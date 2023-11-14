@@ -1,0 +1,18 @@
+{
+    "name": "admin/mvc_da1",
+    "autoload": {
+        "psr-4": {
+            "MVC_DA1\\": "src/"
+        },
+        "files": [
+            "global.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Đặng Hồng Nam",
+            "email": "namkoj1507@gmail.com"
+        }
+    ],
+    "require": {}
+}
