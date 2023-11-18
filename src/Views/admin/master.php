@@ -14,12 +14,14 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
 
     <?php require_once 'components/head.php' ?>
+    <link rel="stylesheet" type="text/css" href="/assets/files/assets/css/style.css">
 </head>
 
 <body>
-
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
     <div id="pcoded" class="pcoded">
-        <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
 
             <?php require_once 'components/navbar.php' ?>

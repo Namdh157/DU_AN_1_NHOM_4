@@ -157,6 +157,33 @@ class Model
         $stmt->execute();
     }
 
+    public function joinTable($connect = [], $orderBy = []) {
+        $sql = "SELECT * FROM {$this->table} JOIN ";
+        $join = [];
+        foreach ($connect as $column) {
+            $join[] = "{$column[0]} ON {$column[1]} = {$column[2]}";
+        }
+        $join = implode(" ", $join);
+
+        $sql .= "{$join}";
+
+        if(!empty($orderBy)) {
+            $addSql = [];
+            foreach ($orderBy as $item) {
+                $addSql[] = "{$item[0]} {$item[1]} LIMIT {$item[2]}" ;
+            }
+            $addSql = ' ORDER BY '.implode(" ", $addSql);
+            $sql .= "{$addSql}";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
+    }
+
     public function __destruct()
     {
         $this->conn = null;
