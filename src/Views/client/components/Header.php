@@ -9,7 +9,7 @@
                 <div class="col-lg-2 col-sm-3 col-3 order-1">
                     <div class="logo_container">
                         <div class="logo">
-                            <a href="index.php"><img src="assets/image/logo-mixi-tét.png" width="130px" alt=""></a>
+                            <a href="index.php"><img src="assets/files/assets/images/logo-mixi-tét.png" width="130px" alt=""></a>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                                     <input type="search" name="search" required="required" class="header_search_input col-11" placeholder="Tìm kiếm sản phẩm...">
                                     <div class="button col-1 position-relative">
                                         <input type="submit" class="col-12 h-100 border-0 rounded" value="" style="background-color:#00d2d4">
-                                        <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-50 translate-middle fs-5"></i>
+                                        <i class="fa fa-search position-absolute" style="top:50%;left:50%;transform: translate(-50%,-50%);font-size:1.3rem"></i>
                                     </div>
                                 </form>
                                 <!-- <div class="menuMb d-none">
@@ -52,12 +52,12 @@
                             <div class="cart_container d-flex flex-row align-items-center justify-content-end">
                                 <div class="cart_icon">
                                     <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918704/cart.png" alt="">
-                                    <div class="cart_count"><span><?php echo $countCart ?></span></div>
+                                    <div class="cart_count"><span><?php echo 0 ?></span></div>
                                 </div>
                                 <div class="cart_content">
                                     <a href="index.php?type=Cart&id=<?php echo empty($users) ? 0 : $users['id'] ?>">
                                         <div class="cart_text">Giỏ hàng</div>
-                                        <div class="cart_price"><?php echo empty($users) ? 0 : '' ?> ₫</div>
+                                        <div class="cart_price"><?php echo empty($users) ? 0 : 0 ?> ₫</div>
                                     </a>
                                 </div>
                             </div>
