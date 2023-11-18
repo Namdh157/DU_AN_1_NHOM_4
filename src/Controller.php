@@ -4,9 +4,10 @@ namespace MVC_DA1;
 
 class Controller {
     protected function render($view, $data = []) {
+        $data['view'] = $view; 
         extract($data);
 
-        include "Views/$view.php";
+        include "Views/client/master.php";
     }
     protected function renderAdmin($view, $data = []) {
         $data['view'] = $view; 
