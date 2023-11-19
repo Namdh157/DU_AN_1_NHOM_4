@@ -157,6 +157,68 @@ class Model
         $stmt->execute();
     }
 
+
+    public function joinTable($connect = [],  $conditions = [], $orderBy = [])
+    {   
+        $sql = "SELECT * FROM ";
+        $as = [];
+        
+        $join = [];
+
+        foreach ($connect as $key => $column) {
+            if ($key == 1) {
+                $join[] = "{$column[0]} ON {$column[2]} = {$column[3]}";
+            }
+            if ($key > 1) {
+                $join[] = " JOIN {$column[0]} ON {$column[2]} = {$column[3]}";
+            }
+            if ($key == 0) {
+                $join[] = "{$column[0]} JOIN {$column[1]} ON {$column[2]} = {$column[3]} JOIN ";
+            }
+        }
+
+        $join = implode(" ", $join);
+        $sql .= $join;
+
+        if (!empty($conditions)) {
+            $where = [];
+            foreach ($conditions as $value) {
+                $link = $condition[3] ?? '';
+                $where[] = " WHERE {$value[0]} {$value[1]} {$value[2]} {$link}";
+            }
+
+            $where = implode(" ", $where);
+            $sql .= $where;
+        }
+
+        if (empty($orderBy)) {
+            $addSql = [];
+            foreach ($orderBy as $item) {
+                $addSql[] = " ORDER BY {$item[0]} {$item[1]} LIMIT {$item[2]}";
+            }
+
+            $addSql = implode(" ", $addSql);
+            $sql .= $addSql;
+        }
+
+        // echo '<pre>';
+        // print_r($sql);
+        // die;
+
+        $stmt = $this->conn->prepare($sql);
+        // foreach ($conditions as &$condition) {
+        //     $stmt->bindParam("{$condition[0]}", $condition[2]);
+        // }
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
+    }
+
+
+
+
+
     public function __destruct()
     {
         $this->conn = null;

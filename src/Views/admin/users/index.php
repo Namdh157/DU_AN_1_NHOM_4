@@ -6,7 +6,7 @@
                 <div class="page-header-title">
                     <i class="feather icon-home bg-c-blue"></i>
                     <div class="d-inline">
-                        <h5>User</h5>
+                        <h5>Người dùng</h5>
                     </div>
                 </div>
             </div>
@@ -16,7 +16,7 @@
                         <li class="breadcrumb-item">
                             <a href="/addmin/dashboard"><i class="feather icon-home"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="#!">User</a> </li>
+                        <li class="breadcrumb-item"><a href="#!">Người dùng</a> </li>
                     </ul>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Danh sách User</h5>
+                                    <h5>Danh sách Người dùng</h5>
 
                                     <a href="/admin/users/create" class="btn btn-info btn-sm">Tạo mới</a>
                                 </div>

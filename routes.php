@@ -1,9 +1,11 @@
 <?php
 
+use MVC_DA1\Controllers\Admin\CartController;
 use MVC_DA1\Controllers\Admin\UserController;
 use MVC_DA1\Controllers\Admin\CategoryController;
 use MVC_DA1\Controllers\Admin\DashboardController;
 use MVC_DA1\Controllers\Client\HomeController;
+
 use MVC_DA1\Router;
 
 
@@ -24,3 +26,8 @@ $router->addRoute('/admin/categories', CategoryController::class, 'index');
 $router->addRoute('/admin/categories/create', CategoryController::class, 'create');
 $router->addRoute('/admin/categories/update', CategoryController::class, 'update');
 $router->addRoute('/admin/categories/delete', CategoryController::class, 'delete');
+
+$router->addRoute('/admin/carts', CartController::class, 'index');
+$router->addRoute('/admin/carts/create', CartController::class, 'create');
+$router->addRoute('/admin/carts/update', CartController::class, 'update');
+$router->addRoute('/admin/carts/delete', CartController::class, 'delete');
