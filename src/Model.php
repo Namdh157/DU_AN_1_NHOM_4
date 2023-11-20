@@ -158,32 +158,51 @@ class Model
     }
 
 
-    public function joinTable($connect = [],  $conditions = [], $orderBy = [])
-    {   
-        $sql = "SELECT * FROM ";
-        $as = [];
-        
+    public function joinTable($addColumn = [], $connect = [],  $conditions = [], $orderBy = [])
+    {
+        $sql = "SELECT *";
+        if(!empty($addColumn)){
+            $asColumn = [];
+            foreach($addColumn as $column){
+                $asColumn[] = " ,{$column[0]} as {$column[1]}";
+            }
+           $asColumn = implode(" ", $asColumn). ' FROM ';
+            $sql .= $asColumn;
+
+        }
+
+
         $join = [];
 
         foreach ($connect as $key => $column) {
-            if ($key == 1) {
-                $join[] = "{$column[0]} ON {$column[2]} = {$column[3]}";
-            }
-            if ($key > 1) {
-                $join[] = " JOIN {$column[0]} ON {$column[2]} = {$column[3]}";
-            }
-            if ($key == 0) {
-                $join[] = "{$column[0]} JOIN {$column[1]} ON {$column[2]} = {$column[3]} JOIN ";
+            if (empty($column[3])) {
+                $join[] = "{$this->table} JOIN  {$column[0]}  ON {$column[1]} = {$column[2]}";
+            } else {
+                if ($key == 1) {
+                    $join[] = "{$column[0]} ON {$column[2]} = {$column[3]}";
+                }
+                if ($key > 1) {
+                    $join[] = " JOIN {$column[0]} ON {$column[2]} = {$column[3]}";
+                }
+                if ($key == 0) {
+                    $join[] = "{$column[0]} JOIN {$column[1]} ON {$column[2]} = {$column[3]} JOIN ";
+                }
+
             }
         }
-
+        if(!empty($addColumn)){
         $join = implode(" ", $join);
+            
+        }else{  
+            $join = ' FROM '.implode(" ", $join);
+        }
         $sql .= $join;
 
         if (!empty($conditions)) {
             $where = [];
             foreach ($conditions as $value) {
-                $link = $condition[3] ?? '';
+                $link = $value[3] ?? '';
+                $value[3] = $value[3] ?? '';
                 $where[] = " WHERE {$value[0]} {$value[1]} {$value[2]} {$link}";
             }
 
@@ -191,7 +210,7 @@ class Model
             $sql .= $where;
         }
 
-        if (empty($orderBy)) {
+        if (!empty($orderBy)) {
             $addSql = [];
             foreach ($orderBy as $item) {
                 $addSql[] = " ORDER BY {$item[0]} {$item[1]} LIMIT {$item[2]}";

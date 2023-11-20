@@ -11,7 +11,7 @@ class CategoryController extends Controller {
     public function index() {
         $categories = (new Category())->all();
 
-        $this->render("admin/categories/index", ["categories" => $categories]);
+        $this->renderAdmin("categories/index", ["categories" => $categories]);
     }
 
     /* Thêm mới */

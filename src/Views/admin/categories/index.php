@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid col-8 pt-3 ">
     <h1>Category List</h1>
 
     <a href="/admin/categories/create" class="btn btn-info">Thêm</a>

@@ -71,9 +71,9 @@
                                                         </td>
                                                         <td><?= $cart['time'] ?></td>
                                                         <td>
-                                                            <a href="/admin/carts/update?id=<?= $cart['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
+                                                            <a href="/admin/carts/update?id=<?= $cart['cart_id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
 
-                                                            <form action="/admin/carts/delete?id=<?= $cart['id'] ?>" method="post">
+                                                            <form action="/admin/carts/delete?id=<?= $cart['cart_id'] ?>" method="post">
                                                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
                                                             </form>
                                                         </td>
