@@ -9,7 +9,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $productModel = (new Product)->allProducts();
+        $productModel = (new Product)->allProductsTypes();
         foreach ($productModel as $key => &$products) {
             if(!empty($products['image_urls'])) {
                 $products['image_urls'] = explode(",",$products['image_urls']);
