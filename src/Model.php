@@ -157,32 +157,76 @@ class Model
         $stmt->execute();
     }
 
-    public function joinTable($connect = [], $orderBy = []) {
-        $sql = "SELECT * FROM {$this->table} JOIN ";
-        $join = [];
-        foreach ($connect as $column) {
-            $join[] = "{$column[0]} ON {$column[1]} = {$column[2]}";
+    public function joinTable($addColumn = [], $connect = [],  $conditions = [], $orderBy = [])
+    {
+        $sql = "SELECT *";
+        if (!empty($addColumn)) {
+            $asColumn = [];
+            foreach ($addColumn as $column) {
+                $asColumn[] = " ,{$column[0]} as {$column[1]}";
+            }
+            $asColumn = implode(" ", $asColumn) . ' FROM ';
+            $sql .= $asColumn;
         }
-        $join = implode(" ", $join);
 
-        $sql .= "{$join}";
 
-        if(!empty($orderBy)) {
+        $join = [];
+
+        foreach ($connect as $key => $column) {
+            if (empty($column[3])) {
+                $join[] = "{$this->table} JOIN  {$column[0]}  ON {$column[1]} = {$column[2]}";
+            } else {
+                if ($key == 1) {
+                    $join[] = "{$column[0]} ON {$column[2]} = {$column[3]}";
+                }
+                if ($key > 1) {
+                    $join[] = " JOIN {$column[0]} ON {$column[2]} = {$column[3]}";
+                }
+                if ($key == 0) {
+                    $join[] = "{$column[0]} JOIN {$column[1]} ON {$column[2]} = {$column[3]} JOIN ";
+                }
+            }
+        }
+        $from = !empty($addColumn) ? '' : ' FROM ';
+        $join = $from . implode(" ", $join);
+        $sql .= $join;
+
+        if (!empty($conditions)) {
+            $where = [];
+            foreach ($conditions as $value) {
+                $link = $value[3] ?? '';
+                $value[3] = $value[3] ?? '';
+                $where[] = " WHERE {$value[0]} {$value[1]} {$value[2]} {$link}";
+            }
+
+            $where = implode(" ", $where);
+            $sql .= $where;
+        }
+
+        if (!empty($orderBy)) {
             $addSql = [];
             foreach ($orderBy as $item) {
-                $addSql[] = "{$item[0]} {$item[1]} LIMIT {$item[2]}" ;
+                $limit = empty($item[2]) ? "" : "LIMIT {$item[2]}";
+                $addSql[] = " ORDER BY {$item[0]} {$item[1]} $limit";
             }
-            $addSql = ' ORDER BY '.implode(" ", $addSql);
-            $sql .= "{$addSql}";
+
+            $addSql = implode(" ", $addSql);
+            $sql .= $addSql;
         }
+        // echo '<pre>';
+        // print_r($sql);
+        // die;
 
         $stmt = $this->conn->prepare($sql);
-
+        // foreach ($conditions as &$condition) {
+        //     $stmt->bindParam("{$condition[0]}", $condition[2]);
+        // }
         $stmt->execute();
 
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         return $stmt->fetchAll();
     }
+    
 
     public function __destruct()
     {

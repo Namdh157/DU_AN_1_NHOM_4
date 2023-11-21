@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container col-8">
     <h1>Cập nhật User</h1>
 
     <form action="" method="post">
