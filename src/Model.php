@@ -46,6 +46,7 @@ class Model
         $sql = "SELECT * FROM {$this->table} ORDER BY {$column} DESC";
 
         $stmt = $this->conn->prepare($sql);
+        
 
         $stmt->execute();
 
@@ -161,14 +162,13 @@ class Model
     public function joinTable($addColumn = [], $connect = [],  $conditions = [], $orderBy = [])
     {
         $sql = "SELECT *";
-        if(!empty($addColumn)){
+        if (!empty($addColumn)) {
             $asColumn = [];
-            foreach($addColumn as $column){
+            foreach ($addColumn as $column) {
                 $asColumn[] = " ,{$column[0]} as {$column[1]}";
             }
-           $asColumn = implode(" ", $asColumn). ' FROM ';
+            $asColumn = implode(" ", $asColumn) . ' FROM ';
             $sql .= $asColumn;
-
         }
 
 
@@ -187,15 +187,10 @@ class Model
                 if ($key == 0) {
                     $join[] = "{$column[0]} JOIN {$column[1]} ON {$column[2]} = {$column[3]} JOIN ";
                 }
-
             }
         }
-        if(!empty($addColumn)){
-        $join = implode(" ", $join);
-            
-        }else{  
-            $join = ' FROM '.implode(" ", $join);
-        }
+        $from = !empty($addColumn) ? '' : ' FROM ';
+        $join = $from . implode(" ", $join);
         $sql .= $join;
 
         if (!empty($conditions)) {
@@ -213,13 +208,13 @@ class Model
         if (!empty($orderBy)) {
             $addSql = [];
             foreach ($orderBy as $item) {
-                $addSql[] = " ORDER BY {$item[0]} {$item[1]} LIMIT {$item[2]}";
+                $limit = empty($item[2]) ? "" : "LIMIT {$item[2]}";
+                $addSql[] = " ORDER BY {$item[0]} {$item[1]} $limit";
             }
 
             $addSql = implode(" ", $addSql);
             $sql .= $addSql;
         }
-
         // echo '<pre>';
         // print_r($sql);
         // die;
@@ -236,6 +231,64 @@ class Model
 
 
 
+    public function categoryProduct($id, $addColumn = [], $connect = [], $conditions  = [])
+    {
+        /* 
+        connect = [
+            ['tên bảng', 'tên bảng.cột, 'tên bảng.cot']
+        ]
+        
+        */
+        $sql = "SELECT *";
+        if(!empty($addColumn)){
+            $asColumn = [];
+            foreach ($addColumn as $column){
+                $asColumn[] =" ,{$column[0]} AS {$column[1]}";
+            }
+            $asColumn = implode(" ", $asColumn) . ' FROM '   ;
+            $sql .= $asColumn;
+        }
+
+       
+
+        if (!empty($connect)) {
+            $join = [];
+            foreach ($connect as $conn) {
+                $join[] = " {$conn[0]} JOIN {$conn[1]} ON {$conn[2]} = {$conn[3]}";
+            }
+            $join = implode(" ", $join);
+        }
+        $sql .= $join;
+
+
+        $where = [];
+        foreach ($conditions as $condition) {
+            $where[] = "{$condition[0]} {$condition[1]} $id";
+        }
+        $where = ' WHERE ' . implode(" ", $where);
+
+        $sql .= $where;
+      
+
+        $stmt = $this->conn->prepare($sql);
+
+        // $stmt->bindParam("{$id}", $id);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+    }
+
+    public function countProduct($id)
+    {
+        $sql = "SELECT COUNT(products.id) as products_count FROM products WHERE products.id_category = $id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        return $stmt->fetch();
+    }
 
 
     public function __destruct()

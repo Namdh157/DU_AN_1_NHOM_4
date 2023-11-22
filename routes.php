@@ -4,7 +4,10 @@ use MVC_DA1\Controllers\Admin\CartController;
 use MVC_DA1\Controllers\Admin\UserController;
 use MVC_DA1\Controllers\Admin\CategoryController;
 use MVC_DA1\Controllers\Admin\DashboardController;
+use MVC_DA1\Controllers\Client\CategoriesController;
 use MVC_DA1\Controllers\Client\HomeController;
+use MVC_DA1\Controllers\Client\ProductDetailController;
+
 
 use MVC_DA1\Router;
 
@@ -14,6 +17,9 @@ $router = new Router();
 
 
 $router->addRoute('/', HomeController::class, 'index');
+$router->addRoute('/Categories', CategoriesController::class, 'index');
+$router->addRoute('/ProductDetail', ProductDetailController::class, 'index');
+
 
 $router->addRoute('/admin/Dashboard', DashboardController::class, 'index');
 
