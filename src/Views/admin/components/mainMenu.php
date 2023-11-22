@@ -29,7 +29,15 @@
                         <span class="pcoded-mtext">Quản lý Danh mục</span>
                     </a>
                 </li>
-
+                
+                <li class>
+                    <a href="/admin/comments" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-edit-1"></i>
+                        </span>
+                        <span class="pcoded-mtext">Quản lý Bình Luận</span>
+                    </a>
+                </li>
                 
 
             </ul>

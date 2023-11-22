@@ -13,18 +13,24 @@ class HomeController extends Controller
     */
     public function index() {
         $category = (new Category())->all();
+
         $productSeller = (new Product())->joinTable(
+            $addColumn = [],
             $connect = [
                 ['category', 'products.id_category', 'category.id']
             ],
+            $conditions = [],
             $orderBy = [
                 ['products.view', 'DESC', 12]
             ]
         );
+
         $productDiscount = (new Product())->joinTable(
+            $addColumn = [],
             $connect = [
                 ['category', 'products.id_category', 'category.id']
             ],
+            $conditions = [],
             $orderBy = [
                 ['products.discount', 'DESC', 9]
             ]
