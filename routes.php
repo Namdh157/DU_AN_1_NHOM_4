@@ -6,6 +6,7 @@ use MVC_DA1\Controllers\Admin\CommentController;
 use MVC_DA1\Controllers\Admin\DashboardController;
 use MVC_DA1\Controllers\Admin\ProductController;
 use MVC_DA1\Controllers\Client\HomeController;
+use MVC_DA1\Controllers\Client\NotificationController;
 use MVC_DA1\Router;
 
 
@@ -14,6 +15,7 @@ $router = new Router();
 
 // rang chủ website
 $router->addRoute('/', HomeController::class, 'index');
+$router->addRoute('/Notification',  HomeController::class, 'notification');
 
 // Trang chủ admin
 $router->addRoute('/admin/dashboard', DashboardController::class, 'index');
@@ -40,3 +42,4 @@ $router->addRoute('/admin/products', ProductController::class, 'index');
 $router->addRoute('/admin/products/create', ProductController::class, 'create');
 $router->addRoute('/admin/products/update', ProductController::class, 'update');
 $router->addRoute('/admin/products/delete', ProductController::class, 'delete');
+

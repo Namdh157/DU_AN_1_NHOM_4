@@ -110,11 +110,11 @@
 
                         <div class="main_nav_menu">
                             <ul class="standard_dropdown main_nav_dropdown">
-                                <li><a href="index.php">Trang chủ<i class="fas fa-chevron-down"></i></a></li>
+                                <li><a href="/">Trang chủ<i class="fas fa-chevron-down"></i></a></li>
                                 <li class="hassubs">
                                     <a href="#">Tất cả danh mục<i class="fas fa-chevron-down"></i></a>
                                     <ul>
-                                        <?php foreach ($category as $value) { ?>
+                                        <?php foreach ($categories as $value) { ?>
                                             <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="index.php?type=Category&id=<?php echo $value['id'] ?>"><?php echo $value['name_category'] ?></a></li>
                                         <?php } ?>
                                     </ul>
@@ -128,7 +128,7 @@
                                         <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"><a href=""></i> &ensp;Cảm Ơn</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="?type=Alert">Thông báo<i class="fas fa-chevron-down"></i></a></li>
+                                <li><a href="/Notification">Thông báo<i class="fas fa-chevron-down"></i></a></li>
                                 <li><a href="?type=Alert">Contact<i class="fas fa-chevron-down"></i></a></li>
                             </ul>
                         </div>
