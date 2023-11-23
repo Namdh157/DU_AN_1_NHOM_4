@@ -17,8 +17,11 @@ $router = new Router();
 
 
 $router->addRoute('/', HomeController::class, 'index');
-$router->addRoute('/Categories', CategoriesController::class, 'index');
-$router->addRoute('/ProductDetail', ProductDetailController::class, 'index');
+$router->addRoute('/Categories', HomeController::class, 'categories');
+$router->addRoute('/ProductDetail', HomeController::class, 'productDetail');
+$router->addRoute('/Register', HomeController::class, 'register');
+$router->addRoute('/Login', HomeController::class, 'login');  
+
 
 
 $router->addRoute('/admin/Dashboard', DashboardController::class, 'index');

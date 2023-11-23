@@ -268,6 +268,10 @@ class Model
         $where = ' WHERE ' . implode(" ", $where);
 
         $sql .= $where;
+
+        // echo '<pre>';
+        // print_r($sql);
+        // die;
       
 
         $stmt = $this->conn->prepare($sql);

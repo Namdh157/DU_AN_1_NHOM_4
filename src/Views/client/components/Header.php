@@ -9,7 +9,7 @@
                 <div class="col-lg-2 col-sm-3 col-3 order-1">
                     <div class="logo_container">
                         <div class="logo">
-                            <a href="index.php"><img src="assets/files/assets/images/logo-mixi-tét.png" width="130px" alt=""></a>
+                            <a href="/"><img src="assets/files/assets/images/logo-mixi-tét.png" width="130px" alt=""></a>
                         </div>
                     </div>
                 </div>
@@ -82,8 +82,8 @@
                             <?php  } else { ?>
                                 <div class="top_bar_user">
                                     <div class="user_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918647/user.svg" alt=""></div>
-                                    <div><a href="view/register/">Đăng ký</a></div>
-                                    <div><a href="view/login/">Đăng nhập</a></div>
+                                    <div><a href="Register">Đăng ký</a></div>
+                                    <div><a href="Login">Đăng nhập</a></div>
                                 </div>
                             <?php } ?>
                         </div>
@@ -110,12 +110,12 @@
 
                         <div class="main_nav_menu">
                             <ul class="standard_dropdown main_nav_dropdown">
-                                <li><a href="index.php">Trang chủ<i class="fas fa-chevron-down"></i></a></li>
+                                <li><a href="/">Trang chủ<i class="fas fa-chevron-down"></i></a></li>
                                 <li class="hassubs">
                                     <a href="#">Tất cả danh mục<i class="fas fa-chevron-down"></i></a>
                                     <ul>
-                                        <?php foreach ($category as $value) { ?>
-                                            <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="/Categories?id=<?=$value['id'] ?>"><?= $value['name_category'] ?></a></li>
+                                        <?php foreach ($allCategories as $item) { ?>
+                                            <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="Categories?id=<?=$item['id'] ?>"><?= $item['name_category'] ?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>

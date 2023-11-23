@@ -3,7 +3,7 @@
         <div class="container-title d-flex justify-content-between align-self-center">
             <div class="title-left ">
                 <h3 class="fs-2 fw-bold"><?php echo $categoryCurrent['name_category']  ?></h3>
-                <p class="fs-6 text-decoration-none"><a href="index.php" class="">TRANG CHỦ /&ensp;</a> <span class="fw-bolder text-dark"> <?php echo $categoryCurrent['name_category'] ?></span></p>
+                <p class="fs-6 text-decoration-none"><a href="/" class="">TRANG CHỦ /&ensp;</a> <span class="fw-bolder text-dark"> <?php echo $categoryCurrent['name_category'] ?></span></p>
             </div>
             <p class="fs-6">Hiện thị <?php echo $countProduct['products_count'] ?> kết quả</p>
             <div class="title right">
@@ -22,9 +22,9 @@
                 <div class="position-sticky">
                     <h4 class="fw-bold">DANH MỤC SẢN PHẨM</h4>
                     <div class="list-group list-group-flush mt-4 fs-5">
-                        <?php foreach ($categories as $value) { ?>
-                            <a href="index.php?type=Category&id=<?php echo $value['id'] ?>" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-                                <span><?php echo $value['name_category'] ?></span>
+                        <?php foreach ($allCategories as $value) { ?>
+                            <a href="Categories?id=<?= $value['id'] ?>" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                                <span><?= $value['name_category'] ?></span>
                             </a>
                         <?php } ?>
                     </div>

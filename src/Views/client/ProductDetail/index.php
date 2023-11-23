@@ -1,6 +1,4 @@
 
-
-
 <style>
     .preview-thumbnail li a img {
         height: 180px;
@@ -17,7 +15,7 @@
 
 <main id="main">
     <div class="container mt-5">
-        <h5><a href="index.php">TRANG CHỦ / </a><a href="Category?id=<?= $productCurrent[0]['id_category'] ?>" class="text-uppercase"><?= $productCurrent[0]['name_category'] ?></a></h5>
+        <h5><a href="/">TRANG CHỦ / </a><a href="Category?id=<?= $productCurrent[0]['id_category'] ?>" class="text-uppercase"><?= $productCurrent[0]['name_category'] ?></a></h5>
         <div class="card">
             <div class="container-fliud">
                 <div class="wrapper row">
@@ -49,7 +47,7 @@
                         </div>
                         <p class="product-description"><?php echo empty($productCurrent['description']) ? 'Chưa có mô tả' :  $productCurrent['description'] ?></p>
                         <h4 class="price">Giá hiện tại: <span><?php echo number_format($productCurrent[0]['price'], 0, '.', ',') ?>₫</span></h4>
-                        <p class="vote"><strong>Danh mục: </strong><a href="Category?id=<?= $productCurrent[0]['name_category'] ?>"> <?= $productCurrent[0]['name_category'] ?></a></strong></p>
+                        <p class="vote"><strong>Danh mục: </strong><a href="Categories?id=<?= $productCurrent[0]['id_category'] ?>"> <?= $productCurrent[0]['name_category'] ?></a></strong></p>
                         <h5 class="sizes">
 
                         </h5>
