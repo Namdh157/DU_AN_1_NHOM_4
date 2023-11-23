@@ -25,6 +25,7 @@ class CartController extends Controller
         $this->allUser = (new User)->all();
 
         $this->cartCurrent = (new Cart)->findOne($id);
+        
     }
 
     public function index()
@@ -50,8 +51,7 @@ class CartController extends Controller
             $data = [
                 'id_product' => $_POST['id_product'],
                 'quantity' => $_POST['quantity'],
-                'id_user' => $_POST['id_user'],
-                'time' => $_POST['time'],
+                'id_user' => $_POST['id_user']
             ];
 
             (new Cart)->insert($data);

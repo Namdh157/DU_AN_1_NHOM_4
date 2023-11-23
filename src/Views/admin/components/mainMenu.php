@@ -39,6 +39,24 @@
                     </a>
                 </li>
 
+                <li class>
+                    <a href="/admin/comments" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layers"></i>
+                        </span>
+                        <span class="pcoded-mtext">Quản lý bình luận</span>
+                    </a>
+                </li>
+
+                <li class>
+                    <a href="/admin/carts" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-box"></i>
+                        </span>
+                        <span class="pcoded-mtext">Quản lý giỏ hàng</span>
+                    </a>
+                </li>
+
                 
 
             </ul>

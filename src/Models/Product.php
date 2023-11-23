@@ -8,11 +8,8 @@ class Product extends Model
 {
     protected $table = 'products';
     protected $columns = [
-        'id',
-        'name',
         'name_product',
         'price',
-        'img',
         'description',
         'view',
         'id_category',
@@ -21,8 +18,9 @@ class Product extends Model
     ];
     public function allProductsTypes($orderBy = [])
     {
-        $sql = "SELECT
-        products.*,
+
+        $sql = "SELECT *,
+        products.id,
         category.name_category,
         images.image_urls,
         properties.colors,
@@ -30,6 +28,7 @@ class Product extends Model
     FROM
         products
     JOIN category ON products.id_category = category.id
+
     JOIN(
         SELECT
             id_products,

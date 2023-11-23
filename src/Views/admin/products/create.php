@@ -37,16 +37,24 @@
                                 <div class="card-block">
                                     <form action="" method="post" enctype="multipart/form-data">
                                         <label for="name">Tên sản phẩm</label>
-                                        <input type="text" name="name" class="form-control">
+                                        <input type="text" name="nameProduct" class="form-control">
 
-                                        <label for="categories" class="mt-3">Danh mục</label>
-                                        <input type="text" name="categories" class="form-control">
+                                        <div class="col-12 m-b-30">
+                                            <label for="name">Danh mục</label>
+                                            <select name="categories" class="form-control form-control-primary">
+                                                <option value="">Chọn danh mục sản phẩm</option>
+                                                <?php foreach ($allCategories as $category) : ?>
+                                                    <option value="<?= $category['id'] ?>"><?= $category['name_category'] ?></option>
+
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
 
                                         <label for="price" class="mt-3">Giá</label>
                                         <input type="text" name="price" class="form-control">
 
                                         <label for="image" class="mt-3">Ảnh</label>
-                                        <input type="file" name="files[]" multiple class="form-control" />
+                                        <input type="file" name="image_urls[]" multiple class="form-control" />
 
                                         <label for="color" class="mt-3">Màu sắc</label>
                                         <input type="text" name="color" class="form-control">

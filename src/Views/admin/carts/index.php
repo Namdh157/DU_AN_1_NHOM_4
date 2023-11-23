@@ -45,7 +45,6 @@
                                                     <th>Sản phẩm</th>
                                                     <th>Số lượng</th>
                                                     <th>Khách hàng</th>
-                                                    <th>Thời gian</th>
                                                     <th>Chức năng</th>
                                                 </tr>
                                             </thead>
@@ -69,7 +68,6 @@
                                                             <span>Địa chỉ:</span><?= $cart['address'] ?><br>
                                                             <span>Số điện thoại: </span><?= $cart['phone'] ?>
                                                         </td>
-                                                        <td><?= $cart['time'] ?></td>
                                                         <td>
                                                             <a href="/admin/carts/update?id=<?= $cart['cart_id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
 

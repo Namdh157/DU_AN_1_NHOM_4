@@ -81,6 +81,8 @@ class Model
         $values = implode(", ", $values);
         $sql .= "({$values})";
 
+
+
         $stmt = $this->conn->prepare($sql);
 
         foreach ($data as $key => &$value) {
@@ -90,6 +92,21 @@ class Model
         }
 
         $stmt->execute();
+    }
+
+    public function insertImages($id_product, $image_url)
+    {
+        $sql = "INSERT INTO products_images (`id_products`, `image_url`) 
+        VALUES (:id_product, :image_url)";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":id_product", $id_product, \PDO::PARAM_INT);
+
+        $stmt->bindParam(":image_url", $image_url, \PDO::PARAM_STR);
+
+        $stmt->execute();
+
     }
 
     /* 
@@ -226,7 +243,16 @@ class Model
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         return $stmt->fetchAll();
     }
-    
+    public function getLastId() {
+        $sql = "SELECT * FROM {$this->table} ORDER BY id DESC LIMIT 1";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute();
+        
+        return $stmt->fetch()['id'];
+    }
+
 
     public function __destruct()
     {
