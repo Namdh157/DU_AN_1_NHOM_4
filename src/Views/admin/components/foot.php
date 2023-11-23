@@ -28,6 +28,8 @@
 <!-- <script type="text/javascript" src="/assets/files/assets/js/script.min.js"></script> -->
 <script src="/assets/files/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script type="text/javascript" src="/assets/files/assets/js/script.js"></script>
+<script type="text/javascript" src="/public/js/loadModel.js"></script>
+
 <script>
     $(function () {
         $('#simpletable').DataTable();

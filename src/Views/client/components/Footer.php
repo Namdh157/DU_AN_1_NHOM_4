@@ -58,9 +58,9 @@
                         <!-- Links -->
                         <h6 class="text-uppercase fw-bold">Tất cả sản phẩm</h6>
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-                        <?php foreach ($categories as $value) { ?>
+                        <?php foreach ($category as $value) { ?>
                             <p>
-                                <a href="../category/?id= <?php echo $value['id'] ?>" class="text-dark"><?php echo $value['name_category'] ?></a>
+                                <a href="Categories?id=<?= $value['id'] ?>" class="text-dark"><?= $value['name_category'] ?></a>
                             </p>
                         <?php } ?>
                     </div>
