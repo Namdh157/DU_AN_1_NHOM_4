@@ -82,13 +82,8 @@
                             <?php  } else { ?>
                                 <div class="top_bar_user">
                                     <div class="user_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918647/user.svg" alt=""></div>
-<<<<<<< HEAD
-                                    <div><a href="view/register/">Đăng ký</a></div>
-                                    <div><a href="view/login/">Đăng nhập</a></div>
-=======
                                     <div><a href="Register">Đăng ký</a></div>
                                     <div><a href="Login">Đăng nhập</a></div>
->>>>>>> Dat
                                 </div>
                             <?php } ?>
                         </div>

@@ -21,7 +21,6 @@ class Product extends Model
     {
 
         $sql = "SELECT *,
-        products.id,
         category.name_category,
         images.image_urls,
         properties.colors,
@@ -29,8 +28,7 @@ class Product extends Model
     FROM
         products
     JOIN category ON products.id_category = category.id
-
-    JOIN(
+    LEFT JOIN (
         SELECT
             id_products,
             GROUP_CONCAT(image_url) AS image_urls
@@ -38,10 +36,8 @@ class Product extends Model
             products_images
         GROUP BY
             id_products
-    ) AS images
-    ON
-        products.id = images.id_products
-    JOIN(
+    ) AS images ON products.id = images.id_products
+    LEFT JOIN (
         SELECT
             product_id,
             GROUP_CONCAT(color) AS colors,
@@ -50,9 +46,7 @@ class Product extends Model
             products_properties
         GROUP BY
             product_id
-    ) AS properties
-    ON
-        products.id = properties.product_id";
+    ) AS properties ON products.id = properties.product_id";
 
         if (!empty($orderBy)) {
             $addSql = [];
