@@ -69,7 +69,7 @@
                                                         <td><?= $value['name_product'] ?></td>
                                                         <td><?= number_format($value['price']) . 'đ'  ?></td>
                                                         <td>
-                                                            <button data-button="detail<?= $key ?>" class="rounded w-100">Hiện thị chi tiết</button>
+                                                            <button data-button="detail<?= $key ?>" class="rounded w-100" onclick=loadModel()>Hiện thị chi tiết</button>
                                                         </td>
                                                         <td><?= $value['name_category'] ?></td>
                                                         <td>
@@ -79,53 +79,53 @@
                                                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
                                                             </form>
                                                         </td>
-                                                    </tr>
-                                                    <tr data-details="detail<?= $key ?>">
-                                                        <td class="text-center containerDetail" colspan="8"  >
-                                                            <div class="container d-flex w-100">
-                                                                <div class="containerDetail-image">
-                                                                    <span>Tất cả ảnh sản phẩm: </span>
-                                                                    <?php if (!empty($value['image_urls'])) {
-                                                                        foreach ($value['image_urls'] as $imageUrl) : ?>
+
+                                                        <!-- <td data-details="detail<?= $key ?>" class="text-center containerDetail" colspan="8">
+                                                            <div class="container d-flex w-100 justify-content-around">
+                                                                <div class="containerDetail-image d-flex  align-items-center p-3 border rounded border-primary-subtle">
+                                                                    <?php if (!empty($value['image_urls'])) { ?>
+                                                                        <h4>Tất cả ảnh sản phẩm: </h4>
+                                                                        <?php foreach ($value['image_urls'] as $imageUrl) : ?>
                                                                             <img src="/assets/files/assets/images/<?= $imageUrl ?>" alt="Ảnh sản phẩm" width="100">
                                                                         <?php endforeach; ?>
                                                                     <?php } else { ?>
-                                                                        <span>Sản phẩm chưa có ảnh nào cả</span>
+                                                                        <h4>Sản phẩm chưa có ảnh nào cả</h4>
                                                                     <?php } ?>
                                                                 </div>
 
 
-                                                                <div class="containerDetail-color-size">
+                                                                <div class="containerDetail-color d-flex flex-wrap justify-content-center p-3 rounded border border-primary-subtle">
                                                                     <p>
-                                                                        <span>Màu sắc: </span>
-                                                                        <?php if (!empty($value['colors'])) {
-                                                                            foreach ($value['colors'] as $color) : ?>
-                                                                                <span><?= $color ?>, </span>
-                                                                            <?php endforeach; ?>
-                                                                        <?php } else { ?>
-                                                                            <span>Sản phẩm không có màu sắc</span>
-                                                                        <?php } ?>
-                                                                    </p>
-
-                                                                    <p>
-                                                                        <span>Kích cỡ: </span>
-                                                                        <?php if (!empty($value['sizes'])) {
-                                                                            foreach ($value['sizes'] as $size) : ?>
-                                                                                <span><?= $size ?>, </span>
-                                                                            <?php endforeach; ?>
-                                                                        <?php } else { ?>
-                                                                            <span>Sản phẩm không có kích cỡ</span>
-                                                                        <?php } ?>
-                                                                    </p>
+                                                                        <?php if (!empty($value['colors'])) { ?>
+                                                                    <h4>Màu sắc: </h4>
+                                                                    <?php foreach ($value['colors'] as $color) : ?>
+                                                                        <span><?= $color ?>; </span>
+                                                                    <?php endforeach; ?>
+                                                                <?php } else { ?>
+                                                                    <h4>Sản phẩm không có màu sắc</h4>
+                                                                <?php } ?>
+                                                                </p>
+                                                                <br>
+                                                                <p>
+                                                                    <?php if (!empty($value['sizes'])) { ?>
+                                                                <h4>Kích cỡ: </h4>
+                                                                <?php foreach ($value['sizes'] as $size) : ?>
+                                                                    <span><?= $size ?>; </span>
+                                                                <?php endforeach; ?>
+                                                            <?php } else { ?>
+                                                                <h4>Sản phẩm không có kích cỡ</h4>
+                                                            <?php } ?>
+                                                            </p>
 
                                                                 </div>
                                                             </div>
+                                                        </td> -->
                                                     </tr>
-                                                    
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -134,15 +134,24 @@
             </div>
         </div>
     </div>
+    <div class="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mobtn" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary mobtn">Save
+                        changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script>
-    const detailProperties = document.querySelectorAll("button.rounded");
-    detailProperties.forEach((item) => {
-        item.addEventListener("click", () => {
-            const dataDetail = item.getAttribute("data-button");
-            document.querySelector("tr[data-details=" + dataDetail + "]>td").classList.toggle("show");
-            item.textContent = document.querySelector("tr[data-details=" + dataDetail + "]>td").classList.contains("show") ? "Ẩn chi tiết" : 'Hiện thị chi tiết'
-        })
-    })
-</script>
