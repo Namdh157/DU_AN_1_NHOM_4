@@ -47,6 +47,7 @@ class Model
 
         $stmt = $this->conn->prepare($sql);
 
+
         $stmt->execute();
 
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
@@ -106,7 +107,6 @@ class Model
         $stmt->bindParam(":image_url", $image_url, \PDO::PARAM_STR);
 
         $stmt->execute();
-
     }
 
     /* 
@@ -173,6 +173,7 @@ class Model
 
         $stmt->execute();
     }
+
 
     public function joinTable($addColumn = [], $connect = [],  $conditions = [], $orderBy = [])
     {
@@ -243,13 +244,80 @@ class Model
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         return $stmt->fetchAll();
     }
-    public function getLastId() {
+
+
+
+    public function categoryProduct($id, $addColumn = [], $connect = [], $conditions  = [])
+    {
+        /* 
+        connect = [
+            ['tên bảng', 'tên bảng.cột, 'tên bảng.cot']
+        ]
+        
+        */
+        $sql = "SELECT *";
+        if (!empty($addColumn)) {
+            $asColumn = [];
+            foreach ($addColumn as $column) {
+                $asColumn[] = " ,{$column[0]} AS {$column[1]}";
+            }
+            $asColumn = implode(" ", $asColumn) . ' FROM ';
+            $sql .= $asColumn;
+        }
+
+
+
+        if (!empty($connect)) {
+            $join = [];
+            foreach ($connect as $conn) {
+                $join[] = " {$conn[0]} JOIN {$conn[1]} ON {$conn[2]} = {$conn[3]}";
+            }
+            $join = implode(" ", $join);
+        }
+        $sql .= $join;
+
+
+        $where = [];
+        foreach ($conditions as $condition) {
+            $where[] = "{$condition[0]} {$condition[1]} $id";
+        }
+        $where = ' WHERE ' . implode(" ", $where);
+
+        $sql .= $where;
+
+        // echo '<pre>';
+        // print_r($sql);
+        // die;
+
+
+        $stmt = $this->conn->prepare($sql);
+
+        // $stmt->bindParam("{$id}", $id);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+    }
+
+    public function countProduct($id)
+    {
+        $sql = "SELECT COUNT(products.id) as products_count FROM products WHERE products.id_category = $id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        return $stmt->fetch();
+    }
+
+    public function getLastId()
+    {
         $sql = "SELECT * FROM {$this->table} ORDER BY id DESC LIMIT 1";
 
         $stmt = $this->conn->prepare($sql);
 
         $stmt->execute();
-        
+
         return $stmt->fetch()['id'];
     }
 

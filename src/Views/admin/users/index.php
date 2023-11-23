@@ -6,7 +6,11 @@
                 <div class="page-header-title">
                     <i class="feather icon-home bg-c-blue"></i>
                     <div class="d-inline">
+<<<<<<< HEAD
                         <h5>Khách hàng</h5>
+=======
+                        <h5>Người dùng</h5>
+>>>>>>> Dat
                     </div>
                 </div>
             </div>
@@ -16,7 +20,11 @@
                         <li class="breadcrumb-item">
                             <a href="/admin/dashboard"><i class="feather icon-home"></i></a>
                         </li>
+<<<<<<< HEAD
                         <li class="breadcrumb-item"><a href="#!">Khách hàng</a> </li>
+=======
+                        <li class="breadcrumb-item"><a href="#!">Người dùng</a> </li>
+>>>>>>> Dat
                     </ul>
                 </div>
             </div>
@@ -32,7 +40,11 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
+<<<<<<< HEAD
                                     <h5>Danh sách Khách hàng</h5>
+=======
+                                    <h5>Danh sách Người dùng</h5>
+>>>>>>> Dat
 
                                     <a href="/admin/users/create" class="btn btn-info btn-sm">Tạo mới</a>
                                 </div>
