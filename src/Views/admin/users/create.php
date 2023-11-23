@@ -32,45 +32,25 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Danh sách User</h5>
-
-                                    <a href="/admin/users/create" class="btn btn-info btn-sm">Tạo mới</a>
+                                    <h5>Thêm mới </h5>
                                 </div>
                                 <div class="card-block">
-                                    <div class="dt-responsive table-responsive">
-                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Address</th>
-                                                    <th>Password</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
+                                    <form action="" method="post">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" class="form-control">
 
-                                            <tbody>
-                                                <?php foreach ($users as $user) : ?>
-                                                    <tr>
-                                                        <td><?= $user['id'] ?></td>
-                                                        <td><?= $user['name'] ?></td>
-                                                        <td><?= $user['email'] ?></td>
-                                                        <td><?= $user['address'] ?></td>
-                                                        <td><?= $user['password'] ?></td>
-                                                        <td>
-                                                            <a href="/admin/users/update?id=<?= $user['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
+                                        <label for="email" class="mt-3">Email</label>
+                                        <input type="email" name="email" class="form-control">
 
-                                                            <form action="/admin/users/delete?id=<?= $user['id'] ?>" method="post">
-                                                                <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
+                                        <label for="password" class="mt-3">Password</label>
+                                        <input type="password" name="password" class="form-control">
 
-                                        </table>
-                                    </div>
+                                        <label for="address" class="mt-3">Address</label>
+                                        <input type="text" name="address" class="form-control">
+
+                                        <button type="submit" name="btn-submit" class="btn btn-info mt-3">Submit</button>
+                                        <a href="/admin/users" class="btn btn-primary mt-3">Quay lại d/s</a>
+                                    </form>
                                 </div>
                             </div>
                         </div>

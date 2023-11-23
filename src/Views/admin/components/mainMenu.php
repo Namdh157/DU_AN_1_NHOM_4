@@ -4,7 +4,7 @@
             <div class="pcoded-navigation-label">App</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class>
-                    <a href="/admin/Dashboard" class="waves-effect waves-dark">
+                    <a href="/admin/dashboard" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-home"></i>
                         </span>
@@ -17,7 +17,7 @@
                         <span class="pcoded-micon">
                             <i class="feather icon-box"></i>
                         </span>
-                        <span class="pcoded-mtext">Quản lý User</span>
+                        <span class="pcoded-mtext">Quản lý khách hàng</span>
                     </a>
                 </li>
 
@@ -29,15 +29,7 @@
                         <span class="pcoded-mtext">Quản lý Danh mục</span>
                     </a>
                 </li>
-                
-                <li class>
-                    <a href="/admin/comments" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-edit-1"></i>
-                        </span>
-                        <span class="pcoded-mtext">Quản lý Bình Luận</span>
-                    </a>
-                </li>
+
                 
 
             </ul>
