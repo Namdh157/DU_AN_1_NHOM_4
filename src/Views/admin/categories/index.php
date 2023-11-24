@@ -35,7 +35,7 @@
                                 <div class="card-header">
                                     <h5>Danh sách Danh mục</h5>
 
-                                    <a href="/admin/users/create" class="btn btn-info btn-sm">Tạo mới</a>
+                                    <a href="/admin/categories/create" class="btn btn-info btn-sm">Tạo mới</a>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
@@ -56,9 +56,9 @@
                                                         <td><?= $value['id'] ?></td>
                                                         <td><?= $value['name_category'] ?></td>
                                                         <td>
-                                                            <a href="/admin/users/update?id=<?= $value['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
+                                                            <a href="/admin/categories/update?id=<?= $value['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
 
-                                                            <form action="/admin/users/delete?id=<?= $value['id'] ?>" method="post">
+                                                            <form action="/admin/categories/delete?id=<?= $value['id'] ?>" method="post">
                                                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
                                                             </form>
                                                         </td>

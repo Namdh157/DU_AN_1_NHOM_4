@@ -44,11 +44,12 @@
                                         <table id="simpletable" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
+                                                    <th>Họ và tên</th>
                                                     <th>Email</th>
-                                                    <th>Address</th>
-                                                    <th>Password</th>
+                                                    <th>Địa chỉ</th>
+                                                    <th>Tên đăng nhập</th>
+                                                    <th>Mật khẩu</th>
+                                                    <th>Chức vụ</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -56,11 +57,13 @@
                                             <tbody>
                                                 <?php foreach ($users as $user) : ?>
                                                     <tr>
-                                                        <td><?= $user['id'] ?></td>
                                                         <td><?= $user['name'] ?></td>
                                                         <td><?= $user['email'] ?></td>
                                                         <td><?= $user['address'] ?></td>
+                                                        <td><?= $user['user_name'] ?></td>
                                                         <td><?= $user['password'] ?></td>
+                                                        <td><?php $roles = [0 => 'Khách hàng', 1 => 'Thành viên', 10 => 'Quản trị (admin)'];
+                                                            echo $roles[$user['role']] ?? ''; ?></td>
                                                         <td>
                                                             <a href="/admin/users/update?id=<?= $user['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
 
