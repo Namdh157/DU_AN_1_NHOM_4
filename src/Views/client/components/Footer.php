@@ -96,11 +96,7 @@
                         <p><i class="fas fa-phone mr-3"></i> + 84 978 930 985</p>
                         <p><i class="fas fa-print mr-3"></i> + 84 978 930 985</p>
                     </div>
-                    <!-- Grid column -->
-                </div>
-                <!-- Grid row -->
-            </div>
-        </section>
+                    <!-- Grid column -->1507
         <!-- Section: Links  -->
 
         <!-- Copyright -->

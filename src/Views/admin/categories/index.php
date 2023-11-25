@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 <div class="pcoded-content">
-=======
-<div class="container-fluid col-8 pt-3 ">
-    <h1>Category List</h1>
->>>>>>> Dat
+
 
     <div class="page-header card">
         <div class="row align-items-end">

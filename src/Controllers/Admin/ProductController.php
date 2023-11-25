@@ -30,6 +30,10 @@ class ProductController extends Controller
             }
         }
 
+        // echo "<pre>";
+        // print_r($this->allProducts);
+        // die;
+
         $this->renderAdmin(
             'products/index',
             [

@@ -16,6 +16,12 @@ function listProducts($listProduct)
                                     <?php } else { ?>
                                         <span>Sản phẩm chưa có ảnh nào cả</span>
                                     <?php } ?>
+=======
+                        <a href="ProductDetail?id=<?=$value['product_detail'] ?>">
+                            <div class="card p-0 p-lg-3">
+                                <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light" data-mdb-ripple-color="light">
+                                    <img src="/assets/files/assets/images//<?= $value['img'] ?>" class="w-100" />
+>>>>>>> Dat
                                     <a href="#!">
                                         <div class="mask">
                                             <div class="d-flex justify-content-start align-items-end h-100">
@@ -31,11 +37,7 @@ function listProducts($listProduct)
                                     <a href="" class="text-reset">
                                         <h5 class="card-title mb-3"><?= $value['name_product'] ?></h5>
                                     </a>
-<<<<<<< HEAD
-                                    <a href="index.php?type=Category&id=<?= $value['id'] ?>" class="text-reset">
-=======
                                     <a href="Categories?id=<?= $value['id'] ?>" class="text-reset">
->>>>>>> Dat
                                         <p><?= $value['name_category'] ?></p>
                                     </a>
                                     <h6 class="mb-3 fw-bold"><?= number_format($value['price'], 0, '.', ',')  ?>₫</h6>

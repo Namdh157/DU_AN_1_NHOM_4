@@ -5,6 +5,7 @@ use MVC_DA1\Controllers\Admin\UserController;
 use MVC_DA1\Controllers\Admin\CategoryController;
 use MVC_DA1\Controllers\Admin\CommentController;
 use MVC_DA1\Controllers\Admin\DashboardController;
+use MVC_DA1\Controllers\Admin\ProductController;
 use MVC_DA1\Controllers\Client\HomeController;
 use MVC_DA1\Router;
 
