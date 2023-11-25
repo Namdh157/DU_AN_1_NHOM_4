@@ -19,7 +19,7 @@
                     <div class="header_search">
                         <div class="header_search_content">
                             <div class="header_search_form_container">
-                                <form method="get" class="d-flex justify-content-between align-items-center">
+                                <form method="get" action="/allProducts" class="d-flex justify-content-between align-items-center">
                                     <input type="search" name="search" required="required" class="header_search_input col-11" placeholder="Tìm kiếm sản phẩm...">
                                     <div class="button col-1 position-relative">
                                         <input type="submit" class="col-12 h-100 border-0 rounded" value="" style="background-color:#00d2d4">
@@ -64,21 +64,21 @@
                         </div>
                         <div class="top_bar_content ml-auto align-items-start">
                             <?php
-                            if (!empty($users)) {
+                            if (isset($_SESSION['account'])) {
                             ?>
                                 <div class="users-logout position-relative">
                                     <div class="d-flex align-items-center">
-                                        <img class="mx-3 rounded-circle" src="assets/image/<?php echo $users['image'] ?>" alt="" width="25px">
-                                        <span class="fw-bold"><?php echo $users['name'] ?></span>
+                                        <img class="mx-3 rounded-circle" src="/assets/files/assets/images/<?= $_SESSION['account']['image_user'] ?>" alt="" width="70px">
+                                        <span class="fw-bold"><?= $_SESSION['account']['name'] ?></span>
                                     </div>
                                     <div class="logout position-absolute rounded " style="display:none; background-color: #00d2d4;">
-                                        <div class="fw-bolder border-bottom fs-5"><a href="view/logout/"> <button>Đăng xuất</button></a></div>
-                                        <?php if ($users['role'] == 10) { ?>
-                                            <div class="fw-bolder"><a href="admin/"> <button> Quản trị website</button></a></div>
+                                        <div class="fw-bolder border-bottom fs-5 "><a href="/Logout"> <button>Đăng xuất</button></a></div>
+                                        <?php if ($_SESSION['account']['role'] == 10) { ?>
+                                            <div class="fw-bolder"><a href="/admin/dashboard"> <button> Quản trị website</button></a></div>
                                         <?php } ?>
                                     </div>
                                 </div>
-
+                                        
                             <?php  } else { ?>
                                 <div class="top_bar_user">
                                     <div class="user_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918647/user.svg" alt=""></div>
@@ -150,3 +150,14 @@
         </div>
     </nav>
 </header>
+<script>
+    const userLogout = document.querySelector('.users-logout');
+    const logout = document.querySelector('.logout');
+
+    userLogout.onmouseover = function() {
+        logout.style.display = "block";
+    }
+    userLogout.onmouseout = function() {
+        logout.style.display = "none";
+    }
+</script>

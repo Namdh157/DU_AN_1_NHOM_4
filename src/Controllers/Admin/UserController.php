@@ -53,8 +53,8 @@ class UserController extends Controller
 
             if(!empty($_FILES['image']['name'])) {
                 $imageUrl = $_FILES['image']['name'];
-                $url = '/assets/files/assets/images/';
-                move_uploaded_file($url, $imageUrl);
+                $url = 'assets/files/assets/images/';
+                move_uploaded_file($_FILES['image']['tmp_name'], $url.$imageUrl);
             } else { 
                 $imageUrl = $user['image'];
             }

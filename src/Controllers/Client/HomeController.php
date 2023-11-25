@@ -5,6 +5,7 @@ namespace MVC_DA1\Controllers\Client;
 use MVC_DA1\Controller;
 use MVC_DA1\Models\Product;
 use MVC_DA1\Models\Category;
+use MVC_DA1\Models\User;
 
 class HomeController extends Controller
 {
@@ -39,9 +40,11 @@ class HomeController extends Controller
                 ['products.discount', 'DESC', 9]
             ]
         );
+        // unset($_SESSION['account']);
         // echo '<pre>';
-        // print_r($productSeller);
+        // print_r($_SESSION);
         // die;
+ 
         $this->render('home', [
             'category' => $category,
             'productSeller' => $productSeller,
@@ -51,7 +54,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function categories() {
+    public function categories()
+    {
         $id = $_GET['id'];
         $categoryCurrent = (new Category())->findOne($id);
         $categories = (new Category())->all();
@@ -64,44 +68,122 @@ class HomeController extends Controller
         ]);
 
         $countProduct = (new Product())->countProduct($id);
-            // echo '<pre>';
-            // print_r($this->allCategories);
-            // die;
+        
         $this->render('Categories/index', [
             'categoryCurrent' => $categoryCurrent,
             'categories' => $categories,
-            'categoryProduct'=> $categoryProduct,
-            'countProduct'=> $countProduct,
+            'categoryProduct' => $categoryProduct,
+            'countProduct' => $countProduct,
             'allCategories' => $this->allCategories
-            
+
         ]);
     }
 
-    public function productDetail(){
+    public function productDetail()
+    {
         $id = $_GET['id'];
-        
+
         $productCurrent = (new Product())->joinTable(
-            $addColumn = [], 
-            $connect = [['category', 'products.id_category', 'category.id']], 
-            $conditions = [['products.id', '=', $id]], 
-            $orderBy = []);
-            
-            
+            $addColumn = [],
+            $connect = [['category', 'products.id_category', 'category.id']],
+            $conditions = [['products.id', '=', $id]],
+            $orderBy = []
+        );
 
 
-               
+
+
+
         $this->render('ProductDetail/index', [
             'productCurrent' => $productCurrent,
             'allCategories' => $this->allCategories
-            
+
         ]);
     }
 
-    public function register(){
+    public function register()
+    {
+        if (isset($_POST['btnSave'])) {
+            $data = [
+                'user_name' => $_POST['nameUser'],
+                'password' => $_POST['password'],
+                'name' => $_POST['name'],
+                'image' => $_FILES['image']['name'],
+                'email' => $_POST['email'],
+                'address' => $_POST['address'],
+                'phone' => $_POST['phone'],
+                'role' => 0,
+            ];
+            if (!empty($_FILES['image']['name'])) {
+                $imageUrl = $_FILES['image']['name'];
+                $fileUrl = 'assets/files/assets/images/';
+                move_uploaded_file($_FILES['image']['tmp_name'], $fileUrl.$imageUrl);
+            }
+            (new User)->insert($data);
+
+            header('location:/Login');
+        }
         $this->render1('Authentication/register');
     }
 
-    public function login(){
+    public function login()
+    {
+        if (isset($_POST['btnSave'])) {
+            $data = [
+                'user_name' => $_POST['user_name'],
+                'password' => $_POST['password']
+            ];
+
+            $acc = (new User)->login($data);
+
+            $_SESSION['account'] = [
+                'id_user' =>  $acc['id'],
+                'name' =>  $acc['name'],
+                'image_user' => $acc['image'],
+                'email' =>  $acc['email'],
+                'address' => $acc['address'],
+                'phone' => $acc['phone'],
+                'role' => $acc['role'],
+            ];
+
+            header('Location:/');
+        }
         $this->render1('Authentication/login');
+    }
+
+    public function logout(){
+        unset($_SESSION['account']);
+        header('location:/');
+    }
+
+    public function allProducts(){
+        $search = $_GET['search'];
+        $products = (new Product)->joinTable(
+            $addColumn = [
+                ['products.id', 'product_detail']
+            ],
+            $connect = [
+                ['category', 'products.id_category', 'category.id']
+            ],
+            $condition = [
+                ['products.name_product', 'LIKE',  "'%" . $search . "%'"]
+            ],
+            $orderBy = [
+                ['products.id', 'DESC']
+            ],
+            );
+        $countSearch = (new Product())->countSearch($search);
+        
+        // echo '<pre>';
+        // print_r($countSearch);
+        // die;
+        $this->render('AllProducts/index',$data = [
+            'countSearch' => $countSearch,
+            'allProducts' => $products,
+            'allCategories' => $this->allCategories
+            
+        ]);
+
+
     }
 }

@@ -310,6 +310,17 @@ class Model
         return $stmt->fetch();
     }
 
+
+    public function countSearch($characters)
+    {
+        $sql = "SELECT COUNT(products.id) as products_count FROM products WHERE products.name_product LIKE  '%$characters%'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        return $stmt->fetch();
+    }
+
+
     public function getLastId()
     {
         $sql = "SELECT * FROM {$this->table} ORDER BY id DESC LIMIT 1";

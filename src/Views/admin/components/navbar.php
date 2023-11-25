@@ -36,33 +36,18 @@
                 <li class="user-profile header-notification">
                     <div class="dropdown-primary dropdown">
                         <div class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="/assets/files/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
-                            <span>John Doe</span>
+                            <img src="/assets/files/assets/images/<?= $_SESSION['account']['image_user'] ?>" class="img-radius" alt="User-Profile-Image">
+                            <span><?= $_SESSION['account']['name'] ?></span>
                             <i class="feather icon-chevron-down"></i>
                         </div>
                         <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                             <li>
-                                <a href="#!">
-                                    <i class="feather icon-settings"></i> Settings
+                                <a href="/">
+                                    <i class="feather icon-lock"></i> Quay về trang chủ
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
-                                    <i class="feather icon-user"></i> Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a href="email-inbox.html">
-                                    <i class="feather icon-mail"></i> My Messages
-                                </a>
-                            </li>
-                            <li>
-                                <a href="auth-lock-screen.html">
-                                    <i class="feather icon-lock"></i> Lock Screen
-                                </a>
-                            </li>
-                            <li>
-                                <a href="auth-sign-in-social.html">
+                                <a href="/Logout">
                                     <i class="feather icon-log-out"></i> Logout
                                 </a>
                             </li>
