@@ -13,11 +13,12 @@ class CommentController extends Controller
 
         $addColumn = [
             ['comment.id', 'commentid'],
-            ['products.img', 'products_img']
+            
         ];
         $connect = [
             ['comment', 'users', 'comment.id_user', 'users.id'],
-            ['products', 'comment', 'comment.id_pro', 'products.id']
+            ['products', 'comment', 'comment.id_pro', 'products.id'],
+            
         ];
 
         $commentCurrent = $commentModel->joinTable($addColumn, $connect);
@@ -43,57 +44,27 @@ class CommentController extends Controller
         }
     }
     public function update()
-    {
-        $commentModel = new Comment;
+{
+    if (isset($_POST['btn-submit'])) {
+        $data = [
+            'id' => $_POST['id'],
+            'content' => $_POST['content'],
+            'id_user' => $_POST['id_user'],
+            'id_pro' => $_POST['id_pro'],
+            'date_comment' => $_POST['date_comment'],
+        ];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $commentId = $_GET['id'] ?? null;
-            $newContent = $_POST['content'] ?? null;
+        $conditions = [
+            ['id', '=', $_GET['id']],
+        ];
 
-            if (!$commentId || $newContent === null) {
-                echo "Dữ liệu không hợp lệ";
-                return;
-            }
-
-            $conditions = [
-                ['id', '=', $commentId],
-            ];
-            $updateData = [
-                'content' => $newContent,
-            ];
-
-
-            $commentModel->update($updateData, $conditions);
-            header("Location: /admin/comments");
-            exit;
-        } else {
-            $commentId = $_GET['id'] ?? null;
-            if (!$commentId) {
-                echo "ID không tồn tại";
-                return;
-            }
-
-            $addColumn = [
-                ['comment.id', 'commentid'],
-                ['users.name', 'user_name'],
-                ['users.image', 'image'],
-            ];
-            $connect = [
-                ['comment', 'users', 'comment.id_user', 'users.id'],
-                ['products', 'comment', 'comment.id_pro', 'products.id'],
-            ];
-
-            $commentCurrent = $commentModel->joinTable($addColumn, $connect);
-
-            $commentUpdate = null;
-            foreach ($commentCurrent as $comment) {
-                if ($comment['commentid'] == $commentId) {
-                    $commentUpdate = $comment;
-                    break;
-                }
-            }
-
-            $this->renderAdmin('comments/update', ['comment' => $commentUpdate]);
-        }
+        (new Comment)->update($data, $conditions);
     }
+
+    $comment = (new Comment)->findOne($_GET['id']);
+
+    $this->renderAdmin('comments/update', ['comment' => $comment]);
+}
+
+
 }

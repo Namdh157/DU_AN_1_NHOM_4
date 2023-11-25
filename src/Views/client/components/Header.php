@@ -114,7 +114,7 @@
                                 <li class="hassubs">
                                     <a href="#">Tất cả danh mục<i class="fas fa-chevron-down"></i></a>
                                     <ul>
-                                        <?php foreach ($category as $value) { ?>
+                                        <?php foreach ($categories as $value) { ?>
                                             <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="index.php?type=Category&id=<?php echo $value['id'] ?>"><?php echo $value['name_category'] ?></a></li>
                                         <?php } ?>
                                     </ul>
@@ -129,7 +129,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="/Notification">Thông báo<i class="fas fa-chevron-down"></i></a></li>
-                                <li><a href="?type=Alert">Contact<i class="fas fa-chevron-down"></i></a></li>
+                                <li><a href="/Contact">Contact<i class="fas fa-chevron-down"></i></a></li>
                             </ul>
                         </div>
 

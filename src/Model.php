@@ -149,7 +149,7 @@ class Model
         foreach ($conditions as &$condition) {
             $stmt->bindParam(":w{$condition[0]}", $condition[2]);
         }
-
+        echo $sql; 
         $stmt->execute();
     }
 

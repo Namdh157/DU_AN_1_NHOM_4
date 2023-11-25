@@ -33,6 +33,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Danh sách Bình Luận</h5>
+                                    <a href="/admin/comments/create" class="btn btn-info btn-sm">Thêm mới</a>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
@@ -57,7 +58,7 @@
                                                         <td><?= $comment['commentid'] ?></td>
                                                         <td><?= $comment['name'] ?><br><img src="<?= $imgPath . $comment['image'] ?>" alt="Ảnh Người dùng" style="max-width: 120px; max-height: 120px;"></td>
                                                         <td><?= $comment['name_product'] ?><br>
-                                                            <img src="<?= $imgPath . $comment['img'] ?>" alt="Ảnh sản phẩm" style="max-width: 120px; max-height: 120px;">
+                                                            <img src="<?= $imgPath . $products_images['img'] ?>" alt="Ảnh sản phẩm" style="max-width: 120px; max-height: 120px;">
 
                                                         </td>
                                                         <td><?= $comment['content'] ?></td>

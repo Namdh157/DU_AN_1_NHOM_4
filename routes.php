@@ -15,6 +15,13 @@ $router = new Router();
 
 // rang chủ website
 $router->addRoute('/', HomeController::class, 'index');
+$router->addRoute('/Notification', HomeController::class, 'notification');
+$router->addRoute('/Contact', HomeController::class, 'contact');
+$router->addRoute('/Categories', HomeController::class, 'categories');
+$router->addRoute('/ProductDetail', HomeController::class, 'productDetail');
+$router->addRoute('/Register', HomeController::class, 'register');
+$router->addRoute('/Login', HomeController::class, 'login');  
+
 
 // Trang chủ admin
 $router->addRoute('/admin/dashboard', DashboardController::class, 'index');
@@ -36,3 +43,9 @@ $router->addRoute('/admin/products', ProductController::class, 'index');
 $router->addRoute('/admin/products/create', ProductController::class, 'create');
 $router->addRoute('/admin/products/update', ProductController::class, 'update');
 $router->addRoute('/admin/products/delete', ProductController::class, 'delete');
+
+//Bình luận 
+$router->addRoute('/admin/comments', CommentController::class, 'index');
+$router->addRoute('/admin/comments/delete', CommentController::class, 'delete');
+$router->addRoute('/admin/comments/update', CommentController::class, 'update');
+$router->addRoute('/admin/comments/create', CommentController::class, 'create');
