@@ -65,11 +65,11 @@
                                                 <?php foreach ($products as $key => $value) : ?>
                                                     <tr>
                                                         <td><?= $key + 1 ?></td>
-                                                        <td><?= $value['id'] ?></td>
+                                                        <td><?= $value['product_id'] ?></td>
                                                         <td><?= $value['name_product'] ?></td>
                                                         <td><?= number_format($value['price']) . 'đ'  ?></td>
                                                         <td>
-                                                            <button data-button="detail<?= $key ?>" class="rounded w-100" onclick=loadModel()>Hiện thị chi tiết</button>
+                                                            <button data-product-id="<?= $value['product_id'] ?>" class="rounded w-100" onclick=loadModel(this)>Hiện thị chi tiết</button>
                                                         </td>
                                                         <td><?= $value['name_category'] ?></td>
                                                         <td>
@@ -138,20 +138,101 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title"><?= $modal['title'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Modal body text goes here.</p>
+                    <div id="containerDetail-image" class="d-flex  align-items-center p-3 border rounded border-primary-subtle">
+
+                    </div>
+                    <div id="containerDetail-properties" class="d-flex flex-wrap justify-content-center p-3 rounded border border-primary-subtle">
+                    </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mobtn" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary mobtn">Save
-                        changes</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+    function Delete(button) {
+
+    }
+
+    function loadModel(button) {
+        const modal = document.querySelector(".modal");
+        const productId = button.getAttribute("data-product-id");
+        var containerImage = document.querySelector("#containerDetail-image");
+        var containerProperties = document.querySelector("#containerDetail-properties");
+        containerProperties.innerHTML = '';
+        containerImage.innerHTML = '';
+        modal.style.display = "block";
+
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append("productId", productId);
+        xhr.open("POST", "/api/products");
+        xhr.send(formData);
+        xhr.onload = () => {
+            if (xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+                var isExistImage = false;
+                var isExistProperties = false;
+                const imageArray = data.allImages;
+                const propertiesArray = data.allProperties;
+
+                imageArray.forEach(img => {
+                    const imgUrl = img.image_url;
+                    if (imgUrl) {
+                        isExistImage = true;
+                        const html = `
+                        <img src="/assets/files/assets/images/${imgUrl}" width="150"> `
+                        containerImage.innerHTML += html;
+                    }
+                });
+                
+                if(!isExistImage) {
+                    containerImage.innerHTML = "<span>Sản phẩm không có ảnh nào</span>"
+                }
+
+                propertiesArray.forEach(item => {
+                    const color = item.color;
+                    const size = item.size;
+                    if(color ) {
+                        isExistProperties = true;
+                        const html = `
+                        <p>Màu sắc:${color}</p>`
+                    }
+                    containerProperties.innerHTML += html;
+
+                    // if(size || size !== null) {
+                    //     isExistProperties = true;
+                    //     const html = `
+                    //     <p>kích cỡ: ${size}</p>`
+                    // }
+                    //     containerProperties.innerHTML += html;
+
+                        
+                    });
+                    // console.log(color, size);
+                
+                if(!isExistProperties) {
+                   containerProperties.innerHTML = "<span>Sản phẩm chưa có size hay color nào</span>"
+                }
+                console.log(propertiesArray)
+            };
+        };
+
+
+    }
+
+    function closeModal() {
+        const modal = document.querySelector(".modal");
+        modal.style.display = 'none';
+    }
+</script>
