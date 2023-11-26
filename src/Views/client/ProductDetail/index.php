@@ -1,4 +1,3 @@
-
 <style>
     .preview-thumbnail li a img {
         height: 180px;
@@ -64,10 +63,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Nhận xét  -->
+
     <div class="commentUsers container">
         <h3 class=" fw-bolder mt-3">Nhận xét sản phẩm từ khách hàng</h3>
-        <?php
-        commentPage($id, $users);
-        ?>
+        <form action="" method="POST">
+        <label for="comment">Bình Luận Của Bạn:</label>
+        <textarea id="comment" name="comment" required></textarea>
+            <input type="submit" name="submit" value="Gửi Bình Luận">
+        </form>
     </div>
+
+    <?php
+    if(isset($_POST["submit"])&&$_POST["submit"]){
+        $content = $_POST["content"];
+    }
+    ?>
 </main>
