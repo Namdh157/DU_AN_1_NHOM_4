@@ -22,7 +22,6 @@
             </div>
         </div>
     </div>
-
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -37,23 +36,23 @@
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
                                         <form action="" method="post">
-                                            <label for="id">ID</label>
-                                            <input type="text" name="id" class="form-control" value="<?= $comment['id'] ?>">
+                                            <label for="name">ID</label>
+                                            <input type="text" name="id" class="form-control" value="<?= $comment['id'] ?>" readonly>
 
-                                            <label for="name" class="mt-3">Tên người dùng</label>
-                                            <input type="text" name="name" class="form-control" value="<?= $comment['name'] ?>">
-                                            
-                                            <label for="product_name">Tên Sản phẩm</label>
-                                            <input type="text" name="product_name" class="form-control" value="<?= $comment['name_product']?>">
-
-                                            <label for="content" class="mt-3">Nội dung</label>
-                                            <textarea id="feedbackText<?= $comment['commentid'] ?>" class="form-control" rows="5"></textarea>
+                                            <label for="content" class="mt-3">Nội Dung</label>
                                             <input type="text" name="content" class="form-control" value="<?= $comment['content'] ?>">
 
-                                            <label for="date_comment"></label>
-                                            <input type="text" name="date_comment" class="form-control" value="<?=$comment['date_comment']?>">
+                                            <label for="id_user" class="mt-3">ID_USER</label>
+                                            <input type="text" name="id_user" class="form-control" value="<?= $comment['id_user'] ?>" readonly>
+
+                                            <label for="id_pro" class="mt-3">ID_PRO</label>
+                                            <input type="text" name="id_pro" class="form-control" value="<?= $comment['id_pro'] ?>" readonly>
+
+                                            <label for="date_comment" class="mt-3">Thời gian</label>
+                                            <input type="text" name="date_comment" class="form-control" value="<?= $comment['date_comment'] ?>" readonly>
+
                                             <button type="submit" name="btn-submit" class="btn btn-info mt-3">Submit</button>
-                                            <a href="/admin/comments" class="btn btn-primary mt-3">Quay lại d/s</a> 
+                                            <a href="/admin/comments" class="btn btn-primary mt-3">Quay lại d/s</a>
                                         </form>
                                     </div>
                                 </div>

@@ -14,7 +14,7 @@ class HomeController extends Controller
     */
     public function index()
     {
-        $category = (new Category())->all();
+        $categories = (new Category())->all();
         $productSeller = (new Product())->joinTable(
             $addColumn = [
                 ['products.id', 'product_detail']
@@ -46,7 +46,7 @@ class HomeController extends Controller
         // die;
  
         $this->render('home', [
-            'category' => $category,
+            'categories' => $categories,
             'productSeller' => $productSeller,
             'productDiscount' => $productDiscount,
             'allCategories' => $this->allCategories
@@ -68,7 +68,7 @@ class HomeController extends Controller
         ]);
 
         $countProduct = (new Product())->countProduct($id);
-        
+
         $this->render('Categories/index', [
             'categoryCurrent' => $categoryCurrent,
             'categories' => $categories,
@@ -79,6 +79,14 @@ class HomeController extends Controller
         ]);
     }
 
+    public function notification()
+    {
+        $this->render("notification", ['categories' => $this->allCategories]);
+    }
+    public function contact()
+    {
+        $this->render("contact", ['categories' => $this->allCategories]);
+    }
     public function productDetail()
     {
         $id = $_GET['id'];
@@ -123,7 +131,6 @@ class HomeController extends Controller
 
             header('location:/Login');
         }
-        $this->render1('Authentication/register');
     }
 
     public function login()
@@ -148,9 +155,8 @@ class HomeController extends Controller
 
             header('Location:/');
         }
-        $this->render1('Authentication/login');
-    }
 
+    }
     public function logout(){
         unset($_SESSION['account']);
         header('location:/');

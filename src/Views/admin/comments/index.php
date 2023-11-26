@@ -50,14 +50,11 @@
 
                                             <tbody>
                                                 <?php foreach ($comments as $comment) : ?>
-                                                    <?php
-                                                    $imgPath = "/assets/files/assets/images/";
-                                                    ?>
                                                     <tr>
                                                         <td><?= $comment['commentid'] ?></td>
-                                                        <td><?= $comment['name'] ?><br><img src="<?= $imgPath . $comment['image'] ?>" alt="Ảnh Người dùng" style="max-width: 120px; max-height: 120px;"></td>
+                                                        <td><?= $comment['name'] ?><br><img src="/assets/files/assets/images/<?=$comment['image'] ?>" alt="Ảnh Người dùng" style="max-width: 120px; max-height: 120px;"></td>
                                                         <td><?= $comment['name_product'] ?><br>
-                                                            <img src="<?= $imgPath . $comment['img'] ?>" alt="Ảnh sản phẩm" style="max-width: 120px; max-height: 120px;">
+                                                            <img src="/assets/files/assets/images/<?=$comment['img'] ?>" alt="Ảnh sản phẩm" style="max-width: 120px; max-height: 120px;">
 
                                                         </td>
                                                         <td><?= $comment['content'] ?></td>
@@ -65,8 +62,10 @@
                                                         <td>
                                                             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#feedbackForm<?= $comment['commentid'] ?>">Phản hồi</button>
                                                             <a href="/admin/comments/update?id=<?= $comment['commentid'] ?>" class="btn btn-primary btn-sm">Cập nhật</a><br>
-                                                            <input type="hidden" name="commentid" value="<?= $comment['commentid'] ?>">
-                                                            <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
+
+                                                            <form method="post" action="/admin/comments/delete">
+                                                                <input type="hidden" name="commentid" value="<?= $comment['commentid'] ?>">
+                                                                <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -86,8 +85,6 @@
 </div>
 </div>
 
-
-<!-- Phản hồi  bình luận-->
 <?php foreach ($comments as $comment) : ?>
     <div class="modal fade" id="feedbackForm<?= $comment['commentid'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" mr-20>
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

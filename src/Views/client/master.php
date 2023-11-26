@@ -20,7 +20,7 @@
 <body>
 
     <?php require_once 'components/ListProducts.php' ?>
-    
+
 
     <div class="super_container">
 

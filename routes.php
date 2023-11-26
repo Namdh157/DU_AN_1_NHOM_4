@@ -3,9 +3,9 @@
 use MVC_DA1\Controllers\Admin\CartController;
 use MVC_DA1\Controllers\Admin\UserController;
 use MVC_DA1\Controllers\Admin\CategoryController;
+use MVC_DA1\Controllers\Admin\CommentController;
 use MVC_DA1\Controllers\Admin\DashboardController;
 use MVC_DA1\Controllers\Admin\ProductController;
-use MVC_DA1\Controllers\APIController;
 use MVC_DA1\Controllers\Client\HomeController;
 use MVC_DA1\Router;
 
@@ -25,12 +25,13 @@ if ($pos !== false) {
 
 // trang chủ website
 $router->addRoute('/', HomeController::class, 'index');
+$router->addRoute('/Notification', HomeController::class, 'notification');
+$router->addRoute('/Contact', HomeController::class, 'contact');
 $router->addRoute('/Categories', HomeController::class, 'categories');
 $router->addRoute('/ProductDetail', HomeController::class, 'productDetail');
 $router->addRoute('/Register', HomeController::class, 'register');
 $router->addRoute('/Login', HomeController::class, 'login');
 $router->addRoute('/allProducts', HomeController::class, 'allProducts');
-
 
 
 // Trang chủ admin
@@ -47,6 +48,7 @@ $router->addRoute('/admin/categories', CategoryController::class, 'index');
 $router->addRoute('/admin/categories/create', CategoryController::class, 'create');
 $router->addRoute('/admin/categories/update', CategoryController::class, 'update');
 $router->addRoute('/admin/categories/delete', CategoryController::class, 'delete');
+
 // Sản phẩm
 $router->addRoute('/admin/products', ProductController::class, 'index');
 $router->addRoute('/admin/products/create', ProductController::class, 'create');
@@ -60,7 +62,13 @@ $router->addRoute('/admin/carts/update', CartController::class, 'update');
 $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
 
 // sử dụng api
-$router->addRoute('/api/products', APIController::class, 'products');
+// $router->addRoute('/api/products', APIController::class, 'products');
+
+//Bình luận 
+$router->addRoute('/admin/comments', CommentController::class, 'index');
+$router->addRoute('/admin/comments/delete', CommentController::class, 'delete');
+$router->addRoute('/admin/comments/update', CommentController::class, 'update');
+$router->addRoute('/admin/comments/create', CommentController::class, 'create');
 
 
 $router->dispatch($uri);
