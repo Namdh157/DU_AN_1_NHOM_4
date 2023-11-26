@@ -40,8 +40,11 @@ class HomeController extends Controller
             ]
         );
         // echo '<pre>';
-        // print_r($productSeller);
+        // print_r($_GET['search']);
         // die;
+        if(isset($_GET['search'])){
+            
+        }
         $this->render('home', [
             'category' => $category,
             'productSeller' => $productSeller,

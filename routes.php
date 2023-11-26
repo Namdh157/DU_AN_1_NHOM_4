@@ -7,13 +7,20 @@ use MVC_DA1\Controllers\Admin\DashboardController;
 use MVC_DA1\Controllers\Admin\ProductController;
 use MVC_DA1\Controllers\APIController;
 use MVC_DA1\Controllers\Client\HomeController;
-
-
-
 use MVC_DA1\Router;
 
 
 $router = new Router();
+
+$requestUri = $_SERVER['REQUEST_URI'];
+$baseUri = '/MVC_DA1';
+
+// Xóa phần cố định (baseUri) từ requestUri
+$uri = str_replace($baseUri, '', $requestUri);
+$pos = strpos($uri, '?');
+if ($pos !== false) {
+    $uri = substr($uri, 0, $pos); // Lấy phần của chuỗi trước dấu '?'
+}
 
 
 // trang chủ website
@@ -53,3 +60,6 @@ $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
 
 // sử dụng api
 $router->addRoute('/api/products', APIController::class, 'products');
+
+
+$router->dispatch($uri);

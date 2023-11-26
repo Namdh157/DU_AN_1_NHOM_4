@@ -19,7 +19,7 @@
                     <div class="header_search">
                         <div class="header_search_content">
                             <div class="header_search_form_container">
-                                <form method="get" class="d-flex justify-content-between align-items-center">
+                                <form method="get" class="d-flex justify-content-between align-items-center" action="/allProduct">
                                     <input type="search" name="search" required="required" class="header_search_input col-11" placeholder="Tìm kiếm sản phẩm...">
                                     <div class="button col-1 position-relative">
                                         <input type="submit" class="col-12 h-100 border-0 rounded" value="" style="background-color:#00d2d4">
