@@ -19,7 +19,7 @@
                     <div class="header_search">
                         <div class="header_search_content">
                             <div class="header_search_form_container">
-                                <form method="get" action="/allProducts" class="d-flex justify-content-between align-items-center">
+                                <form method="get" class="d-flex justify-content-between align-items-center" action="/allProducts">
                                     <input type="search" name="search" required="required" class="header_search_input col-11" placeholder="Tìm kiếm sản phẩm...">
                                     <div class="button col-1 position-relative">
                                         <input type="submit" class="col-12 h-100 border-0 rounded" value="" style="background-color:#00d2d4">
@@ -68,7 +68,7 @@
                             ?>
                                 <div class="users-logout position-relative">
                                     <div class="d-flex align-items-center">
-                                        <img class="mx-3 rounded-circle" src="/assets/files/assets/images/<?= $_SESSION['account']['image_user'] ?>" alt="" width="70px">
+                                        <img class="mx-3 rounded-circle" src="/assets/files/assets/images/<?= $_SESSION['account']['image_user'] ?>" alt="ảnh khách hàng" style="height:50px" width="50px">
                                         <span class="fw-bold"><?= $_SESSION['account']['name'] ?></span>
                                     </div>
                                     <div class="logout position-absolute rounded " style="display:none; background-color: #00d2d4;">

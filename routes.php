@@ -6,6 +6,7 @@ use MVC_DA1\Controllers\Admin\CategoryController;
 use MVC_DA1\Controllers\Admin\CommentController;
 use MVC_DA1\Controllers\Admin\DashboardController;
 use MVC_DA1\Controllers\Admin\ProductController;
+use MVC_DA1\Controllers\APIController;
 use MVC_DA1\Controllers\Client\HomeController;
 use MVC_DA1\Router;
 
@@ -31,6 +32,7 @@ $router->addRoute('/Categories', HomeController::class, 'categories');
 $router->addRoute('/ProductDetail', HomeController::class, 'productDetail');
 $router->addRoute('/Register', HomeController::class, 'register');
 $router->addRoute('/Login', HomeController::class, 'login');
+$router->addRoute('/Logout', HomeController::class, 'logout');
 $router->addRoute('/allProducts', HomeController::class, 'allProducts');
 
 
@@ -62,7 +64,7 @@ $router->addRoute('/admin/carts/update', CartController::class, 'update');
 $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
 
 // sử dụng api
-// $router->addRoute('/api/products', APIController::class, 'products');
+ $router->addRoute('/api/products', APIController::class, 'products');
 
 //Bình luận 
 $router->addRoute('/admin/comments', CommentController::class, 'index');

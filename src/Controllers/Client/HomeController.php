@@ -9,9 +9,6 @@ use MVC_DA1\Models\User;
 
 class HomeController extends Controller
 {
-    /*
-        Đây là hàm hiển thị danh sách user
-    */
     public function index()
     {
         $categories = (new Category())->all();
@@ -40,11 +37,6 @@ class HomeController extends Controller
                 ['products.discount', 'DESC', 9]
             ]
         );
-        // unset($_SESSION['account']);
-        // echo '<pre>';
-        // print_r($_SESSION);
-        // die;
- 
         $this->render('home', [
             'categories' => $categories,
             'productSeller' => $productSeller,
@@ -131,6 +123,7 @@ class HomeController extends Controller
 
             header('location:/Login');
         }
+        $this->render1('Authentication/register');
     }
 
     public function login()
@@ -155,7 +148,7 @@ class HomeController extends Controller
 
             header('Location:/');
         }
-
+        $this->render1('Authentication/login');
     }
     public function logout(){
         unset($_SESSION['account']);
@@ -180,9 +173,6 @@ class HomeController extends Controller
             );
         $countSearch = (new Product())->countSearch($search);
         
-        // echo '<pre>';
-        // print_r($countSearch);
-        // die;
         $this->render('AllProducts/index',$data = [
             'countSearch' => $countSearch,
             'allProducts' => $products,

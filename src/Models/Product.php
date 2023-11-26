@@ -21,6 +21,7 @@ class Product extends Model
     {
 
         $sql = "SELECT *,
+        products.id as product_id,
         category.name_category,
         images.image_urls,
         properties.colors,

@@ -30,14 +30,19 @@ class ProductController extends Controller
             }
         }
 
+        $modal = [
+            'title' => 'Thông tin chi tiết sản phẩm',
+        ];
+
         // echo "<pre>";
-        // print_r($this->allProducts);
+        // print_r($this->allProducts[0]['image_urls']);
         // die;
 
         $this->renderAdmin(
             'products/index',
             [
-                'products' => $this->allProducts
+                'products' => $this->allProducts,
+                'modal' => $modal,
             ]
         );
     }
