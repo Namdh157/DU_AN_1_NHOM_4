@@ -96,11 +96,10 @@
                         <p><i class="fas fa-phone mr-3"></i> + 84 978 930 985</p>
                         <p><i class="fas fa-print mr-3"></i> + 84 978 930 985</p>
                     </div>
-                    <!-- Grid column -->1507
         <!-- Section: Links  -->
 
         <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        <div class="text-center p-3 col-12" style="background-color: rgba(0, 0, 0, 0.2)">
             © 2023 Copyright:
             <a class="text-dark" href="https://mdbootstrap.com/">THE SOURTDANG</a>
         </div>

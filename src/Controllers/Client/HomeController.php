@@ -5,15 +5,13 @@ namespace MVC_DA1\Controllers\Client;
 use MVC_DA1\Controller;
 use MVC_DA1\Models\Product;
 use MVC_DA1\Models\Category;
+use MVC_DA1\Models\User;
 
 class HomeController extends Controller
 {
-    /*
-        Đây là hàm hiển thị danh sách user
-    */
     public function index()
     {
-        $category = (new Category())->all();
+        $categories = (new Category())->all();
         $productSeller = (new Product())->joinTable(
             $addColumn = [
                 ['products.id', 'product_detail']
@@ -39,11 +37,8 @@ class HomeController extends Controller
                 ['products.discount', 'DESC', 9]
             ]
         );
-        // echo '<pre>';
-        // print_r($productSeller);
-        // die;
         $this->render('home', [
-            'category' => $category,
+            'categories' => $categories,
             'productSeller' => $productSeller,
             'productDiscount' => $productDiscount,
             'allCategories' => $this->allCategories
@@ -65,9 +60,7 @@ class HomeController extends Controller
         ]);
 
         $countProduct = (new Product())->countProduct($id);
-        // echo '<pre>';
-        // print_r($this->allCategories);
-        // die;
+
         $this->render('Categories/index', [
             'categoryCurrent' => $categoryCurrent,
             'categories' => $categories,
@@ -77,6 +70,7 @@ class HomeController extends Controller
 
         ]);
     }
+
     public function notification()
     {
         $this->render("notification", ['categories' => $this->allCategories]);
@@ -109,11 +103,83 @@ class HomeController extends Controller
 
     public function register()
     {
+        if (isset($_POST['btnSave'])) {
+            $data = [
+                'user_name' => $_POST['nameUser'],
+                'password' => $_POST['password'],
+                'name' => $_POST['name'],
+                'image' => $_FILES['image']['name'],
+                'email' => $_POST['email'],
+                'address' => $_POST['address'],
+                'phone' => $_POST['phone'],
+                'role' => 0,
+            ];
+            if (!empty($_FILES['image']['name'])) {
+                $imageUrl = $_FILES['image']['name'];
+                $fileUrl = 'assets/files/assets/images/';
+                move_uploaded_file($_FILES['image']['tmp_name'], $fileUrl.$imageUrl);
+            }
+            (new User)->insert($data);
+
+            header('location:/Login');
+        }
         $this->render1('Authentication/register');
     }
 
     public function login()
     {
+        if (isset($_POST['btnSave'])) {
+            $data = [
+                'user_name' => $_POST['user_name'],
+                'password' => $_POST['password']
+            ];
+
+            $acc = (new User)->login($data);
+
+            $_SESSION['account'] = [
+                'id_user' =>  $acc['id'],
+                'name' =>  $acc['name'],
+                'image_user' => $acc['image'],
+                'email' =>  $acc['email'],
+                'address' => $acc['address'],
+                'phone' => $acc['phone'],
+                'role' => $acc['role'],
+            ];
+
+            header('Location:/');
+        }
         $this->render1('Authentication/login');
+    }
+    public function logout(){
+        unset($_SESSION['account']);
+        header('location:/');
+    }
+
+    public function allProducts(){
+        $search = $_GET['search'];
+        $products = (new Product)->joinTable(
+            $addColumn = [
+                ['products.id', 'product_detail']
+            ],
+            $connect = [
+                ['category', 'products.id_category', 'category.id']
+            ],
+            $condition = [
+                ['products.name_product', 'LIKE',  "'%" . $search . "%'"]
+            ],
+            $orderBy = [
+                ['products.id', 'DESC']
+            ],
+            );
+        $countSearch = (new Product())->countSearch($search);
+        
+        $this->render('AllProducts/index',$data = [
+            'countSearch' => $countSearch,
+            'allProducts' => $products,
+            'allCategories' => $this->allCategories
+            
+        ]);
+
+
     }
 }

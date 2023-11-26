@@ -7,6 +7,6 @@ use MVC_DA1\Model;
 class Category extends Model {
     protected $table = 'category';
     protected $columns = [
-        'name',
+        'name_category',
     ];
 }

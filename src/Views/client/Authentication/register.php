@@ -66,7 +66,7 @@
                                                 <div class="col-md-6 mb-4">
                                                     <div class="form-outline">
                                                         <label class="form-label" for="form3Example1n">Tên đăng nhập</label>
-                                                        <input type="text" id="form3Example1n" class="form-control form-control-lg" name="user_name" />
+                                                        <input type="text" id="form3Example1n" class="form-control form-control-lg" name="nameUser" />
                                                     </div>
                                                 </div>
                                             </div>

@@ -7,7 +7,7 @@ use MVC_DA1\Models\Category;
 
 class CategoryController extends Controller {
 
-    /* Lấy danh sách */
+
     public function index() {
         $categories = (new Category())->all();
 
@@ -18,7 +18,7 @@ class CategoryController extends Controller {
     public function create() {
         if (isset($_POST["btn-submit"])) { 
             $data = [
-                'name' => $_POST['name'],
+                'name_category' => $_POST['name'],
             ];
 
             (new Category())->insert($data);
@@ -26,15 +26,18 @@ class CategoryController extends Controller {
             header('Location: /admin/categories');
         }
 
-        $this->render("admin/categories/create");
+        $this->renderAdmin("categories/create");
     }
 
     /* Cập nhật */
     public function update() {
 
+        $id = $_GET['id'];
+        $categoryCurrent = (new Category())->findOne($id);
+ 
         if (isset($_POST["btn-submit"])) { 
             $data = [
-                'name' => $_POST['name'],
+                'name_category' => $_POST['name'],
             ];
 
             $conditions = [
@@ -42,11 +45,13 @@ class CategoryController extends Controller {
             ];
 
             (new Category())->update($data, $conditions);
+
+            header('Location: /admin/categories');
         }
 
-        $category = (new Category())->findOne($_GET["id"]);
-
-        $this->render("admin/categories/update", ["category" => $category]);
+        $this->renderAdmin("categories/update", [
+            "categoryCurrent" => $categoryCurrent]
+        );
     }
 
     /* Xóa */

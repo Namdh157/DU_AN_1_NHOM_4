@@ -63,6 +63,7 @@ class CommentController extends Controller
 
     $comment = (new Comment)->findOne($_GET['id']);
 
+
     $this->renderAdmin('comments/update', ['comment' => $comment]);
 }
 
