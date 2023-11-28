@@ -149,7 +149,6 @@ class Model
         foreach ($conditions as &$condition) {
             $stmt->bindParam(":w{$condition[0]}", $condition[2]);
         }
-        echo $sql; 
         $stmt->execute();
     }
 
@@ -336,5 +335,14 @@ class Model
     public function __destruct()
     {
         $this->conn = null;
+    }
+
+    public function updateComment($id)
+    {
+        $sql = "SELECT * FROM comment JOIN users ON comment.id_user = users.id JOIN products ON comment.id_pro = products.id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        return $stmt->fetch();
     }
 }

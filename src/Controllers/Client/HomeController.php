@@ -145,7 +145,6 @@ class HomeController extends Controller
                 'phone' => $acc['phone'],
                 'role' => $acc['role'],
             ];
-
             header('Location:/');
         }
         $this->render1('Authentication/login');

@@ -35,24 +35,24 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <form action="" method="post">
+                                        <form action="/admin/comments/update" method="post">
                                             <label for="name">ID</label>
                                             <input type="text" name="id" class="form-control" value="<?= $comment['id'] ?>" readonly>
 
                                             <label for="content" class="mt-3">Nội Dung</label>
                                             <input type="text" name="content" class="form-control" value="<?= $comment['content'] ?>">
 
-                                            <label for="id_user" class="mt-3">ID_USER</label>
-                                            <input type="text" name="id_user" class="form-control" value="<?= $comment['id_user'] ?>" readonly>
+                                            <label for="name" class="mt-3">Tên Người dùng</label>
+                                            <input type="text" name="name" class="form-control" value="<?= $comment['name'] ?>" readonly>
 
-                                            <label for="id_pro" class="mt-3">ID_PRO</label>
-                                            <input type="text" name="id_pro" class="form-control" value="<?= $comment['id_pro'] ?>" readonly>
+                                            <label for="name_product" class="mt-3">Tên sản phẩm</label>
+                                            <input type="text" name="name_product" class="form-control" value="<?= $comment['name_product'] ?>" readonly>
 
                                             <label for="date_comment" class="mt-3">Thời gian</label>
                                             <input type="text" name="date_comment" class="form-control" value="<?= $comment['date_comment'] ?>" readonly>
 
-                                            <button type="submit" name="btn-submit" class="btn btn-info mt-3">Submit</button>
-                                            <a href="/admin/comments" class="btn btn-primary mt-3">Quay lại d/s</a>
+                                            <button type="submit" name="btn-submit" class="btn btn-info mt-3">Cập nhật</button>
+                                            <a href="/admin/comments" class="btn btn-primary mt-3">Quay lại danh sách</a>
                                         </form>
                                     </div>
                                 </div>

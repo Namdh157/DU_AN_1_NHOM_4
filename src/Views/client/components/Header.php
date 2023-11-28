@@ -128,8 +128,8 @@
                                         <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"><a href=""></i> &ensp;Cảm Ơn</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="?type=Alert">Thông báo<i class="fas fa-chevron-down"></i></a></li>
-                                <li><a href="?type=Alert">Contact<i class="fas fa-chevron-down"></i></a></li>
+                                <li><a href="Notification">Thông báo<i class="fas fa-chevron-down"></i></a></li>
+                                <li><a href="Contact">Contact<i class="fas fa-chevron-down"></i></a></li>
                             </ul>
                         </div>
 

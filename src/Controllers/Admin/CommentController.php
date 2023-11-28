@@ -47,11 +47,7 @@ class CommentController extends Controller
 {
     if (isset($_POST['btn-submit'])) {
         $data = [
-            'id' => $_POST['id'],
             'content' => $_POST['content'],
-            'id_user' => $_POST['id_user'],
-            'id_pro' => $_POST['id_pro'],
-            'date_comment' => $_POST['date_comment'],
         ];
 
         $conditions = [
@@ -61,7 +57,7 @@ class CommentController extends Controller
         (new Comment)->update($data, $conditions);
     }
 
-    $comment = (new Comment)->findOne($_GET['id']);
+    $comment = (new Comment)->updateComment($_GET['id']);
 
 
     $this->renderAdmin('comments/update', ['comment' => $comment]);
