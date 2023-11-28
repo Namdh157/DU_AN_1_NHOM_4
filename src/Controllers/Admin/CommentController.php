@@ -13,12 +13,13 @@ class CommentController extends Controller
 
         $addColumn = [
             ['comment.id', 'commentid'],
-            
+
         ];
         $connect = [
             ['comment', 'users', 'comment.id_user', 'users.id'],
             ['products', 'comment', 'comment.id_pro', 'products.id'],
-            
+            // ['products_images', 'products', 'products.id_category', 'products_images.id_products']
+
         ];
 
         $commentCurrent = $commentModel->joinTable($addColumn, $connect);
@@ -44,24 +45,17 @@ class CommentController extends Controller
         }
     }
     public function update()
-{
-    if (isset($_POST['btn-submit'])) {
-        $data = [
-            'content' => $_POST['content'],
-        ];
+    {
+        if (isset($_POST['btn-submit'])) {
 
-        $conditions = [
-            ['id', '=', $_GET['id']],
-        ];
+            $id = $_GET['id'];
+            $newContent = $_POST['content'];
+            (new Comment)->updateComment($id, $newContent);
+        }
 
-        (new Comment)->update($data, $conditions);
+        $comment = (new Comment)->showComment($_GET['id']);
+
+
+        $this->renderAdmin('comments/update', ['comment' => $comment]);
     }
-
-    $comment = (new Comment)->updateComment($_GET['id']);
-
-
-    $this->renderAdmin('comments/update', ['comment' => $comment]);
-}
-
-
 }

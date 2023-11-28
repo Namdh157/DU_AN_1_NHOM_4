@@ -21,4 +21,14 @@ class Comment extends Model
         $this->table = 'comment';
         $this->columns = ['content', 'id_user', 'id_pro', 'date_comment'];
     }
+    public function updateComment($id, $newContent)
+    {
+        $sql = "UPDATE comment SET content = :content WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':content', $newContent);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount(); 
+    }
+    
 }

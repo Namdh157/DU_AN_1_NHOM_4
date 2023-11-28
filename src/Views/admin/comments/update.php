@@ -35,9 +35,9 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <form action="/admin/comments/update" method="post">
+                                    <form action="/admin/comments/update" method="post">
                                             <label for="name">ID</label>
-                                            <input type="text" name="id" class="form-control" value="<?= $comment['id'] ?>" readonly>
+                                            <input type="text" name="id" class="form-control" value="<?= $comment['commentid'] ?>" readonly>
 
                                             <label for="content" class="mt-3">Nội Dung</label>
                                             <input type="text" name="content" class="form-control" value="<?= $comment['content'] ?>">

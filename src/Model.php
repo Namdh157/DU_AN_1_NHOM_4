@@ -337,9 +337,9 @@ class Model
         $this->conn = null;
     }
 
-    public function updateComment($id)
+    public function showComment($id)
     {
-        $sql = "SELECT * FROM comment JOIN users ON comment.id_user = users.id JOIN products ON comment.id_pro = products.id";
+        $sql = "SELECT * ,comment.id as commentid FROM comment JOIN users ON comment.id_user = users.id JOIN  products ON comment.id_pro = products.id";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
