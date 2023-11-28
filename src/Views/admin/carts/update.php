@@ -28,9 +28,6 @@
             </select>
         </div>
 
-        <label for="time" class="mt-3">Thời gian</label>
-        <input type="text" name="time" class="form-control" value="<?= $cartCurrent['time'] ?>">
-
         <button type="submit" name="btn-submit" class="btn btn-info mt-3">Submit</button>
         <a href="/admin/carts" class="btn btn-primary mt-3">Quay lại d/s</a>
     </form>

@@ -7,6 +7,7 @@
         display: table-cell;
     }
 </style>
+
 <div class="pcoded-content">
 
     <div class="page-header card">
@@ -73,53 +74,12 @@
                                                         </td>
                                                         <td><?= $value['name_category'] ?></td>
                                                         <td>
-                                                            <a href="/admin/users/update?id=<?= $value['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
+                                                            <a href="/admin/products/update?id=<?= $value['product_id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
 
-                                                            <form action="/admin/users/delete?id=<?= $value['id'] ?>" method="post">
+                                                            <form action="/admin/products/delete?id=<?= $value['product_id'] ?>" method="post">
                                                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
                                                             </form>
                                                         </td>
-
-                                                        <!-- <td data-details="detail<?= $key ?>" class="text-center containerDetail" colspan="8">
-                                                            <div class="container d-flex w-100 justify-content-around">
-                                                                <div class="containerDetail-image d-flex  align-items-center p-3 border rounded border-primary-subtle">
-                                                                    <?php if (!empty($value['image_urls'])) { ?>
-                                                                        <h4>Tất cả ảnh sản phẩm: </h4>
-                                                                        <?php foreach ($value['image_urls'] as $imageUrl) : ?>
-                                                                            <img src="/assets/files/assets/images/<?= $imageUrl ?>" alt="Ảnh sản phẩm" width="100">
-                                                                        <?php endforeach; ?>
-                                                                    <?php } else { ?>
-                                                                        <h4>Sản phẩm chưa có ảnh nào cả</h4>
-                                                                    <?php } ?>
-                                                                </div>
-
-
-                                                                <div class="containerDetail-color d-flex flex-wrap justify-content-center p-3 rounded border border-primary-subtle">
-                                                                    <p>
-                                                                        <?php if (!empty($value['colors'])) { ?>
-                                                                    <h4>Màu sắc: </h4>
-                                                                    <?php foreach ($value['colors'] as $color) : ?>
-                                                                        <span><?= $color ?>; </span>
-                                                                    <?php endforeach; ?>
-                                                                <?php } else { ?>
-                                                                    <h4>Sản phẩm không có màu sắc</h4>
-                                                                <?php } ?>
-                                                                </p>
-                                                                <br>
-                                                                <p>
-                                                                    <?php if (!empty($value['sizes'])) { ?>
-                                                                <h4>Kích cỡ: </h4>
-                                                                <?php foreach ($value['sizes'] as $size) : ?>
-                                                                    <span><?= $size ?>; </span>
-                                                                <?php endforeach; ?>
-                                                            <?php } else { ?>
-                                                                <h4>Sản phẩm không có kích cỡ</h4>
-                                                            <?php } ?>
-                                                            </p>
-
-                                                                </div>
-                                                            </div>
-                                                        </td> -->
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -135,35 +95,30 @@
         </div>
     </div>
     <div class="modal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><?= $modal['title'] ?></h5>
+                    <h5 class="modal-title">Thông tin chi tiết sản phẩm</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="containerDetail-image" class="d-flex  align-items-center p-3 border rounded border-primary-subtle">
+                    <div id="containerDetail-image" class="d-flex  align-items-center justify-content-center p-3 border rounded border-primary-subtle">
 
                     </div>
                     <div id="containerDetail-properties" class="d-flex flex-wrap justify-content-center p-3 rounded border border-primary-subtle">
                     </div>
-                    </div>
                 </div>
-                <div class="modal-footer">
-                </div>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
     </div>
 </div>
-
+</div>
 
 <script>
-    function Delete(button) {
-
-    }
-
     function loadModel(button) {
         const modal = document.querySelector(".modal");
         const productId = button.getAttribute("data-product-id");
@@ -176,6 +131,7 @@
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append("productId", productId);
+        formData.append("getImages", '');
         xhr.open("POST", "/api/products");
         xhr.send(formData);
         xhr.onload = () => {
@@ -191,40 +147,41 @@
                     if (imgUrl) {
                         isExistImage = true;
                         const html = `
-                        <img src="/assets/files/assets/images/${imgUrl}" width="150"> `
+                        <p><img src="/assets/files/assets/images/${imgUrl}" width="100" style="height:100px" class="p-2"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></p> `
                         containerImage.innerHTML += html;
                     }
                 });
-                
-                if(!isExistImage) {
+
+                if (!isExistImage) {
                     containerImage.innerHTML = "<span>Sản phẩm không có ảnh nào</span>"
                 }
 
+                let htmlArray = [];
                 propertiesArray.forEach(item => {
                     const color = item.color;
                     const size = item.size;
-                    if(color ) {
+                    let html = '';
+
+                    if (color) {
                         isExistProperties = true;
-                        const html = `
-                        <p>Màu sắc:${color}</p>`
+                        html += `<p>Màu sắc: ${color}</p>`;
                     }
-                    containerProperties.innerHTML += html;
 
-                    // if(size || size !== null) {
-                    //     isExistProperties = true;
-                    //     const html = `
-                    //     <p>kích cỡ: ${size}</p>`
-                    // }
-                    //     containerProperties.innerHTML += html;
+                    if (size) {
+                        isExistProperties = true;
+                        html += `<p>Kích cỡ: ${size}</p>`;
+                    }
 
-                        
-                    });
-                    // console.log(color, size);
-                
-                if(!isExistProperties) {
-                   containerProperties.innerHTML = "<span>Sản phẩm chưa có size hay color nào</span>"
+                    if (html) {
+                        htmlArray.push(html);
+                    }
+                });
+
+                if (!isExistProperties) {
+                    containerProperties.innerHTML = "<span>Sản phẩm chưa có size hay color nào</span>"
+                } else {
+                    containerProperties.innerHTML = htmlArray.join("");
                 }
-                console.log(propertiesArray)
             };
         };
 

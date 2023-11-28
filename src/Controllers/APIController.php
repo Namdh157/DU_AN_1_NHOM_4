@@ -7,16 +7,26 @@ use MVC_DA1\Models\Product_properties;
 class APIController {
 
     public function products() {
-        $productId = $_POST['productId'];
+        if(isset($_POST['getImages'])) {
+            $productId = $_POST['productId'];
+        
+            $allProperties = (new Product_properties)->getProperties($productId);
+            $allImages = (new Images)->getByProductId($productId);
+    
+            $data = [
+                "allProperties" => $allProperties,
+                "allImages" => $allImages
+            ];
+            echo json_encode($data);
+        }
+        if(isset($_POST['deleteImage'])) {
 
-        $allProperties = (new Product_properties)->getProperties($productId);
-        $allImages = (new Images)->getByProductId($productId);
+        }
 
-        $data = [
-            "allProperties" => $allProperties,
-            "allImages" => $allImages
-        ];
-        echo json_encode($data);
+        if(isset($_POST['addImages'])) {
+
+        }
+       
     }
 
     

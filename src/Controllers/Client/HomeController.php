@@ -9,9 +9,13 @@ use MVC_DA1\Models\User;
 
 class HomeController extends Controller
 {
+    protected $allCategories;
+
+    public function __construct() {
+        $this->allCategories = (new Category)->all();
+    }
     public function index()
     {
-        $categories = (new Category())->all();
         $productSeller = (new Product())->joinTable(
             $addColumn = [
                 ['products.id', 'product_detail']
@@ -38,11 +42,9 @@ class HomeController extends Controller
             ]
         );
         $this->render('home', [
-            'categories' => $categories,
+            'allCategories' => $this->allCategories,
             'productSeller' => $productSeller,
             'productDiscount' => $productDiscount,
-            'allCategories' => $this->allCategories
-
         ]);
     }
 
@@ -63,10 +65,9 @@ class HomeController extends Controller
 
         $this->render('Categories/index', [
             'categoryCurrent' => $categoryCurrent,
-            'categories' => $categories,
+            'allCategories' => $this->allCategories,
             'categoryProduct' => $categoryProduct,
             'countProduct' => $countProduct,
-            'allCategories' => $this->allCategories
 
         ]);
     }
