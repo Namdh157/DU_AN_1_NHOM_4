@@ -70,7 +70,7 @@
                                                         <td><?= $value['name_product'] ?></td>
                                                         <td><?= number_format($value['price']) . 'đ'  ?></td>
                                                         <td>
-                                                            <button data-product-id="<?= $value['product_id'] ?>" class="rounded w-100" onclick=loadModel(this)>Hiện thị chi tiết</button>
+                                                            <button data-product-id="<?= $value['product_id'] ?>" id="btnModal<?= $value['product_id'] ?>" class="rounded w-100" onclick=loadModel(this)>Hiện thị chi tiết</button>
                                                         </td>
                                                         <td><?= $value['name_category'] ?></td>
                                                         <td>
@@ -94,102 +94,163 @@
             </div>
         </div>
     </div>
-    <div class="modal">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal" style="background-color:#00000080">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Thông tin chi tiết sản phẩm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                    <h4 class="modal-title">Thông tin chi tiết sản phẩm</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div id="containerDetail-image" class="d-flex  align-items-center justify-content-center p-3 border rounded border-primary-subtle">
 
+                <div class="modal-body">
+                    <span>Hình ảnh </span>
+                    <button id="addImages" onclick=addImages(this)>
+                        <i class="fa fa-plus-circle text-info fs-3"></i>
+                    </button>
+                    <input id="inputUpload" name="image_urls[]" type="file" style="display:none" multiple>
+                    <div id="containerDetail-image" class="d-flex flex-wrap p-3">
                     </div>
-                    <div id="containerDetail-properties" class="d-flex flex-wrap justify-content-center p-3 rounded border border-primary-subtle">
+                    <span>Thuộc tính </span>
+                    <button id="addProperties">
+                        <i class="fa fa-plus-square  text-info fs-3 "></i>
+                    </button>
+                    <div id="containerDetail-properties" class="d-flex flex-wrap justify-content-center p-3">
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-            </div>
         </div>
     </div>
-</div>
-</div>
 
-<script>
-    function loadModel(button) {
+    <script>
         const modal = document.querySelector(".modal");
-        const productId = button.getAttribute("data-product-id");
-        var containerImage = document.querySelector("#containerDetail-image");
-        var containerProperties = document.querySelector("#containerDetail-properties");
-        containerProperties.innerHTML = '';
-        containerImage.innerHTML = '';
-        modal.style.display = "block";
+        const btnClose = document.querySelector(".close");
+        const containerImages = document.querySelector("#containerDetail-image");
+        const containerProperties = document.querySelector("#containerDetail-properties");
+        const btnAddImages = document.querySelector("#addImages");
 
-        const xhr = new XMLHttpRequest();
-        const formData = new FormData();
-        formData.append("productId", productId);
-        formData.append("getImages", '');
-        xhr.open("POST", "/api/products");
-        xhr.send(formData);
-        xhr.onload = () => {
-            if (xhr.status == 200) {
-                const data = JSON.parse(xhr.responseText);
-                var isExistImage = false;
-                var isExistProperties = false;
-                const imageArray = data.allImages;
-                const propertiesArray = data.allProperties;
 
-                imageArray.forEach(img => {
-                    const imgUrl = img.image_url;
-                    if (imgUrl) {
-                        isExistImage = true;
-                        const html = `
-                        <p><img src="/assets/files/assets/images/${imgUrl}" width="100" style="height:100px" class="p-2"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></p> `
-                        containerImage.innerHTML += html;
+        function loadModel(button) {
+            //modal hiện thị chi tiết sản phẩm
+            modal.style.display = "block";
+            const productId = button.getAttribute("data-product-id");
+            // tạo đối tượng ajax
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            // Thêm dữ liệu vào FormData
+            formData.append("productId", productId);
+            formData.append("renderData", "");
+            // Gửi yêu cầu Ajax đến server và nhận lại kết quả
+            xhr.open("POST", "/api/products");
+            xhr.send(formData);
+            xhr.onload = () => {
+                // Kiểm tra kết quả trả về
+                if (xhr.status === 200) {
+                    btnAddImages.setAttribute("data-product-id", productId);
+                    //lấy data về từ server
+                    const data = JSON.parse(xhr.responseText);
+                    let allImages = data.allImages;
+                    let allProperties = data.allProperties;
+                    let isImages = false;
+                    let isProperties = false;
+                    containerImages.innerHTML = "";
+                    //Hiện thị các ảnh
+                    allImages.forEach(image => {
+                        isImages = true;
+                        var html = `<div class="position-relative">
+                                        <img src="/assets/files/assets/images/${image.image_url}" width="100" class="p-3" style="height:100px"> 
+                                        <button id-image = "${image.id}"  type="button" class="btn-close position-absolute top-0 end-0" id="deleteImage" onclick="deleteImage(this)" aria-label="Close"></button>
+                                    </div>
+                        `
+                        containerImages.innerHTML += html;
+                    });
+                    if (!isImages) {
+                        containerImages.innerHTML = "Sản phẩm không có ảnh nào";
                     }
-                });
-
-                if (!isExistImage) {
-                    containerImage.innerHTML = "<span>Sản phẩm không có ảnh nào</span>"
+                    containerProperties.innerHTML = "";
+                    //Hiện thị các thuộc tính
+                    allProperties.forEach(property => {
+                        var html = `<div class="d-flex flex-column align-items-center justify-content-center p-3 border rounded border-primary-subtle">
+                                        <span class="text-primary">${property.color}</span>
+                                        <span class="text-primary">${property.size}</span>
+                                    </div>`
+                        containerProperties.innerHTML += html;
+                    });
+                    if (!isImages) {
+                        containerProperties.innerHTML = "Sản phẩm không có thuộc tính nào";
+                    }
                 }
+            }
 
-                let htmlArray = [];
-                propertiesArray.forEach(item => {
-                    const color = item.color;
-                    const size = item.size;
-                    let html = '';
+        }
 
-                    if (color) {
-                        isExistProperties = true;
-                        html += `<p>Màu sắc: ${color}</p>`;
-                    }
-
-                    if (size) {
-                        isExistProperties = true;
-                        html += `<p>Kích cỡ: ${size}</p>`;
-                    }
-
-                    if (html) {
-                        htmlArray.push(html);
-                    }
-                });
-
-                if (!isExistProperties) {
-                    containerProperties.innerHTML = "<span>Sản phẩm chưa có size hay color nào</span>"
-                } else {
-                    containerProperties.innerHTML = htmlArray.join("");
+        //hàm thêm ảnh
+        function addImages(button) {
+            // lấy id sản phẩm và input upload ảnh
+            const productId = button.getAttribute("data-product-id");
+            const inputImg = document.querySelector("#inputUpload");
+            inputImg.click();
+            inputImg.addEventListener("change", () => {
+                // tạo đối tượng ajax
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                // Thêm dữ liệu vào FormData
+                formData.append("productId", productId);
+                formData.append("addImages", "");
+                const images = inputImg.files;
+                for (const file of images) {
+                    formData.append("imageUrls[]", file);
                 }
-            };
-        };
+                // Gửi yêu cầu Ajax đến server và nhận lại kết quả
+                xhr.open("POST", "/api/products");
+                xhr.send(formData);
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        // lấy data về từ server
+                        const data = JSON.parse(xhr.responseText);
+                        var image_url = data.name;
+                        console.log(data.name);
+                        //Hiện thị các ảnh
+                        image_url.forEach(image => {
+                            var html = `<div class="position-relative">
+                                            <img src="/assets/files/assets/images/${image}" width="100" class="p-3" style="height:100px">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 id="deleteImage" aria-label="Close"></button>
+                                        </div>
+                                        `
+                            containerImages.innerHTML += html;
+                        });
+                    }
+                }
+            })
+        }
 
 
-    }
+        //hàm xóa ảnh
+        function deleteImage(button) {
+            idImage = button.getAttribute("id-image");
+            //tạo đối tượng ajax
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            // thêm dữ liệu vào formData
+            formData.append("idImage", idImage);
+            formData.append("deleteImage", "");
 
-    function closeModal() {
-        const modal = document.querySelector(".modal");
-        modal.style.display = 'none';
-    }
-</script>
+            //gửi yêu cầu ajax đến server và nhận lại kết quả
+            xhr.open("POST", "/api/products");
+            xhr.send(formData);
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    const imageCurrent = button.closest(".position-relative");
+                    if(imageCurrent) { 
+                        containerImages.removeChild(imageCurrent);
+                    }
+                }
+            }
+        }
+        //đóng modal
+        btnClose.addEventListener("click", () => {
+            modal.style.display = "none";
+        })
+    </script>
