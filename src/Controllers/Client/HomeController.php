@@ -52,8 +52,8 @@ class HomeController extends Controller
     {
         $id = $_GET['id'];
         $categoryCurrent = (new Category())->findOne($id);
-        $categories = (new Category())->all();
-        $categoryProduct = (new Product())->categoryProduct($id, $addColumn = [
+        $categoryProduct = (new Product())->categoryProduct($id, 
+        $addColumn = [
             ['products.id', 'product_detail']
         ], $connect = [
             ['products', 'category', 'products.id_category', 'category.id'],
@@ -83,17 +83,19 @@ class HomeController extends Controller
     public function productDetail()
     {
         $id = $_GET['id'];
-
-        $productCurrent = (new Product())->joinTable(
-            $addColumn = [],
-            $connect = [['category', 'products.id_category', 'category.id']],
-            $conditions = [['products.id', '=', $id]],
-            $orderBy = []
-        );
-
-
-
-
+        $productCurrent = (new Product())->getProductCurrent($id);
+        if($productCurrent['image_urls']) {
+            $productCurrent['image_urls'] = explode(",", $productCurrent['image_urls']);
+        }
+        if($productCurrent['colors']) {
+            $productCurrent['colors'] = explode(",", $productCurrent['colors']);
+        }
+        if($productCurrent['sizes']) {
+            $productCurrent['sizes'] = explode(",", $productCurrent['sizes']);
+        }
+        // echo "<pre>";
+        // print_r($productCurrent);
+        // die;
 
         $this->render('ProductDetail/index', [
             'productCurrent' => $productCurrent,
