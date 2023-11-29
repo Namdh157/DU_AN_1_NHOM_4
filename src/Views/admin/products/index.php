@@ -215,7 +215,7 @@
                         image_url.forEach(image => {
                             var html = `<div class="position-relative">
                                             <img src="/assets/files/assets/images/${image}" width="100" class="p-3" style="height:100px">
-                                            <button type="button" class="btn-close position-absolute top-0 end-0 id="deleteImage" aria-label="Close"></button>
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 id="deleteImage" onclick="deleteImage(this)" aria-label="Close"></button>
                                         </div>
                                         `
                             containerImages.innerHTML += html;
@@ -241,7 +241,6 @@
             xhr.send(formData);
             xhr.onload = () => {
                 if (xhr.status === 200) {
-                    const data = JSON.parse(xhr.responseText);
                     const imageCurrent = button.closest(".position-relative");
                     if(imageCurrent) { 
                         containerImages.removeChild(imageCurrent);
