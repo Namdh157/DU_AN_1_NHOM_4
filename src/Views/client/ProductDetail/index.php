@@ -1,6 +1,6 @@
 <?php
 include 'CommentFunctions.php';
-$productId = $_GET['id']; 
+$productId = $_GET['id'];
 $comments = getComments($productId);
 ?>
 <style>
@@ -67,7 +67,7 @@ $comments = getComments($productId);
                         </div>
                         <ul class="preview-thumbnail nav nav-tabs">
                             <?php foreach ($productCurrent['image_urls'] as $image) : ?>
-                            <li><a><img src="assets/files/assets/images/<?= $image ?>" /></a></li>
+                                <li><a><img src="assets/files/assets/images/<?= $image ?>" /></a></li>
                             <?php endforeach; ?>
                         </ul>
 
@@ -106,9 +106,53 @@ $comments = getComments($productId);
 
     <!-- Nhận xét  -->
     <div class="commentUsers container">
-        <h3 class=" fw-bolder mt-3">Nhận xét sản phẩm từ khách hàng</h3>
-        <?php
-        commentPage($id, $users);
-        ?>
+        <h3 class="fw-bolder mt-3">Nhận xét sản phẩm từ khách hàng</h3>
+        <br>
+        <div class="show_comment">
+            <? $comments = getComments($_GET['id']); ?>
+            <?php if (empty($comments)) : ?>    
+                <p>Chưa có bình luận nào.</p>
+            <?php else : ?>
+                <div class="comments">
+                    <?php foreach ($comments as $comment) : ?>
+                        <div class="comment">
+                            <div class="comment-avatar">
+                                <img src="assets/files/assets/images/<?= $comment['image'] ?>" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;"> <!-- Hiển thị ảnh người dùng -->
+                            </div>
+                            <div class="comment-content">
+                                <strong><?= $comment["name"] ?></strong>
+                                <p><?= $comment['content'] ?></p>
+                                <span class="comment-date"><?= $comment['date_comment'] ?></span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="insert_comment">
+            <?php if (isset($_SESSION['account']) && $_SESSION['account']) : ?>
+                <form id="commentForm" action="" method="post">
+                    <textarea name="commentContent" required class="form-control" placeholder="Để lại bình luận của bạn..."></textarea>
+                    <input type="hidden" name="idpro" value="<?= $_GET['id'] ?>">
+                    <button type="submit" class="btn btn-primary mt-2">Gửi Bình Luận</button>
+                </form>
+            <?php else : ?>
+                <p>Bạn cần phải <a href="Login">đăng nhập</a> để bình luận.</p>
+            <?php endif;
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['account']) && $_SESSION['account']) {
+                $id_user = $_SESSION['account']['id_user'];
+                $id_pro = $_POST['idpro'];
+                $content = $_POST['commentContent'];
+
+                $isInserted = insertComment($id_user, $id_pro, $content);
+
+                if ($isInserted) {
+                    echo "Bình luận đã được gửi thành công.";
+                } else {
+                    echo "Có lỗi xảy ra khi gửi bình luận.";
+                }
+            }
+            ?>
+        </div>
     </div>
 </main>
