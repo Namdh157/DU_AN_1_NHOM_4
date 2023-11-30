@@ -16,31 +16,48 @@ class HomeController extends Controller
     }
     public function index()
     {
-        $productSeller = (new Product())->joinTable(
-            $addColumn = [
-                ['products.id', 'product_detail']
-            ],
-            $connect = [
-                ['category', 'products.id_category', 'category.id']
-            ],
-            $condition = [],
+        $productSeller = (new Product())->allProductsTypes(
             $orderBy = [
                 ['products.view', 'DESC', 12]
             ]
         );
-        $productDiscount = (new Product())->joinTable(
-            $addColumn = [
-                ['products.id', 'product_detail']
-            ],
-            $connect = [
-                ['category', 'products.id_category', 'category.id']
-            ],
-            $condition = [],
+        
+        foreach ($productSeller as $key => &$products) {
+            if (!empty($products['image_urls'])) {
+                $products['image_urls'] = explode(",", $products['image_urls']);
+            }
 
+            if (!empty($products['sizes'])) {
+                $products['sizes'] = explode(",", $products['sizes']);
+            }
+
+            if (!empty($products['colors'])) {
+                $products['colors'] = explode(",", $products['colors']);
+            }
+        }
+        
+        $productDiscount = (new Product())->allProductsTypes(
             $orderBy = [
                 ['products.discount', 'DESC', 9]
             ]
         );
+
+        foreach ($productDiscount as $key => &$products) {
+            if (!empty($products['image_urls'])) {
+                $products['image_urls'] = explode(",", $products['image_urls']);
+            }
+
+            if (!empty($products['sizes'])) {
+                $products['sizes'] = explode(",", $products['sizes']);
+            }
+
+            if (!empty($products['colors'])) {
+                $products['colors'] = explode(",", $products['colors']);
+            }
+        }
+        // echo "<pre>";
+        // print_r($productSeller);
+        // die;
         $this->render('home', [
             'allCategories' => $this->allCategories,
             'productSeller' => $productSeller,
@@ -180,7 +197,6 @@ class HomeController extends Controller
             'countSearch' => $countSearch,
             'allProducts' => $products,
             'allCategories' => $this->allCategories
-            
         ]);
 
 
