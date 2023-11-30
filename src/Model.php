@@ -47,7 +47,6 @@ class Model
 
         $stmt = $this->conn->prepare($sql);
 
-
         $stmt->execute();
 
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);

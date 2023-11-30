@@ -2,17 +2,7 @@
 
 namespace MVC_DA1;
 
-use MVC_DA1\Models\Category;
-
 class Controller {
-
-    protected $allCategories;
-
-    public function __construct()
-    {
-        $this->allCategories = (new Category)->all();
-        
-    }
 
     protected function render($view, $data = []) {
         $data['view'] = $view; 

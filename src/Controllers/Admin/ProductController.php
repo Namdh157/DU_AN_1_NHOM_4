@@ -10,9 +10,15 @@ class ProductController extends Controller
 {
     protected $allProducts;
 
+    protected $productModel;
+
+    protected $allCategories;
+
     public function __construct()
     {
-        $this->allProducts = (new Product)->allProductsTypes([['products.id', 'DESC']]);
+        $this->productModel = (new Product);
+        $this->allProducts = $this->productModel->allProductsTypes([['products.id', 'DESC']]);
+        $this->allCategories = (new Category)->all();
     }
     public function index()
     {
@@ -25,34 +31,20 @@ class ProductController extends Controller
                 $products['sizes'] = explode(",", $products['sizes']);
             }
 
-            if (!empty($products['color'])) {
-                $products['color'] = explode(",", $products['color']);
+            if (!empty($products['colors'])) {
+                $products['colors'] = explode(",", $products['colors']);
             }
         }
-
-        $modal = [
-            'title' => 'Thông tin chi tiết sản phẩm',
-        ];
-
-        // echo "<pre>";
-        // print_r($this->allProducts[0]['image_urls']);
-        // die;
 
         $this->renderAdmin(
             'products/index',
             [
                 'products' => $this->allProducts,
-                'modal' => $modal,
             ]
         );
     }
     public function create()
     {
-        $productModel = (new Product);
-        
-        $allCategory = (new Category)->all();
-
-
         if (isset($_POST['btn-submit'])) {
             $data = [
                 'name_product' => $_POST['nameProduct'],
@@ -64,27 +56,55 @@ class ProductController extends Controller
                 'special' => 0
             ];
 
-            $productModel->insert($data);
+            $this->productModel->insert($data);
 
-            $idProduct = $productModel->getLastId();
+            $idProduct = $this->productModel->getLastId();
 
             $images = $_FILES['image_urls']['name'];
 
             foreach ($images as $image) {
-                $productModel->insertImages($idProduct, $image);
+                $this->productModel->insertImages($idProduct, $image);
             }
             
         }
-        // echo '<pre>';
-        //     print_r($idProduct);
-        //     die;
 
         $this->renderAdmin(
             'products/create',
             [
-                'allCategories' => $allCategory
+                'allCategories' => $this->allCategories,
 
             ]
         );
+    }
+
+    public function update() {
+        $id = $_GET['id'];
+
+        $productCurrent = $this->productModel->getProductCurrent($id);
+
+        if($productCurrent['image_urls']) {
+            $productCurrent['image_urls'] = explode(",", $productCurrent['image_urls']);
+        }
+        if($productCurrent['colors']) {
+            $productCurrent['colors'] = explode(",", $productCurrent['colors']);
+        }
+        if($productCurrent['sizes']) {
+            $productCurrent['sizes'] = explode(",", $productCurrent['sizes']);
+        }
+
+        $this->renderAdmin('products/update', [
+            'allCategories' => $this->allCategories,
+            'productCurrent' => $productCurrent
+        ]);
+    }
+
+    public function delete() {
+        $conditions = [
+            ['id', '=', $_GET['id']],
+        ];
+        
+        (new Product())->delete($conditions);
+
+        header('Location: /admin/products');
     }
 }
