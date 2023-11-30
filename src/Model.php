@@ -186,7 +186,7 @@ class Model
             $asColumn = implode(" ", $asColumn) . ' FROM ';
             $sql .= $asColumn;
         }
-
+        
 
         $join = [];
 
@@ -232,7 +232,7 @@ class Model
             $sql .= $addSql;
         }
         // echo '<pre>';
-        // print_r($sql);
+        // print_r( $sql);
         // die;
 
         $stmt = $this->conn->prepare($sql);

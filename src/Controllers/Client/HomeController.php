@@ -3,6 +3,7 @@
 namespace MVC_DA1\Controllers\Client;
 
 use MVC_DA1\Controller;
+use MVC_DA1\Models\Cart;
 use MVC_DA1\Models\Product;
 use MVC_DA1\Models\Category;
 use MVC_DA1\Models\User;
@@ -117,7 +118,7 @@ class HomeController extends Controller
             if (!empty($_FILES['image']['name'])) {
                 $imageUrl = $_FILES['image']['name'];
                 $fileUrl = 'assets/files/assets/images/';
-                move_uploaded_file($_FILES['image']['tmp_name'], $fileUrl.$imageUrl);
+                move_uploaded_file($_FILES['image']['tmp_name'], $fileUrl . $imageUrl);
             }
             (new User)->insert($data);
 
@@ -150,12 +151,14 @@ class HomeController extends Controller
         }
         $this->render1('Authentication/login');
     }
-    public function logout(){
+    public function logout()
+    {
         unset($_SESSION['account']);
         header('location:/');
     }
 
-    public function allProducts(){
+    public function allProducts()
+    {
         $search = $_GET['search'];
         $products = (new Product)->joinTable(
             $addColumn = [
@@ -170,16 +173,41 @@ class HomeController extends Controller
             $orderBy = [
                 ['products.id', 'DESC']
             ],
-            );
+        );
         $countSearch = (new Product())->countSearch($search);
-        
-        $this->render('AllProducts/index',$data = [
+
+        $this->render('AllProducts/index', $data = [
             'countSearch' => $countSearch,
             'allProducts' => $products,
             'allCategories' => $this->allCategories
-            
+
         ]);
+    }
 
 
+    public function Cart()
+    {
+        $id = $_SESSION['account']['id_user'];
+        
+        $allProductsInCart = (new Cart)->joinTable(
+            $addColumn = [],
+            $connect = [
+                ['category', 'products', 'category.id', 'products.id_category'],
+                ['cart', '', 'products.id', 'cart.id_product']
+            ],
+            $condition = [
+                ['cart.id_user', '=', $id],
+            ],
+            $orderBy = [],
+        );
+
+        // echo '<pre>';
+        //     print_r($allProductsInCart);
+        //     die;
+
+        $this->render('Cart/index', $data = [
+            'allProductsInCart' => $allProductsInCart,
+            'allCategories' => $this->allCategories
+        ]);
     }
 }

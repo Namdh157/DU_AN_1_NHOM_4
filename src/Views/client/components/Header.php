@@ -55,7 +55,7 @@
                                     <div class="cart_count"><span><?php echo 0 ?></span></div>
                                 </div>
                                 <div class="cart_content">
-                                    <a href="index.php?type=Cart&id=<?php echo empty($users) ? 0 : $users['id'] ?>">
+                                    <a href="\Cart">
                                         <div class="cart_text">Giỏ hàng</div>
                                         <div class="cart_price"><?php echo empty($users) ? 0 : 0 ?> ₫</div>
                                     </a>
@@ -114,8 +114,8 @@
                                 <li class="hassubs">
                                     <a href="#">Tất cả danh mục<i class="fas fa-chevron-down"></i></a>
                                     <ul>
-                                        <?php foreach ($categories as $value) { ?>
-                                            <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="index.php?type=Category&id=<?php echo $value['id'] ?>"><?php echo $value['name_category'] ?></a></li>
+                                        <?php foreach ($allCategories as $value) { ?>
+                                            <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="Categories?id=<?php echo $value['id'] ?>"><?= $value['name_category'] ?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>

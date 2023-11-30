@@ -34,6 +34,7 @@ $router->addRoute('/Register', HomeController::class, 'register');
 $router->addRoute('/Login', HomeController::class, 'login');
 $router->addRoute('/Logout', HomeController::class, 'logout');
 $router->addRoute('/allProducts', HomeController::class, 'allProducts');
+$router->addRoute('/Cart', HomeController::class, 'cart');
 
 
 // Trang chủ admin
@@ -64,7 +65,7 @@ $router->addRoute('/admin/carts/update', CartController::class, 'update');
 $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
 
 // sử dụng api
- $router->addRoute('/api/products', APIController::class, 'products');
+$router->addRoute('/api/products', APIController::class, 'products');
 
 //Bình luận 
 $router->addRoute('/admin/comments', CommentController::class, 'index');
