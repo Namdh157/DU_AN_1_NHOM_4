@@ -6,7 +6,7 @@
                 <div class="page-header-title">
                     <i class="feather icon-home bg-c-blue"></i>
                     <div class="d-inline">
-                        <h5>User</h5>
+                        <h5>Sản phẩm</h5>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
 
 
                                         <button type="submit" name="btn-submit" class="btn btn-info mt-3">Thêm mới</button>
-                                        <a href="/admin/users" class="btn btn-primary mt-3">Quay lại d/s</a>
+                                        <a href="/admin/products" class="btn btn-primary mt-3">Quay lại d/s</a>
                                     </form>
                                 </div>
                             </div>
