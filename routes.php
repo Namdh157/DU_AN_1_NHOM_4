@@ -35,6 +35,7 @@ $router->addRoute('/Login', HomeController::class, 'login');
 $router->addRoute('/Logout', HomeController::class, 'logout');
 $router->addRoute('/allProducts', HomeController::class, 'allProducts');
 $router->addRoute('/Cart', HomeController::class, 'cart');
+$router->addRoute('/Cart/delete', HomeController::class, 'delete');
 
 
 // Trang chủ admin

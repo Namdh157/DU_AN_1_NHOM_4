@@ -40,7 +40,7 @@ if (empty($_SESSION['account'])) { ?>
                                                         <div class="d-flex justify-content-between">
                                                             <div class="d-flex flex-row align-items-center">
                                                                 <div>
-                                                                   <img src="/assets/files/assets/images/<?= $value['img'] ?>" class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+                                                                   <img src="/assets/files/assets/images/<?= $value['image_urls'] ?>" class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
                                                                 </div>
                                                                 <div class="ms-3">
                                                                     <h5><?= $value['name_product'] ?></h5>
@@ -54,7 +54,11 @@ if (empty($_SESSION['account'])) { ?>
                                                                 <div style="width: 80px;">
                                                                     <h5 class="mb-0"><?= number_format($value['price'], 0, '.', ',') ?> ₫</h5>
                                                                 </div>
-                                                                <a href="javascript:confirmDelete('client/Cart/delete?id=<?= $value['id'] ?>')" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+
+                                                                <form action="/admin/categories/delete?id=<?= $value['id'] ?>" method="post">
+                                                                <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2"><i class="fas fa-trash-alt"></i></button>
+                                                            </form>
+                                                                <!-- <a href="javascript:confirmDelete('/Cart/delete?id=<?= $value['id'] ?>')" style="color: #cecece;"></a> -->
                                                             </div>
                                                         </div>
                                                     </div>

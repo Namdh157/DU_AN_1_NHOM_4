@@ -20,15 +20,15 @@ class Product extends Model
     public function allProductsTypes($orderBy = [])
     {
 
-        $sql = "SELECT *,
-        products.id as product_id,
+        $sql = "SELECT
+        *,
+        products.id AS product_id,
         category.name_category,
-        images.image_urls,
-        properties.colors,
-        properties.sizes
+        images.image_urls
     FROM
         products
-    JOIN category ON products.id_category = category.id
+    JOIN
+        category ON products.id_category = category.id
     LEFT JOIN (
         SELECT
             id_products,
@@ -38,16 +38,10 @@ class Product extends Model
         GROUP BY
             id_products
     ) AS images ON products.id = images.id_products
-    LEFT JOIN (
-        SELECT
-            product_id,
-            GROUP_CONCAT(color) AS colors,
-            GROUP_CONCAT(size) AS sizes
-        FROM
-            products_properties
-        GROUP BY
-            product_id
-    ) AS properties ON products.id = properties.product_id";
+    LEFT JOIN
+        products_properties ON products.id = products_properties.product_id
+    LEFT JOIN
+        categories_properties ON products_properties.id_categories_properties = categories_properties.id";
 
         if (!empty($orderBy)) {
             $addSql = [];
@@ -61,12 +55,149 @@ class Product extends Model
         }
 
         $stmt = $this->conn->prepare($sql);
-        // foreach ($conditions as &$condition) {
-        //     $stmt->bindParam("{$condition[0]}", $condition[2]);
-        // }
         $stmt->execute();
 
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         return $stmt->fetchAll();
     }
+    public function getProductCurrent($id)
+    {
+
+        $sql = "SELECT
+        *,
+        products.id AS product_id,
+        category.name_category,
+        images.image_urls
+    FROM
+        products
+    JOIN
+        category ON products.id_category = category.id
+    LEFT JOIN (
+        SELECT
+            id_products,
+            GROUP_CONCAT(image_url) AS image_urls
+        FROM
+            products_images
+        GROUP BY
+            id_products
+    ) AS images ON products.id = images.id_products
+    LEFT JOIN
+        products_properties ON products.id = products_properties.product_id
+    LEFT JOIN
+        categories_properties ON products_properties.id_categories_properties = categories_properties.id
+    WHERE products.id = :id";
+
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function categoryProduct($id, $conditions  = [])
+    {
+        $sql = "SELECT
+        *,
+        products.id AS product_id,
+        category.name_category,
+        images.image_urls
+    FROM
+        products
+    JOIN
+        category ON products.id_category = category.id
+    LEFT JOIN (
+        SELECT
+            id_products,
+            GROUP_CONCAT(image_url) AS image_urls
+        FROM
+            products_images
+        GROUP BY
+            id_products
+    ) AS images ON products.id = images.id_products
+    LEFT JOIN
+        products_properties ON products.id = products_properties.product_id
+    LEFT JOIN
+        categories_properties ON products_properties.id_categories_properties = categories_properties.id";
+
+
+
+        $where = [];
+        foreach ($conditions as $condition) {
+            $where[] = "{$condition[0]} {$condition[1]} $id";
+        }
+        $where = ' WHERE ' . implode(" ", $where);
+
+        $sql .= $where;
+
+       
+
+
+        $stmt = $this->conn->prepare($sql);
+
+        // $stmt->bindParam("{$id}", $id);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+    }
+
+    public function cartProduct($id, $conditions  = [])
+    {
+        $sql = "SELECT
+        *,
+        products.id AS product_id,
+        category.name_category,
+        images.image_urls
+        FROM
+        products
+        JOIN
+        category ON products.id_category = category.id
+        LEFT JOIN (
+        SELECT
+        id_products,
+        GROUP_CONCAT(image_url) AS image_urls
+        FROM
+        products_images
+        GROUP BY
+        id_products
+        ) AS images ON products.id = images.id_products
+        LEFT JOIN
+        products_properties ON products.id = products_properties.product_id
+        LEFT JOIN
+        categories_properties ON products_properties.id_categories_properties = categories_properties.id
+        LEFT JOIN
+        cart ON products.id = cart.id_product"; 
+
+        
+$where = [];
+foreach ($conditions as $condition) {
+    $where[] = "{$condition[0]} {$condition[1]} $id";
+}
+$where = ' WHERE ' . implode(" ", $where);
+
+$sql .= $where;
+
+
+
+
+$stmt = $this->conn->prepare($sql);
+
+// $stmt->bindParam("{$id}", $id);
+
+$stmt->execute();
+
+$stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+return $stmt->fetchAll();
+      
+
+    //   echo '<pre>';
+    //   print_r($sql);
+    //   die;
+}
 }

@@ -12,6 +12,8 @@ class Cart extends Model {
         'id_user',
     ];
 
+    
+
     public function allProductsTypes($orderBy = [])
     {
         $sql = "SELECT *,

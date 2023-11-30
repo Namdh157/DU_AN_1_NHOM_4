@@ -7,6 +7,7 @@
         display: table-cell;
     }
 </style>
+
 <div class="pcoded-content">
 
     <div class="page-header card">
@@ -69,57 +70,16 @@
                                                         <td><?= $value['name_product'] ?></td>
                                                         <td><?= number_format($value['price']) . 'đ'  ?></td>
                                                         <td>
-                                                            <button data-product-id="<?= $value['product_id'] ?>" class="rounded w-100" onclick=loadModel(this)>Hiện thị chi tiết</button>
+                                                            <button data-product-id="<?= $value['product_id'] ?>" id="btnModal<?= $value['product_id'] ?>" class="rounded w-100" onclick=loadModel(this)>Hiện thị chi tiết</button>
                                                         </td>
                                                         <td><?= $value['name_category'] ?></td>
                                                         <td>
-                                                            <a href="/admin/users/update?id=<?= $value['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
+                                                            <a href="/admin/products/update?id=<?= $value['product_id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
 
-                                                            <form action="/admin/users/delete?id=<?= $value['id'] ?>" method="post">
+                                                            <form action="/admin/products/delete?id=<?= $value['product_id'] ?>" method="post">
                                                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
                                                             </form>
                                                         </td>
-
-                                                        <!-- <td data-details="detail<?= $key ?>" class="text-center containerDetail" colspan="8">
-                                                            <div class="container d-flex w-100 justify-content-around">
-                                                                <div class="containerDetail-image d-flex  align-items-center p-3 border rounded border-primary-subtle">
-                                                                    <?php if (!empty($value['image_urls'])) { ?>
-                                                                        <h4>Tất cả ảnh sản phẩm: </h4>
-                                                                        <?php foreach ($value['image_urls'] as $imageUrl) : ?>
-                                                                            <img src="/assets/files/assets/images/<?= $imageUrl ?>" alt="Ảnh sản phẩm" width="100">
-                                                                        <?php endforeach; ?>
-                                                                    <?php } else { ?>
-                                                                        <h4>Sản phẩm chưa có ảnh nào cả</h4>
-                                                                    <?php } ?>
-                                                                </div>
-
-
-                                                                <div class="containerDetail-color d-flex flex-wrap justify-content-center p-3 rounded border border-primary-subtle">
-                                                                    <p>
-                                                                        <?php if (!empty($value['colors'])) { ?>
-                                                                    <h4>Màu sắc: </h4>
-                                                                    <?php foreach ($value['colors'] as $color) : ?>
-                                                                        <span><?= $color ?>; </span>
-                                                                    <?php endforeach; ?>
-                                                                <?php } else { ?>
-                                                                    <h4>Sản phẩm không có màu sắc</h4>
-                                                                <?php } ?>
-                                                                </p>
-                                                                <br>
-                                                                <p>
-                                                                    <?php if (!empty($value['sizes'])) { ?>
-                                                                <h4>Kích cỡ: </h4>
-                                                                <?php foreach ($value['sizes'] as $size) : ?>
-                                                                    <span><?= $size ?>; </span>
-                                                                <?php endforeach; ?>
-                                                            <?php } else { ?>
-                                                                <h4>Sản phẩm không có kích cỡ</h4>
-                                                            <?php } ?>
-                                                            </p>
-
-                                                                </div>
-                                                            </div>
-                                                        </td> -->
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -134,105 +94,167 @@
             </div>
         </div>
     </div>
-    <div class="modal">
-        <div class="modal-dialog" role="document">
+    <div class="modal" style="background-color:#00000080">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><?= $modal['title'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                    <h4 class="modal-title">Thông tin chi tiết sản phẩm</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div id="containerDetail-image" class="d-flex  align-items-center p-3 border rounded border-primary-subtle">
 
+                <div class="modal-body">
+                    <span>Hình ảnh </span>
+                    <button id="addImages" onclick="addImages(this)">
+                        <i class="fa fa-plus-circle text-info fs-3"></i>
+                    </button>
+                    <input id="inputUpload" type="file" hidden multiple accept="image/*">
+                    <div id="containerDetail-image" class="d-flex flex-wrap p-3">
                     </div>
-                    <div id="containerDetail-properties" class="d-flex flex-wrap justify-content-center p-3 rounded border border-primary-subtle">
+                    <span>Thuộc tính </span>
+                    <button id="addProperties">
+                        <i class="fa fa-plus-square  text-info fs-3 "></i>
+                    </button>
+                    <div id="containerDetail-properties" class="d-flex flex-wrap justify-content-center p-3">
                     </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-
-<script>
-    function Delete(button) {
-
-    }
-
-    function loadModel(button) {
+    <script>
         const modal = document.querySelector(".modal");
-        const productId = button.getAttribute("data-product-id");
-        var containerImage = document.querySelector("#containerDetail-image");
-        var containerProperties = document.querySelector("#containerDetail-properties");
-        containerProperties.innerHTML = '';
-        containerImage.innerHTML = '';
-        modal.style.display = "block";
+        const btnClose = document.querySelector(".close");
+        const containerImages = document.querySelector("#containerDetail-image");
+        const containerProperties = document.querySelector("#containerDetail-properties");
+        const btnAddImages = document.querySelector("#addImages");
+        const inputImg = document.querySelector("#inputUpload");
 
-        const xhr = new XMLHttpRequest();
-        const formData = new FormData();
-        formData.append("productId", productId);
-        xhr.open("POST", "/api/products");
-        xhr.send(formData);
-        xhr.onload = () => {
-            if (xhr.status == 200) {
-                const data = JSON.parse(xhr.responseText);
-                var isExistImage = false;
-                var isExistProperties = false;
-                const imageArray = data.allImages;
-                const propertiesArray = data.allProperties;
 
-                imageArray.forEach(img => {
-                    const imgUrl = img.image_url;
-                    if (imgUrl) {
-                        isExistImage = true;
-                        const html = `
-                        <img src="/assets/files/assets/images/${imgUrl}" width="150"> `
-                        containerImage.innerHTML += html;
-                    }
-                });
-                
-                if(!isExistImage) {
-                    containerImage.innerHTML = "<span>Sản phẩm không có ảnh nào</span>"
-                }
-
-                propertiesArray.forEach(item => {
-                    const color = item.color;
-                    const size = item.size;
-                    if(color ) {
-                        isExistProperties = true;
-                        const html = `
-                        <p>Màu sắc:${color}</p>`
-                    }
-                    containerProperties.innerHTML += html;
-
-                    // if(size || size !== null) {
-                    //     isExistProperties = true;
-                    //     const html = `
-                    //     <p>kích cỡ: ${size}</p>`
-                    // }
-                    //     containerProperties.innerHTML += html;
-
-                        
+        function loadModel(button) {
+            //modal hiện thị chi tiết sản phẩm
+            modal.style.display = "block";
+            const productId = button.getAttribute("data-product-id");
+            // tạo đối tượng ajax
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            // Thêm dữ liệu vào FormData
+            formData.append("productId", productId);
+            formData.append("renderData", "");
+            // Gửi yêu cầu Ajax đến server và nhận lại kết quả
+            xhr.open("POST", "/api/products");
+            xhr.send(formData);
+            xhr.onload = () => {
+                // Kiểm tra kết quả trả về
+                if (xhr.status === 200) {
+                    btnAddImages.setAttribute("data-product-id", productId);
+                    //lấy data về từ server
+                    const data = JSON.parse(xhr.responseText);
+                    let allImages = data.allImages;
+                    let allProperties = data.allProperties;
+                    let isImages = false;
+                    let isProperties = false;
+                    containerImages.innerHTML = "";
+                    //Hiện thị các ảnh
+                    allImages.forEach(image => {
+                        isImages = true;
+                        var html = `<div class="position-relative">
+                                        <img src="/assets/files/assets/images/${image.image_url}" width="100" class="p-3" style="height:100px"> 
+                                        <button id-image = "${image.id}"  type="button" class="btn-close position-absolute top-0 end-0" id="deleteImage" onclick="deleteImage(this)" aria-label="Close"></button>
+                                    </div>
+                        `
+                        containerImages.innerHTML += html;
                     });
-                    // console.log(color, size);
-                
-                if(!isExistProperties) {
-                   containerProperties.innerHTML = "<span>Sản phẩm chưa có size hay color nào</span>"
+                    if (!isImages) {
+                        containerImages.innerHTML = "Sản phẩm không có ảnh nào";
+                    }
+                    containerProperties.innerHTML = "";
+                    //Hiện thị các thuộc tính
+                    allProperties.forEach(property => {
+                        var html = `<div class="d-flex flex-column align-items-center justify-content-center p-3 border rounded border-primary-subtle">
+                                        <span class="text-primary">${property.color}</span>
+                                        <span class="text-primary">${property.size}</span>
+                                    </div>`
+                        containerProperties.innerHTML += html;
+                    });
+                    if (!isImages) {
+                        containerProperties.innerHTML = "Sản phẩm không có thuộc tính nào";
+                    }
                 }
-                console.log(propertiesArray)
-            };
-        };
+            }
+
+        }
+
+        //hàm thêm ảnh
+        function addImages(button) {
+            // lấy id sản phẩm và input upload ảnh
+            const productId = button.getAttribute("data-product-id");
+            inputImg.click();
+            
+        }
+
+        inputImg.onchange = () => {
+
+             const productId = btnAddImages.getAttribute("data-product-id");
+                // tạo đối tượng ajax
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                // Thêm dữ liệu vào FormData
+                formData.append("productId", productId);
+                formData.append("addImages", "");
+                const images = inputImg.files;
+                for (const file of images) {
+                    formData.append("imageUrls[]", file);
+                }
+                // Gửi yêu cầu Ajax đến server và nhận lại kết quả
+                xhr.open("POST", "/api/products");
+                xhr.send(formData);
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        // lấy data về từ server
+                        const data = JSON.parse(xhr.responseText);
+                        var image_url = data.name;
+                        //check xem có ảnh nào chưa
+                        if(!containerImages.querySelector("img")) {
+                            containerImages.innerHTML = "";
+                        }
+                        //Hiện thị các ảnh
+                        image_url.forEach(image => {
+                            var html = `<div class="position-relative">
+                                            <img src="/assets/files/assets/images/${image}" width="100" class="p-3" style="height:100px">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 id="deleteImage" onclick="deleteImage(this)" aria-label="Close"></button>
+                                        </div>
+                                        `
+                            containerImages.innerHTML += html;
+                        });
+                    }
+                }
+
+            }
 
 
-    }
+        //hàm xóa ảnh
+        function deleteImage(button) {
+            idImage = button.getAttribute("id-image");
+            //tạo đối tượng ajax
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            // thêm dữ liệu vào formData
+            formData.append("idImage", idImage);
+            formData.append("deleteImage", "");
 
-    function closeModal() {
-        const modal = document.querySelector(".modal");
-        modal.style.display = 'none';
-    }
-</script>
+            //gửi yêu cầu ajax đến server và nhận lại kết quả
+            xhr.open("POST", "/api/products");
+            xhr.send(formData);
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                button.closest(".position-relative")?.remove();
+                }
+            }
+        }
+        //đóng modal
+        btnClose.addEventListener("click", () => {
+            modal.style.display = "none";
+        })
+    </script>
