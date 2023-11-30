@@ -97,4 +97,14 @@ class ProductController extends Controller
             'productCurrent' => $productCurrent
         ]);
     }
+
+    public function delete() {
+        $conditions = [
+            ['id', '=', $_GET['id']],
+        ];
+        
+        (new Product())->delete($conditions);
+
+        header('Location: /admin/products');
+    }
 }

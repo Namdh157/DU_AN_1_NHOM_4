@@ -106,10 +106,10 @@
 
                 <div class="modal-body">
                     <span>Hình ảnh </span>
-                    <button id="addImages" onclick=addImages(this)>
+                    <button id="addImages" onclick="addImages(this)">
                         <i class="fa fa-plus-circle text-info fs-3"></i>
                     </button>
-                    <input id="inputUpload" name="image_urls[]" type="file" style="display:none" multiple>
+                    <input id="inputUpload" type="file" hidden multiple accept="image/*">
                     <div id="containerDetail-image" class="d-flex flex-wrap p-3">
                     </div>
                     <span>Thuộc tính </span>
@@ -129,6 +129,7 @@
         const containerImages = document.querySelector("#containerDetail-image");
         const containerProperties = document.querySelector("#containerDetail-properties");
         const btnAddImages = document.querySelector("#addImages");
+        const inputImg = document.querySelector("#inputUpload");
 
 
         function loadModel(button) {
@@ -189,9 +190,13 @@
         function addImages(button) {
             // lấy id sản phẩm và input upload ảnh
             const productId = button.getAttribute("data-product-id");
-            const inputImg = document.querySelector("#inputUpload");
             inputImg.click();
-            inputImg.addEventListener("change", () => {
+            
+        }
+
+        inputImg.onchange = () => {
+
+             const productId = btnAddImages.getAttribute("data-product-id");
                 // tạo đối tượng ajax
                 const xhr = new XMLHttpRequest();
                 const formData = new FormData();
@@ -210,7 +215,10 @@
                         // lấy data về từ server
                         const data = JSON.parse(xhr.responseText);
                         var image_url = data.name;
-                        console.log(data.name);
+                        //check xem có ảnh nào chưa
+                        if(!containerImages.querySelector("img")) {
+                            containerImages.innerHTML = "";
+                        }
                         //Hiện thị các ảnh
                         image_url.forEach(image => {
                             var html = `<div class="position-relative">
@@ -222,8 +230,8 @@
                         });
                     }
                 }
-            })
-        }
+
+            }
 
 
         //hàm xóa ảnh
@@ -241,10 +249,7 @@
             xhr.send(formData);
             xhr.onload = () => {
                 if (xhr.status === 200) {
-                    const imageCurrent = button.closest(".position-relative");
-                    if(imageCurrent) { 
-                        containerImages.removeChild(imageCurrent);
-                    }
+                button.closest(".position-relative")?.remove();
                 }
             }
         }
