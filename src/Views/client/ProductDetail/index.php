@@ -1,5 +1,21 @@
 <?php
 include 'CommentFunctions.php';
+if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    $id_user = $_SESSION['account']['id_user']; 
+    $id_pro = $_POST['idpro']; 
+    $content = $_POST['commentContent']; 
+
+    $isInserted = insertComment($id_user, $id_pro, $content); 
+
+    if ($isInserted) {
+        echo $content; 
+        exit; 
+    } else {
+        echo "Có lỗi xảy ra khi gửi bình luận.";
+        exit; 
+    }
+}
+
 $productId = $_GET['id']; 
 $comments = getComments($productId);
 ?>
@@ -106,9 +122,59 @@ $comments = getComments($productId);
 
     <!-- Nhận xét  -->
     <div class="commentUsers container">
-        <h3 class=" fw-bolder mt-3">Nhận xét sản phẩm từ khách hàng</h3>
-        <?php
-        commentPage($id, $users);
-        ?>
+        <h3 class="fw-bolder mt-3">Nhận xét sản phẩm từ khách hàng</h3>
+        <br>
+        <div class="show_comment">
+            <? $comments = getComments($_GET['id']); ?>
+            <?php if (empty($comments)) : ?>    
+                <p>Chưa có bình luận nào.</p>
+            <?php else : ?>
+                <div class="comments">
+                    <?php foreach ($comments as $comment) : ?>
+                        <div class="comment">
+                            <div class="comment-avatar">
+                                <img src="assets/files/assets/images/<?= $comment['image'] ?>" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;"> <!-- Hiển thị ảnh người dùng -->
+                            </div>
+                            <div class="comment-content">
+                                <strong><?= $comment["name"] ?></strong>
+                                <p><?= $comment['content'] ?></p>
+                                <span class="comment-date"><?= $comment['date_comment'] ?></span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="insert_comment">
+            <?php if (isset($_SESSION['account']) && $_SESSION['account']) : ?>
+                <form id="commentForm" action="" method="post">
+                    <textarea name="commentContent" required class="form-control" placeholder="Để lại bình luận của bạn..."></textarea>
+                    <input type="hidden" name="idpro" value="<?= $_GET['id'] ?>">
+                    <button type="submit" class="btn btn-primary mt-2">Gửi Bình Luận</button>
+                </form>
+            <?php else : ?>
+                <p>Bạn cần phải <a href="Login">đăng nhập</a> để bình luận.</p>
+            <?php endif;?>
+        </div>
     </div>
 </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#commentForm').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "", 
+            data: $(this).serialize(),
+            success: function(response){
+                alert('Bình luận đã được gửi!');
+                location.reload();
+            },
+            error: function(xhr, status, error){
+                console.error(error);
+            }
+        });
+    });
+});
+</script>

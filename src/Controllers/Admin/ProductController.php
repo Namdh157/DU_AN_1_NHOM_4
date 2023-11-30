@@ -85,12 +85,12 @@ class ProductController extends Controller
         if($productCurrent['image_urls']) {
             $productCurrent['image_urls'] = explode(",", $productCurrent['image_urls']);
         }
-        if($productCurrent['colors']) {
-            $productCurrent['colors'] = explode(",", $productCurrent['colors']);
-        }
-        if($productCurrent['sizes']) {
-            $productCurrent['sizes'] = explode(",", $productCurrent['sizes']);
-        }
+        // if($productCurrent['colors']) {
+        //     $productCurrent['colors'] = explode(",", $productCurrent['colors']);
+        // }
+        // if($productCurrent['sizes']) {
+        //     $productCurrent['sizes'] = explode(",", $productCurrent['sizes']);
+        // }
 
         $this->renderAdmin('products/update', [
             'allCategories' => $this->allCategories,
