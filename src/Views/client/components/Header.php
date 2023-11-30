@@ -114,8 +114,8 @@
                                 <li class="hassubs">
                                     <a href="#">Tất cả danh mục<i class="fas fa-chevron-down"></i></a>
                                     <ul>
-                                        <?php foreach ($allCategories as $item) { ?>
-                                            <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="Categories?id=<?=$item['id'] ?>"><?= $item['name_category'] ?></a></li>
+                                        <?php foreach ($categories as $value) { ?>
+                                            <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="index.php?type=Category&id=<?php echo $value['id'] ?>"><?php echo $value['name_category'] ?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>

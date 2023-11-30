@@ -61,12 +61,51 @@ class Product extends Model
         }
 
         $stmt = $this->conn->prepare($sql);
-        // foreach ($conditions as &$condition) {
-        //     $stmt->bindParam("{$condition[0]}", $condition[2]);
-        // }
         $stmt->execute();
 
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         return $stmt->fetchAll();
+    }
+    public function getProductCurrent($id)
+    {
+
+        $sql = "SELECT *,
+        products.id as product_id,
+        category.name_category,
+        images.image_urls,
+        properties.colors,
+        properties.sizes
+    FROM
+        products
+    JOIN category ON products.id_category = category.id
+    LEFT JOIN (
+        SELECT
+            id_products,
+            GROUP_CONCAT(image_url) AS image_urls
+        FROM
+            products_images
+        GROUP BY
+            id_products
+    ) AS images ON products.id = images.id_products
+    LEFT JOIN (
+        SELECT
+            product_id,
+            GROUP_CONCAT(color) AS colors,
+            GROUP_CONCAT(size) AS sizes
+        FROM
+            products_properties
+        GROUP BY
+            product_id
+    ) AS properties ON products.id = properties.product_id
+    WHERE products.id = :id";
+
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 }
