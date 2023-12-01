@@ -54,7 +54,7 @@
                                                         <td><?= $comment['commentid'] ?></td>
                                                         <td><?= $comment['name'] ?><br><img src="/assets/files/assets/images/<?=$comment['image'] ?>" alt="Ảnh Người dùng" style="max-width: 120px; max-height: 120px;"></td>
                                                         <td><?= $comment['name_product'] ?><br>
-                                                            <img src="/assets/files/assets/images/<?=$comment['img'] ?>" alt="Ảnh sản phẩm" style="max-width: 120px; max-height: 120px;">
+                                                            <img src="/assets/files/assets/images/<?=$comment['image_url'] ?>" alt="Ảnh sản phẩm" style="max-width: 120px; max-height: 120px;">
 
                                                         </td>
                                                         <td><?= $comment['content'] ?></td>

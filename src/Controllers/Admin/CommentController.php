@@ -18,7 +18,7 @@ class CommentController extends Controller
         $connect = [
             ['comment', 'users', 'comment.id_user', 'users.id'],
             ['products', 'comment', 'comment.id_pro', 'products.id'],
-            // ['products_images', 'products', 'products.id_category', 'products_images.id_products']
+            ['products_images', 'products', 'products.id', 'products_images.id_products']
 
         ];
 
