@@ -115,6 +115,7 @@
                                     <a href="#">Tất cả danh mục<i class="fas fa-chevron-down"></i></a>
                                     <ul>
                                         <?php foreach ($allCategories as $value) { ?>
+<<<<<<<<< Temporary merge branch 1
                                             <li class="d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="Categories?id=<?= $value['id'] ?>"><?php echo $value['name_category'] ?></a></li>
                                         <?php } ?>
                                     </ul>

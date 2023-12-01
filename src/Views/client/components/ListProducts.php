@@ -10,10 +10,15 @@ function listProducts($listProduct)
                         <a href="ProductDetail?id=<?=$value['product_id'] ?>">
                             <div class="card p-0 p-lg-3">
                                 <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light" data-mdb-ripple-color="light">
+<<<<<<< HEAD
                                     <img src="/assets/files/assets/images//<?= $value['image_urls'][0] ?>" class="w-100" style="height: 100%;" />
                                     <a href="ProductDetail?id=<?=$value['product_id'] ?>">
+=======
+                                    <img src="/assets/files/assets/images//<?= $value['image_urls'][0] ?>" class="w-100" />
+                                    <a href="#!">
+>>>>>>> Nam
                                         <div class="mask">
-                                            <div class="d-flex justify-content-start align-items-end h-100">
+                                            <div class="d-flex justify  -content-start align-items-end h-100">
                                                 <h5><span class="badge bg-primary ms-2"><?= $value['discount'] ?>%</span></h5>
                                             </div>
                                         </div>
@@ -23,7 +28,11 @@ function listProducts($listProduct)
                                     </a>
                                 </div>
                                 <div class="card-body fs-1 p-0" style="height: 125px;">
+<<<<<<< HEAD
                                     <a href="ProductDetail?id=<?=$value['product_id'] ?>" class="text-reset">
+=======
+                                    <a href="ProductDetail?=<?= $value['id']?>" class="text-reset">
+>>>>>>> Nam
                                         <h5 class="card-title mb-3"><?= $value['name_product'] ?></h5>
                                     </a>
                                     <a href="Categories?id=<?= $value['id_category'] ?>" class="text-reset">

@@ -22,7 +22,10 @@ class HomeController extends Controller
                 ['products.view', 'DESC', 12]
             ]
         );
+<<<<<<< HEAD
         
+=======
+>>>>>>> Nam
         foreach ($productSeller as $key => &$products) {
             if (!empty($products['image_urls'])) {
                 $products['image_urls'] = explode(",", $products['image_urls']);
@@ -36,13 +39,21 @@ class HomeController extends Controller
                 $products['colors'] = explode(",", $products['colors']);
             }
         }
+<<<<<<< HEAD
         
+=======
+
+
+>>>>>>> Nam
         $productDiscount = (new Product())->allProductsTypes(
             $orderBy = [
                 ['products.discount', 'DESC', 9]
             ]
         );
+<<<<<<< HEAD
 
+=======
+>>>>>>> Nam
         foreach ($productDiscount as $key => &$products) {
             if (!empty($products['image_urls'])) {
                 $products['image_urls'] = explode(",", $products['image_urls']);
@@ -56,6 +67,13 @@ class HomeController extends Controller
                 $products['colors'] = explode(",", $products['colors']);
             }
         }
+<<<<<<< HEAD
+=======
+        // echo "<pre>";
+        // print_r($productDiscount);
+        // die;
+
+>>>>>>> Nam
         
         $this->render('home', [
             'allCategories' => $this->allCategories,
@@ -68,15 +86,34 @@ class HomeController extends Controller
     {
         $id = $_GET['id'];
         $categoryCurrent = (new Category())->findOne($id);
+<<<<<<< HEAD
         $categoryProduct = (new Product())->categoryProduct($id, 
        $conditions = [
             ['products.id_category', '=']
         ]);
         
+=======
+        $categoryProduct = (new Product())->allProductsTypes($orderBy = []);
+>>>>>>> Nam
         foreach ($categoryProduct as $key => &$products) {
             if (!empty($products['image_urls'])) {
                 $products['image_urls'] = explode(",", $products['image_urls']);
             }
+<<<<<<< HEAD
+=======
+
+            if (!empty($products['sizes'])) {
+                $products['sizes'] = explode(",", $products['sizes']);
+            }
+
+            if (!empty($products['colors'])) {
+                $products['colors'] = explode(",", $products['colors']);
+            }
+        }
+        // echo "<pre>";
+        // print_r($categoryProduct);
+        // die;
+>>>>>>> Nam
 
             if (!empty($products['sizes'])) {
                 $products['sizes'] = explode(",", $products['sizes']);
@@ -185,16 +222,7 @@ class HomeController extends Controller
     public function allProducts()
     {
         $search = $_GET['search'];
-        $products = (new Product)->joinTable(
-            $addColumn = [
-                ['products.id', 'product_detail']
-            ],
-            $connect = [
-                ['category', 'products.id_category', 'category.id']
-            ],
-            $condition = [
-                ['products.name_product', 'LIKE',  "'%" . $search . "%'"]
-            ],
+        $products = (new Product)->allProductsTypes(
             $orderBy = [
                 ['products.id', 'DESC']
             ],
