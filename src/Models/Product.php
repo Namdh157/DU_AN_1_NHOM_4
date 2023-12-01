@@ -10,7 +10,6 @@ class Product extends Model
     protected $table = 'products';
     protected $columns = [
         'name_product',
-        'price',
         'description',
         'view',
         'id_category',
@@ -20,34 +19,32 @@ class Product extends Model
     public function allProductsTypes($orderBy = [])
     {
 
-        $sql = "SELECT *,
-        products.id as product_id,
-        category.name_category,
-        images.image_urls,
-        properties.colors,
-        properties.sizes
+        $sql = "SELECT
+        p.id AS product_id,
+        p.id_category,
+        p.name_product,
+        p.description,
+        p.view,
+        c.name_category,
+        p.discount,
+        p.special,
+        GROUP_CONCAT(DISTINCT cp.size) AS sizes,
+        GROUP_CONCAT(DISTINCT cp.color) AS colors,
+        GROUP_CONCAT(DISTINCT cp.price) AS prices,
+        GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
+        GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
     FROM
-        products
-    JOIN category ON products.id_category = category.id
-    LEFT JOIN (
-        SELECT
-            id_products,
-            GROUP_CONCAT(image_url) AS image_urls
-        FROM
-            products_images
-        GROUP BY
-            id_products
-    ) AS images ON products.id = images.id_products
-    LEFT JOIN (
-        SELECT
-            product_id,
-            GROUP_CONCAT(color) AS colors,
-            GROUP_CONCAT(size) AS sizes
-        FROM
-            products_properties
-        GROUP BY
-            product_id
-    ) AS properties ON products.id = properties.product_id";
+        products p
+    JOIN category c ON
+        p.id_category = c.id
+    LEFT JOIN products_properties pp ON
+        p.id = pp.product_id
+    LEFT JOIN categories_properties cp ON
+        pp.id_categories_properties = cp.id
+    LEFT JOIN products_images PI ON
+        p.id = PI.id_products
+    GROUP BY
+        p.id";
 
         if (!empty($orderBy)) {
             $addSql = [];
@@ -69,36 +66,33 @@ class Product extends Model
     public function getProductCurrent($id)
     {
 
-        $sql = "SELECT *,
-        products.id as product_id,
-        category.name_category,
-        images.image_urls,
-        properties.colors,
-        properties.sizes
+        $sql = "SELECT
+        p.id_category,
+        p.id AS product_id,
+        p.name_product,
+        p.description,
+        p.view,
+        c.name_category,
+        p.discount,
+        p.special,
+        GROUP_CONCAT(DISTINCT cp.size) AS sizes,
+        GROUP_CONCAT(DISTINCT cp.color) AS colors,
+        GROUP_CONCAT(DISTINCT cp.price) AS prices,
+        GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
+        GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
     FROM
-        products
-    JOIN category ON products.id_category = category.id
-    LEFT JOIN (
-        SELECT
-            id_products,
-            GROUP_CONCAT(image_url) AS image_urls
-        FROM
-            products_images
-        GROUP BY
-            id_products
-    ) AS images ON products.id = images.id_products
-    LEFT JOIN (
-        SELECT
-            product_id,
-            GROUP_CONCAT(color) AS colors,
-            GROUP_CONCAT(size) AS sizes
-        FROM
-            products_properties
-        GROUP BY
-            product_id
-    ) AS properties ON products.id = properties.product_id
-    WHERE products.id = :id";
-
+        products p
+    JOIN category c ON
+        p.id_category = c.id
+    LEFT JOIN products_properties pp ON
+        p.id = pp.product_id
+    LEFT JOIN categories_properties cp ON
+        pp.id_categories_properties = cp.id
+    LEFT JOIN products_images PI ON
+        p.id = PI.id_products
+        WHERE p.id = :id
+    GROUP BY
+        p.id ";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -108,4 +102,50 @@ class Product extends Model
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+
+    public function categoryProduct($id, $conditions  = [])
+    {
+        
+        $sql = "SELECT
+        p.id AS product_id,
+        p.id_category,
+        p.name_product,
+        p.description,
+        p.view,
+        c.name_category,
+        p.discount,
+        p.special,
+        GROUP_CONCAT(DISTINCT cp.size) AS sizes,
+        GROUP_CONCAT(DISTINCT cp.color) AS colors,
+        GROUP_CONCAT(DISTINCT cp.price) AS prices,
+        GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
+        GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
+    FROM
+        products p
+    JOIN category c ON
+        p.id_category = c.id
+    LEFT JOIN products_properties pp ON
+        p.id = pp.product_id
+    LEFT JOIN categories_properties cp ON
+        pp.id_categories_properties = cp.id
+    LEFT JOIN products_images PI ON
+        p.id = PI.id_products
+    ";
+
+        $where = [];
+        foreach ($conditions as $condition) {
+            $where[] = "{$condition[0]} {$condition[1]} $id";
+        }
+        $where = ' WHERE ' . implode(" ", $where);
+
+        $sql .= $where." GROUP BY p.id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+    } 
 }

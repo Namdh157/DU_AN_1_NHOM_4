@@ -1,11 +1,13 @@
 <?php
 
 use MVC_DA1\Controllers\Admin\CartController;
+use MVC_DA1\Controllers\Admin\CategoriesPropertiesController;
 use MVC_DA1\Controllers\Admin\UserController;
 use MVC_DA1\Controllers\Admin\CategoryController;
 use MVC_DA1\Controllers\Admin\CommentController;
 use MVC_DA1\Controllers\Admin\DashboardController;
 use MVC_DA1\Controllers\Admin\ProductController;
+use MVC_DA1\Controllers\Admin\ProductPropertiesController;
 use MVC_DA1\Controllers\APIController;
 use MVC_DA1\Controllers\Client\HomeController;
 use MVC_DA1\Router;
@@ -57,6 +59,18 @@ $router->addRoute('/admin/products/create', ProductController::class, 'create');
 $router->addRoute('/admin/products/update', ProductController::class, 'update');
 $router->addRoute('/admin/products/delete', ProductController::class, 'delete');
 
+//thuộc tính sản phẩm
+$router->addRoute('/admin/productsProperties', ProductPropertiesController::class, 'index');
+$router->addRoute('/admin/productsProperties/create', ProductPropertiesController::class, 'create');
+$router->addRoute('/admin/productsProperties/update', ProductPropertiesController::class, 'update');
+$router->addRoute('/admin/productsProperties/delete', ProductPropertiesController::class, 'delete');
+
+//danh mục thuộc tính sản phẩm
+$router->addRoute('/admin/categoriesProductsProperties', CategoriesPropertiesController::class, 'index');
+$router->addRoute('/admin/categoriesProductsProperties/create', CategoriesPropertiesController::class, 'create');
+$router->addRoute('/admin/categoriesProductsProperties/update', CategoriesPropertiesController::class, 'update');
+$router->addRoute('/admin/categoriesProductsProperties/delete', CategoriesPropertiesController::class, 'delete');
+
 // Giỏ hàng
 $router->addRoute('/admin/carts', CartController::class, 'index');
 $router->addRoute('/admin/carts/create', CartController::class, 'create');
@@ -65,6 +79,8 @@ $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
 
 // sử dụng api
  $router->addRoute('/api/products', APIController::class, 'products');
+ $router->addRoute('/api/carts', APIController::class, 'carts');
+
 
 //Bình luận 
 $router->addRoute('/admin/comments', CommentController::class, 'index');

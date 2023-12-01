@@ -1609,17 +1609,8 @@ img {
     flex-direction: column;
 }
 
-.colors {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-}
-
 .product-title,
-.price,
-.sizes,
-.colors {
+.price{
     text-transform: UPPERCASE;
     font-weight: bold;
 }
@@ -1632,35 +1623,12 @@ img {
 .product-title,
 .rating,
 .product-description,
-.price,
-.vote,
-.sizes {
+.price {
     margin-bottom: 15px;
 }
 
 .product-title {
     margin-top: 0;
-}
-
-.size {
-    margin-right: 10px;
-}
-
-.size:first-of-type {
-    margin-left: 40px;
-}
-
-.color {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
-    height: 2em;
-    width: 2em;
-    border-radius: 2px;
-}
-
-.color:first-of-type {
-    margin-left: 20px;
 }
 
 .add-to-cart,
