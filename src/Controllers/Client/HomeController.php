@@ -5,6 +5,7 @@ namespace MVC_DA1\Controllers\Client;
 use MVC_DA1\Controller;
 use MVC_DA1\Models\Product;
 use MVC_DA1\Models\Category;
+use MVC_DA1\Models\Product_properties;
 use MVC_DA1\Models\User;
 
 class HomeController extends Controller
@@ -18,7 +19,7 @@ class HomeController extends Controller
     {
         $productSeller = (new Product())->allProductsTypes(
             $orderBy = [
-                ['products.view', 'DESC', 12]
+                ['p.view', 'DESC', 9]
             ]
         );
         
@@ -34,11 +35,19 @@ class HomeController extends Controller
             if (!empty($products['colors'])) {
                 $products['colors'] = explode(",", $products['colors']);
             }
+
+            if (!empty($products['prices'])) {
+                $products['prices'] = explode(",", $products['prices']);
+            }
+
+            if (!empty($products['quantities'])) {
+                $products['quantities'] = explode(",", $products['quantities']);
+            }
         }
         
         $productDiscount = (new Product())->allProductsTypes(
             $orderBy = [
-                ['products.discount', 'DESC', 9]
+                ['p.discount', 'DESC', 9]
             ]
         );
 
@@ -53,6 +62,14 @@ class HomeController extends Controller
 
             if (!empty($products['colors'])) {
                 $products['colors'] = explode(",", $products['colors']);
+            }
+
+            if (!empty($products['prices'])) {
+                $products['prices'] = explode(",", $products['prices']);
+            }
+
+            if (!empty($products['quantities'])) {
+                $products['quantities'] = explode(",", $products['quantities']);
             }
         }
         // echo "<pre>";
@@ -70,16 +87,35 @@ class HomeController extends Controller
         $id = $_GET['id'];
         $categoryCurrent = (new Category())->findOne($id);
         $categoryProduct = (new Product())->categoryProduct($id, 
-        $addColumn = [
-            ['products.id', 'product_detail']
-        ], $connect = [
-            ['products', 'category', 'products.id_category', 'category.id'],
-        ],  $conditions = [
-            ['products.id_category', '=']
+         $conditions = [
+            ['p.id_category', '=']
         ]);
+
+        foreach ($categoryProduct as $key => &$products) {
+            if (!empty($products['image_urls'])) {
+                $products['image_urls'] = explode(",", $products['image_urls']);
+            }
+
+            if (!empty($products['sizes'])) {
+                $products['sizes'] = explode(",", $products['sizes']);
+            }
+
+            if (!empty($products['colors'])) {
+                $products['colors'] = explode(",", $products['colors']);
+            }
+
+            if (!empty($products['prices'])) {
+                $products['prices'] = explode(",", $products['prices']);
+            }
+
+            if (!empty($products['quantities'])) {
+                $products['quantities'] = explode(",", $products['quantities']);
+            }
+        }
 
         $countProduct = (new Product())->countProduct($id);
 
+        
         $this->render('Categories/index', [
             'categoryCurrent' => $categoryCurrent,
             'allCategories' => $this->allCategories,
@@ -101,18 +137,23 @@ class HomeController extends Controller
     {
         $id = $_GET['id'];
         $productCurrent = (new Product())->getProductCurrent($id);
+
         if($productCurrent['image_urls']) {
             $productCurrent['image_urls'] = explode(",", $productCurrent['image_urls']);
         }
-        if($productCurrent['colors']) {
-            $productCurrent['colors'] = explode(",", $productCurrent['colors']);
+        if($productCurrent['prices']) {
+            $productCurrent['prices'] = explode(",", $productCurrent['prices']);
         }
         if($productCurrent['sizes']) {
             $productCurrent['sizes'] = explode(",", $productCurrent['sizes']);
         }
-        // echo "<pre>";
-        // print_r($productCurrent);
-        // die;
+        if($productCurrent['colors']) {
+            $productCurrent['colors'] = explode(",", $productCurrent['colors']);
+        }
+        if($productCurrent['quantities']) {
+            $productCurrent['quantities'] = explode(",", $productCurrent['quantities']);
+        }
+        
 
         $this->render('ProductDetail/index', [
             'productCurrent' => $productCurrent,
