@@ -33,12 +33,19 @@
                 </li>
 
                 <li class>
-
                     <a href="/admin/products" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-box"></i>
                         </span>
                         <span class="pcoded-mtext">Quản lý sản phẩm</span>
+                    </a>
+                </li>
+                <li class>
+                    <a href="/admin/categoriesProductsProperties" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-box"></i>
+                        </span>
+                        <span class="pcoded-mtext">Loại Thuộc tính sản phẩm</span>
                     </a>
                 </li>
 
@@ -56,7 +63,7 @@
                         <span class="pcoded-micon">
                             <i class="feather icon-box"></i>
                         </span>
-                        <span class="pcoded-mtext">Quản lý giỏ hàng</span>
+                        <span class="pcoded-mtext">Quản lý đơn hàng</span>
                     </a>
                 </li>
 
