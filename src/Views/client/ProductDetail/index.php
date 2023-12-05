@@ -21,7 +21,6 @@ $comments = getComments($productId);
 ?>
 <style>
     * {
-        /* box-shadow: 0 0 5px #000; */
     }
 
     .listImage {
