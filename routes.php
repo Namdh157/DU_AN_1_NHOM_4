@@ -36,7 +36,6 @@ $router->addRoute('/Register', HomeController::class, 'register');
 $router->addRoute('/Login', HomeController::class, 'login');
 $router->addRoute('/Logout', HomeController::class, 'logout');
 $router->addRoute('/allProducts', HomeController::class, 'allProducts');
-
 $router->addRoute('/Carts', HomeController::class, 'carts');
 $router->addRoute('/Carts/delete', HomeController::class, 'cartsDelete');
 
@@ -76,12 +75,10 @@ $router->addRoute('/admin/carts/update', CartController::class, 'update');
 $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
 
 // sử dụng api
-
  $router->addRoute('/api/products', APIController::class, 'products');
  $router->addRoute('/api/carts', APIController::class, 'carts');
  $router->addRoute('/api/comments', APIController::class, 'comments');
  $router->addRoute('/api/orders', APIController::class, 'order');
-
 
 
 
