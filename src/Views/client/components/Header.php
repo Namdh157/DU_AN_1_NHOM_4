@@ -52,12 +52,12 @@
                             <div class="cart_container d-flex flex-row align-items-center justify-content-end">
                                 <div class="cart_icon">
                                     <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918704/cart.png" alt="">
-                                    <div class="cart_count"><span><?php echo 0 ?></span></div>
+                                    <div class="cart_count"><span><?= $countCart ?></span></div>
                                 </div>
                                 <div class="cart_content">
-                                    <a href="index.php?type=Cart&id=<?php echo empty($users) ? 0 : $users['id'] ?>">
+                                    <a href="Carts?id=<?php echo isset($_SESSION['account']) ? $_SESSION['account']['id_user'] : '' ?>">
                                         <div class="cart_text">Giỏ hàng</div>
-                                        <div class="cart_price"><?php echo empty($users) ? 0 : 0 ?> ₫</div>
+                                        <div class="cart_price overflow-x-hidden"><?= empty($totalCart) ? '0' : number_format($totalCart, 0, '.', ',') ?> ₫</div>
                                     </a>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                         <?php } ?>
                                     </div>
                                 </div>
-                                        
+
                             <?php  } else { ?>
                                 <div class="top_bar_user">
                                     <div class="user_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918647/user.svg" alt=""></div>
@@ -152,12 +152,15 @@
 </header>
 <script>
     const userLogout = document.querySelector('.users-logout');
-    const logout = document.querySelector('.logout');
 
-    userLogout.onmouseover = function() {
-        logout.style.display = "block";
-    }
-    userLogout.onmouseout = function() {
-        logout.style.display = "none";
+    if (userLogout) {
+        const logout = document.querySelector('.logout');
+
+        userLogout.onmouseover = function() {
+            logout.style.display = "block";
+        }
+        userLogout.onmouseout = function() {
+            logout.style.display = "none";
+        }
     }
 </script>

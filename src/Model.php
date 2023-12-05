@@ -71,9 +71,10 @@ class Model
     {
         $sql = "INSERT INTO {$this->table}";
 
+        
         $columns = implode(", ", $this->columns);
         $sql .= "({$columns}) VALUES ";
-
+        
         $values = [];
         foreach ($this->columns as $column) {
             $values[] = ":{$column}";
@@ -81,16 +82,14 @@ class Model
         $values = implode(", ", $values);
         $sql .= "({$values})";
 
-
-
         $stmt = $this->conn->prepare($sql);
-
+        
         foreach ($data as $key => &$value) {
             if (in_array($key, $this->columns)) {
                 $stmt->bindParam(":{$key}", $value);
             }
         }
-
+        
         $stmt->execute();
     }
 
@@ -148,7 +147,7 @@ class Model
         foreach ($conditions as &$condition) {
             $stmt->bindParam(":w{$condition[0]}", $condition[2]);
         }
-        echo $sql; 
+
         $stmt->execute();
     }
 

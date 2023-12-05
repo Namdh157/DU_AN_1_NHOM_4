@@ -71,7 +71,7 @@
                                                         <td><?= $value['product_id'] ?></td>
                                                         <td><?= $value['name_product'] ?></td>
                                                         <td>
-                                                            <button data-product-id="<?= $value['product_id'] ?>" id="btnModal<?= $value['product_id'] ?>" class="rounded w-100" onclick=loadModel(this)>Hiện thị chi tiết</button>
+                                                            <button data-product-id="<?= $value['product_id'] ?>" data-nameProduct="<?= $value['name_product'] ?>" id="btnModal<?= $value['product_id'] ?>" class="rounded w-100" onclick=loadModel(this)>Hiện thị chi tiết</button>
                                                         </td>
                                                         <td><?= $value['name_category'] ?></td>
                                                         <td>
@@ -99,7 +99,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Thông tin chi tiết sản phẩm</h4>
+                    <h4 id="nameProduct" class="modal-title">Thông tin sản phẩm</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -121,16 +121,10 @@
                         <div class="card-block">
                             <div class="form-group row">
                                 <label for="color">Thêm thuộc tính cho sản phẩm</label>
-                                <select id="idProperties">
-                                    <option value="">Chọn thuộc tính sản phẩm</option>
-                                    <?php foreach ($allProductsProperties as $properties) : ?>
-                                        <option value="<?= $properties['id'] ?>">
-                                            <?= $properties['color'] ?>
-                                            <?= $properties['size'] ?>
-                                            <?= $properties['price'] ?>đ
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <input id="color" class="form-group" type="text" placeholder="Màu sắc">
+                                <input id="size" class="form-group" type="text" placeholder="kích thước">
+                                <input id="price" class="form-group" type="number" placeholder="Giá tiền">
+                                <input id="quantity" class="form-group" type="number" placeholder="Số lượng">
                             </div>
                             <button id="btn-add-properties" type="button" class="btn btn-primary p-b-0">Xác nhận</button>
                         </div>
@@ -156,8 +150,11 @@
 
         function loadModel(button) {
             //modal hiện thị chi tiết sản phẩm
-            modal.style.display = "block";
+            const nameProduct =button.getAttribute("data-nameProduct");
             const productId = button.getAttribute("data-product-id");
+            const title =document.getElementById("nameProduct");
+            modal.style.display = "block";
+            title.innerHTML = "Thông tin chi tiết " + nameProduct;
             // tạo đối tượng ajax
             const xhr = new XMLHttpRequest();
             const formData = new FormData();
@@ -174,7 +171,7 @@
                     btnAddProperties.setAttribute("data-product-id", productId);
                     //lấy data về từ server
                     const data = JSON.parse(xhr.responseText);
-                    // console.log(data);
+                    console.log(data);
                     let allImages = data.allImages;
                     let allProductProperties = data.allProductProperties;
                     let isImages = false;
@@ -199,7 +196,7 @@
                         isProperties = true;
                         var html = `
                             <div class="position-relative border m-2 rounded border-primary">
-                                <p class="p-2">Màu sắc: ${item.color}, Kích cỡ: ${item.size}, Giá tiền: ${item.price}đ</p>
+                                <p class="p-2">Màu sắc: ${item.color}, Kích cỡ: ${item.size}, Giá tiền: ${item.price}đ số lượng:${item.quantity}</p>
                                 <button id-item = "${item.idProperties}" type="button" class="btn-close position-absolute top-0 end-0" id="deleteProperties" onclick="deleteProperties(this)" aria-label="Close"></button>
                             </div>
                         `
@@ -287,43 +284,49 @@
         function addProperties(button) {
             modal2.style.display = "block";
             const productId = button.getAttribute("data-product-id");
-            const properties = document.querySelector("#idProperties");
+            const color = document.getElementById("color");
+            const size =document.getElementById("size");
+            const price =document.getElementById("price");
+            const quantity = document.getElementById("quantity");
             const btnAddProperties = document.querySelector("#btn-add-properties");
-            properties.addEventListener("change", () => {
-                var idProperties = properties.value;
-                btnAddProperties.onclick = () => {
-                    //tạo đối tượng ajax
-                    const xhr = new XMLHttpRequest();
-                    const formData = new FormData();
-                    // thêm dữ liệu vào formData
-                    formData.append("productId", productId);
-                    formData.append("idProperties", idProperties);
-                    formData.append("addProperties", "");
-                    //gửi yêu cầu ajax đến server và nhận lại kết quả
-                    xhr.open("POST", "/api/products");
-                    xhr.send(formData);
-                    xhr.onload = () => {
-                        if (xhr.status === 200) {
-                            const data = JSON.parse(xhr.responseText);
-                            if(data === "error") {
-                                alert("Thuộc tính đã tồn tại");
-                                return;
-                            }
-                            if (!containerProperties.querySelector("#deleteProperties")) {
-                                containerProperties.innerHTML = "";
-                            }
-                                var html = `
+
+            btnAddProperties.onclick = () => {
+                //tạo đối tượng ajax
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                // thêm dữ liệu vào formData
+                formData.append("productId", productId);
+                formData.append("color", color.value);
+                formData.append("size", size.value);
+                formData.append("price", price.value);
+                formData.append("quantity", quantity.value);
+                formData.append("addProperties", "");
+                //gửi yêu cầu ajax đến server và nhận lại kết quả
+                xhr.open("POST", "/api/products");
+                xhr.send(formData);
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        const data = JSON.parse(xhr.responseText);
+                        console.log(data)
+                        if (data === "error") {
+                            alert("Thuộc tính đã tồn tại");
+                            return;
+                        }
+                        if (!containerProperties.querySelector("#deleteProperties")) {
+                            containerProperties.innerHTML = "";
+                        }
+                        var html = `
                                                 <div class="position-relative border m-2 rounded border-primary">
-                                                    <p class="p-2">Màu sắc: ${data.color}, Kích cỡ: ${data.size}, Giá tiền: ${data.price}đ</p>
+                                                    <p class="p-2">Màu sắc: ${data.color}, Kích cỡ: ${data.size}, Giá tiền: ${data.price}đ  số lượng:${data
+                                                        .quantity}</p>
                                                     <button id-item = "${data.id}" type="button" class="btn-close position-absolute top-0 end-0" id="deleteProperties" onclick="deleteProperties(this)" aria-label="Close"></button>
                                                 </div>
                                             `
-                                containerProperties.innerHTML += html;
+                        containerProperties.innerHTML += html;
 
-                        }
                     }
                 }
-            })
+            }
         }
 
         //Xóa thuộc tính

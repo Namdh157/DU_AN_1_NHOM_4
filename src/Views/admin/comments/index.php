@@ -53,9 +53,7 @@
                                                     <tr>
                                                         <td><?= $comment['commentid'] ?></td>
                                                         <td><?= $comment['name'] ?><br><img src="/assets/files/assets/images/<?=$comment['image'] ?>" alt="Ảnh Người dùng" style="max-width: 120px; max-height: 120px;"></td>
-                                                        <td><?= $comment['name_product'] ?><br>
-                                                            <img src="/assets/files/assets/images/<?=$comment['img'] ?>" alt="Ảnh sản phẩm" style="max-width: 120px; max-height: 120px;">
-
+                                                        <td><?= $comment['name_product'] ?>
                                                         </td>
                                                         <td><?= $comment['content'] ?></td>
                                                         <td><?= $comment['date_comment'] ?></td>

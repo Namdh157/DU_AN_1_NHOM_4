@@ -28,8 +28,6 @@ class Product extends Model
         c.name_category,
         p.discount,
         p.special,
-        GROUP_CONCAT(DISTINCT cp.size) AS sizes,
-        GROUP_CONCAT(DISTINCT cp.color) AS colors,
         GROUP_CONCAT(DISTINCT cp.price) AS prices,
         GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
         GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
@@ -37,10 +35,8 @@ class Product extends Model
         products p
     JOIN category c ON
         p.id_category = c.id
-    LEFT JOIN products_properties pp ON
-        p.id = pp.product_id
     LEFT JOIN categories_properties cp ON
-        pp.id_categories_properties = cp.id
+        p.id = cp.id_product
     LEFT JOIN products_images PI ON
         p.id = PI.id_products
     GROUP BY
@@ -67,8 +63,8 @@ class Product extends Model
     {
 
         $sql = "SELECT
-        p.id_category,
         p.id AS product_id,
+        p.id_category,
         p.name_product,
         p.description,
         p.view,
@@ -84,10 +80,8 @@ class Product extends Model
         products p
     JOIN category c ON
         p.id_category = c.id
-    LEFT JOIN products_properties pp ON
-        p.id = pp.product_id
     LEFT JOIN categories_properties cp ON
-        pp.id_categories_properties = cp.id
+        p.id = cp.id_product
     LEFT JOIN products_images PI ON
         p.id = PI.id_products
         WHERE p.id = :id
@@ -124,10 +118,8 @@ class Product extends Model
         products p
     JOIN category c ON
         p.id_category = c.id
-    LEFT JOIN products_properties pp ON
-        p.id = pp.product_id
     LEFT JOIN categories_properties cp ON
-        pp.id_categories_properties = cp.id
+        p.id = cp.id_product
     LEFT JOIN products_images PI ON
         p.id = PI.id_products
     ";

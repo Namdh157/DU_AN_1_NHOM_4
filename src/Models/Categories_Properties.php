@@ -10,6 +10,7 @@ class Categories_Properties extends Model
         'color',
         'price',
         'quantity',
+        'id_product'
     ];
 
     public function getData($id) {
@@ -25,15 +26,70 @@ class Categories_Properties extends Model
 
         return $stmt->fetch();
     }
-
-    public function getId($color, $size) {
-        $sql = "SELECT id FROM categories_properties WHERE color = ? AND size = ?";
+    
+    public function getProperties() {
+        $sql = "SELECT size, color, price, quantity, id_product FROM {$this->table}";
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->execute([$color, $size]);
+        $stmt->execute();
 
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getPropertiesByProductId($id) {
+        $sql = "SELECT * FROM {$this->table} WHERE id_product = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getProductProperties($id) {
+        $sql = "SELECT categories_properties.id as idProperties, size, color, price, quantity FROM categories_properties
+        LEFT JOIN products ON categories_properties.id_product = products.id WHERE categories_properties.id_product = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getId($color, $size) {
+        $sql = "SELECT id FROM categories_properties WHERE color = :color AND size = :size ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':color', $color);
+        $stmt->bindParam(':size', $size);
+
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['id'];
+    }
+    
+    public function getCategories(){
+        $sql = "SELECT * FROM categories_properties";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
     }
     
 }
