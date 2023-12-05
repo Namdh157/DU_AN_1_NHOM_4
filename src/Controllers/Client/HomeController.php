@@ -4,6 +4,9 @@ namespace MVC_DA1\Controllers\Client;
 
 use MVC_DA1\Controller;
 use MVC_DA1\Models\Cart;
+
+use MVC_DA1\Models\Categories_Properties;
+use MVC_DA1\Models\Comment;
 use MVC_DA1\Models\Product;
 use MVC_DA1\Models\Category;
 use MVC_DA1\Models\User;
@@ -12,20 +15,32 @@ class HomeController extends Controller
 {
     protected $allCategories;
 
-    public function __construct() {
+    protected $countCart;
+
+    protected $totalCart;
+
+    public function __construct()
+    {
         $this->allCategories = (new Category)->all();
+        if (isset($_SESSION['account'])) {
+            $id = $_SESSION['account']['id_user'];
+            $this->countCart = (new Cart)->countCart($id);
+            $this->totalCart = (new Cart)->totalCart($id);
+        } else {
+            $this->countCart = 0;
+            $this->totalCart = 0;
+        }
     }
     public function index()
     {
         $productSeller = (new Product())->allProductsTypes(
             $orderBy = [
-                ['products.view', 'DESC', 12]
+                ['p.view', 'DESC', 9]
             ]
         );
-<<<<<<< HEAD
+
         
-=======
->>>>>>> Nam
+
         foreach ($productSeller as $key => &$products) {
             if (!empty($products['image_urls'])) {
                 $products['image_urls'] = explode(",", $products['image_urls']);
@@ -38,22 +53,23 @@ class HomeController extends Controller
             if (!empty($products['colors'])) {
                 $products['colors'] = explode(",", $products['colors']);
             }
+
+
+            if (!empty($products['prices'])) {
+                $products['prices'] = explode(",", $products['prices']);
+            }
+
+            if (!empty($products['quantities'])) {
+                $products['quantities'] = explode(",", $products['quantities']);
+            }
         }
-<<<<<<< HEAD
-        
-=======
-
-
->>>>>>> Nam
         $productDiscount = (new Product())->allProductsTypes(
             $orderBy = [
-                ['products.discount', 'DESC', 9]
+                ['p.discount', 'DESC', 9]
             ]
         );
-<<<<<<< HEAD
 
-=======
->>>>>>> Nam
+
         foreach ($productDiscount as $key => &$products) {
             if (!empty($products['image_urls'])) {
                 $products['image_urls'] = explode(",", $products['image_urls']);
@@ -66,19 +82,26 @@ class HomeController extends Controller
             if (!empty($products['colors'])) {
                 $products['colors'] = explode(",", $products['colors']);
             }
-        }
-<<<<<<< HEAD
-=======
-        // echo "<pre>";
-        // print_r($productDiscount);
-        // die;
 
->>>>>>> Nam
-        
+
+            if (!empty($products['prices'])) {
+                $products['prices'] = explode(",", $products['prices']);
+            }
+
+            if (!empty($products['quantities'])) {
+                $products['quantities'] = explode(",", $products['quantities']);
+            }
+        }
+
+
         $this->render('home', [
             'allCategories' => $this->allCategories,
             'productSeller' => $productSeller,
             'productDiscount' => $productDiscount,
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart
+
+
         ]);
     }
 
@@ -86,21 +109,19 @@ class HomeController extends Controller
     {
         $id = $_GET['id'];
         $categoryCurrent = (new Category())->findOne($id);
-<<<<<<< HEAD
-        $categoryProduct = (new Product())->categoryProduct($id, 
-       $conditions = [
-            ['products.id_category', '=']
-        ]);
-        
-=======
-        $categoryProduct = (new Product())->allProductsTypes($orderBy = []);
->>>>>>> Nam
+
+        $categoryProduct = (new Product())->categoryProduct(
+            $id,
+            $conditions = [
+                ['p.id_category', '=']
+            ]
+        );
+
+
         foreach ($categoryProduct as $key => &$products) {
             if (!empty($products['image_urls'])) {
                 $products['image_urls'] = explode(",", $products['image_urls']);
             }
-<<<<<<< HEAD
-=======
 
             if (!empty($products['sizes'])) {
                 $products['sizes'] = explode(",", $products['sizes']);
@@ -109,57 +130,84 @@ class HomeController extends Controller
             if (!empty($products['colors'])) {
                 $products['colors'] = explode(",", $products['colors']);
             }
-        }
-        // echo "<pre>";
-        // print_r($categoryProduct);
-        // die;
->>>>>>> Nam
 
-            if (!empty($products['sizes'])) {
-                $products['sizes'] = explode(",", $products['sizes']);
+            if (!empty($products['prices'])) {
+                $products['prices'] = explode(",", $products['prices']);
             }
 
-            if (!empty($products['colors'])) {
-                $products['colors'] = explode(",", $products['colors']);
+            if (!empty($products['quantities'])) {
+                $products['quantities'] = explode(",", $products['quantities']);
             }
         }
-        
+
         $countProduct = (new Product())->countProduct($id);
 
-        // echo "<pre>";
-        // print_r($categoryProduct);
-        // die;
+
         $this->render('Categories/index', [
             'categoryCurrent' => $categoryCurrent,
             'allCategories' => $this->allCategories,
             'categoryProduct' => $categoryProduct,
             'countProduct' => $countProduct,
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart
+
 
         ]);
     }
 
     public function notification()
     {
-        $this->render("notification", ['categories' => $this->allCategories]);
+        $this->render("notification", [
+            'categories' => $this->allCategories,
+            'allCategories' => $this->allCategories,
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart
+
+        ]);
     }
     public function contact()
     {
-        $this->render("contact", ['categories' => $this->allCategories]);
+        $this->render("contact", [
+            'categories' => $this->allCategories,
+            'allCategories' => $this->allCategories,
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart
+
+        ]);
     }
     public function productDetail()
     {
         $id = $_GET['id'];
         $productCurrent = (new Product())->getProductCurrent($id);
-        if($productCurrent['image_urls']) {
+
+        $allCategoriesProperties = (new Categories_Properties)->all();
+
+        if ($productCurrent['image_urls']) {
             $productCurrent['image_urls'] = explode(",", $productCurrent['image_urls']);
         }
-        // echo "<pre>";
-        // print_r($productCurrent);
-        // die;
+        if ($productCurrent['prices']) {
+            $productCurrent['prices'] = explode(",", $productCurrent['prices']);
+        }
+        if ($productCurrent['sizes']) {
+            $productCurrent['sizes'] = explode(",", $productCurrent['sizes']);
+        }
+        if ($productCurrent['colors']) {
+            $productCurrent['colors'] = explode(",", $productCurrent['colors']);
+        }
+        if ($productCurrent['quantities']) {
+            $productCurrent['quantities'] = explode(",", $productCurrent['quantities']);
+        }
+
+        $allComments = (new Comment)->allComment($id);
+
 
         $this->render('ProductDetail/index', [
             'productCurrent' => $productCurrent,
-            'allCategories' => $this->allCategories
+            'allCategories' => $this->allCategories,
+            'countCart' => $this->countCart,
+            'allCategoriesProperties' => json_encode($allCategoriesProperties),
+            'allComments' => $allComments,
+            'totalCart' => $this->totalCart
 
         ]);
     }
@@ -198,18 +246,22 @@ class HomeController extends Controller
             ];
 
             $acc = (new User)->login($data);
+            if (empty($acc)) {
+                echo "<script> alert('Tài khoản mật khẩu không chính xác')</script>";
+            } else {
+                $_SESSION['account'] = [
+                    'id_user' =>  $acc['id'],
+                    'name' =>  $acc['name'],
+                    'image_user' => $acc['image'],
+                    'email' =>  $acc['email'],
+                    'address' => $acc['address'],
+                    'phone' => $acc['phone'],
+                    'role' => $acc['role'],
+                ];
 
-            $_SESSION['account'] = [
-                'id_user' =>  $acc['id'],
-                'name' =>  $acc['name'],
-                'image_user' => $acc['image'],
-                'email' =>  $acc['email'],
-                'address' => $acc['address'],
-                'phone' => $acc['phone'],
-                'role' => $acc['role'],
-            ];
 
-            header('Location:/');
+                header('Location:/');
+            }
         }
         $this->render1('Authentication/login');
     }
@@ -222,7 +274,18 @@ class HomeController extends Controller
     public function allProducts()
     {
         $search = $_GET['search'];
-        $products = (new Product)->allProductsTypes(
+
+
+        $products = (new Product)->joinTable(
+            $addColumn = [
+                ['products.id', 'product_detail']
+            ],
+            $connect = [
+                ['category', 'products.id_category', 'category.id']
+            ],
+            $condition = [
+                ['products.name_product', 'LIKE',  "'%" . $search . "%'"]
+            ],
             $orderBy = [
                 ['products.id', 'DESC']
             ],
@@ -232,42 +295,38 @@ class HomeController extends Controller
         $this->render('AllProducts/index', $data = [
             'countSearch' => $countSearch,
             'allProducts' => $products,
-            'allCategories' => $this->allCategories
+
+            'allCategories' => $this->allCategories,
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart
+
         ]);
     }
 
-
-    public function Cart()
+    public function carts()
     {
-        $id = $_SESSION['account']['id_user'];
-        
-        $allProductsInCart = ( new Product)->cartProduct($id,
-            $condition = [
-                ['cart.id_user', '='],
-            ]
-        );
-
-        // foreach ($allProductsInCart as $key => &$products) {
-        //     if (!empty($products['image_urls'])) {
-        //         $products['image_urls'] = explode(",", $products['image_urls']);
-        //     }
-
-        //     if (!empty($products['sizes'])) {
-        //         $products['sizes'] = explode(",", $products['sizes']);
-        //     }
-
-        //     if (!empty($products['colors'])) {
-        //         $products['colors'] = explode(",", $products['colors']);
-        //     }
-        // }
-    
-        // echo '<pre>';
-        //     print_r($allProductsInCart);
-        //     die;
-
-        $this->render('Cart/index', $data = [
+        if (isset($_SESSION['account'])) {
+            $id = $_SESSION['account']['id_user'];
+            $allProductsInCart = (new cart)->allCartBYUser($id);
+        } else {
+            $allProductsInCart = [];
+        }
+        // echo "<pre>";
+        // print_r( $allProductsInCart);
+        // die;
+        $this->render('Carts/index', $data = [
+            'allCategories' => $this->allCategories,
             'allProductsInCart' => $allProductsInCart,
-            'allCategories' => $this->allCategories
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart
+
+
         ]);
+    }
+
+    public function cartsDelete($id)
+    {
+        (new Cart)->delete($id);
+        header('location:/Carts');
     }
 }

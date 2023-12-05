@@ -27,14 +27,14 @@ if (empty($_SESSION['account'])) { ?>
 
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div>
-                                                    <p class="mb-1">Giỏ hàng</p>
-                                                   
+                                                    <p class="mb-1">Giỏ hàng</p>            
                                                 </div>
                                                 <div>
                                                     <p class="mb-0"><span class="text-muted">Sắp xếp theo:</span> <a href="#!" class="text-body">Giá <i class="fas fa-angle-down mt-1"></i></a></p>
                                                 </div>
                                             </div>
                                             <?php foreach ($allProductsInCart as $value) { ?>
+                                                <pre><?php print_r($allProductsInCart) ?></pre>
                                                 <div class="card mb-3">
                                                     <div class="card-body">
                                                         <div class="d-flex justify-content-between">
@@ -49,16 +49,12 @@ if (empty($_SESSION['account'])) { ?>
                                                             </div>
                                                             <div class="d-flex flex-row align-items-center">
                                                                 <div style="width: 50px;">
-                                                                    <h5 class="fw-normal mb-0"><?= $value['quantity'] ?></h5>
+                                                                    <h5 class="fw-normal mb-0"><?= $value['quantities'] ?></h5>
                                                                 </div>
                                                                 <div style="width: 80px;">
-                                                                    <h5 class="mb-0"><?= number_format($value['price'], 0, '.', ',') ?> ₫</h5>
+                                                                    <h5 class="mb-0"><?= number_format($value['prices'], 0, '.', ',') ?> ₫</h5>
                                                                 </div>
-
-                                                                <form action="/admin/categories/delete?id=<?= $value['id'] ?>" method="post">
-                                                                <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2"><i class="fas fa-trash-alt"></i></button>
-                                                            </form>
-                                                                <!-- <a href="javascript:confirmDelete('/Cart/delete?id=<?= $value['id'] ?>')" style="color: #cecece;"></a> -->
+                                                                <a href="javascript:confirmDelete('client/Cart/delete?id=<?= $value['id'] ?>')" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
                                                             </div>
                                                         </div>
                                                     </div>

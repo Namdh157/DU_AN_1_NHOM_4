@@ -4,69 +4,130 @@ namespace MVC_DA1\Models;
 
 use MVC_DA1\Model;
 
-class Cart extends Model {
-    protected $table = 'cart';
+class Cart extends Model
+{
+    protected $table = 'order_user';
     protected $columns = [
         'id_product',
         'quantity',
         'id_user',
+        'status',
+        'time',
+        'id_properties'
     ];
 
-    
-
-    public function allProductsTypes($orderBy = [])
+    public function countCart($id)
     {
-        $sql = "SELECT *,
-        category.name_category,
-        images.image_urls,
-        properties.colors,
-        properties.sizes
-    FROM
-        products
-    JOIN category ON products.id_category = category.id
-    LEFT JOIN(
-        SELECT
-            id_products,
-            GROUP_CONCAT(image_url) AS image_urls
-        FROM
-            products_images
-        GROUP BY
-            id_products
-    ) AS images
-    ON
-        products.id = images.id_products
-    LEFT JOIN(
-        SELECT
-            product_id,
-            GROUP_CONCAT(color) AS colors,
-            GROUP_CONCAT(size) AS sizes
-        FROM
-            products_properties
-        GROUP BY
-            product_id
-    ) AS properties
-    ON
-        products.id = properties.product_id";
-
-        if (!empty($orderBy)) {
-            $addSql = [];
-            foreach ($orderBy as $item) {
-                $limit = empty($item[2]) ? "" : "LIMIT {$item[2]}";
-                $addSql[] = " ORDER BY {$item[0]} {$item[1]} $limit";
-            }
-
-            $addSql = implode(" ", $addSql);
-            $sql .= $addSql;
-        }
+        $sql = "SELECT COUNT(*) AS countCart FROM {$this->table} WHERE id_user = :id_user AND status = 0";
 
         $stmt = $this->conn->prepare($sql);
-        // foreach ($conditions as &$condition) {
-        //     $stmt->bindParam("{$condition[0]}", $condition[2]);
-        // }
+
+        $stmt->bindParam(':id_user', $id);
+
         $stmt->execute();
 
-        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
-        return $stmt->fetchAll();
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['countCart'];
     }
 
+    public function allCartBYUser($id)
+    {
+        $sql = "SELECT
+        ou.id AS order_id,
+        p.id AS product_id,
+        p.name_product AS product_name,
+        p.discount AS product_discount,
+        cp.size,
+        cp.color,
+        cp.price AS unit_price,
+        ou.quantity,
+        (cp.price * ou.quantity) AS total_price,
+        SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT PI.image_url), ',', 1) AS image_url
+    FROM
+        order_user ou
+    JOIN products p ON
+        ou.id_product = p.id
+    JOIN categories_properties cp ON
+        ou.id_properties = cp.id
+    JOIN products_images PI ON
+        p.id = PI.id_products
+    WHERE
+        ou.id_user = :id AND ou.status = 0
+    GROUP BY
+        ou.id, p.id, cp.size, cp.color, ou.quantity;
+    
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function allCart() {
+        $sql = "SELECT
+        ou.id AS order_id,
+        p.id AS product_id,
+        p.name_product AS product_name,
+        p.discount AS product_discount,
+        cp.size,
+        cp.color,
+        cp.price AS unit_price,
+        ou.quantity,
+        (cp.price * ou.quantity) AS total_price,
+        SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT PI.image_url), ',', 1) AS image_url
+    FROM
+        order_user ou
+    JOIN products p ON
+        ou.id_product = p.id
+    JOIN categories_properties cp ON
+        ou.id_properties = cp.id
+    JOIN products_images PI ON
+        p.id = PI.id_products
+    GROUP BY
+        ou.id, p.id, cp.size, cp.color, ou.quantity;
+    
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    function totalCart($id)
+    {
+        $sql = "SELECT
+        SUM(cp.price * ou.quantity) AS total_cart_price
+    FROM
+        order_user ou
+    JOIN products p ON
+        ou.id_product = p.id
+    JOIN categories_properties cp ON
+        ou.id_properties = cp.id
+    WHERE
+        ou.id_user = :id AND ou.status = 0;
+    ";
+    
+            $stmt = $this->conn->prepare($sql);
+    
+            $stmt->bindParam(':id', $id);
+    
+            $stmt->execute();
+    
+            return $stmt->fetch(\PDO::FETCH_ASSOC)['total_cart_price'];
+    }
+
+    function pay($id){
+        $sql = "UPDATE order_user SET status = 1 WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+        
+        $stmt->execute();
+    }
 }
