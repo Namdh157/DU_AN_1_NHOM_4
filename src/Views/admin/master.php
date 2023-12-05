@@ -16,6 +16,11 @@
     <?php require_once 'components/head.php' ?>
     <link rel="stylesheet" type="text/css" href="/assets/files/assets/css/style.css">
 </head>
+<style>
+    .btn-sm {
+        width: 100px !important;
+    }
+</style>
 
 <body>
     <div class="loader-bg">

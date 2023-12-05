@@ -63,7 +63,7 @@
                         <span class="pcoded-micon">
                             <i class="feather icon-box"></i>
                         </span>
-                        <span class="pcoded-mtext">Quản lý giỏ hàng</span>
+                        <span class="pcoded-mtext">Quản lý đơn hàng</span>
                     </a>
                 </li>
 

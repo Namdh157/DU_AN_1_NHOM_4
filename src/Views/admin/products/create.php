@@ -50,24 +50,32 @@
                                             </select>
                                         </div>
 
-                                        <label for="price" class="mt-3">Giá</label>
-                                        <input type="text" name="price" class="form-control">
-
                                         <label for="image" class="mt-3">Ảnh</label>
                                         <input type="file" name="image_urls[]" multiple class="form-control" />
 
-                                        <label for="color" class="mt-3">Màu sắc</label>
-                                        <input type="text" name="color" class="form-control">
+                                        <label for="price">Giá tiền</label>
+                                        <input type="number" name="price" class="form-control">
 
-                                        <label for="size" class="mt-3">Size</label>
-                                        <input type="text" name="size" class="form-control">
+                                        <label for=" quantity">Số lượng</label>
+                                        <input type="number" name="quantity" class="form-control">
 
-                                        <label for="description" class="mt-3">Mô tả</label>
+                                        <label for=" description" class="mt-3">Mô tả</label>
                                         <input type="text" name="description" class="form-control">
 
                                         <label for="discount" class="mt-3">Giảm giá</label>
                                         <input type="text" name="discount" class="form-control">
 
+                                        <div class="row">
+                                            <h3 class="py-3">Sản phẩm biến thể</h3>
+                                            <div class="col-3 m-b-30">
+                                                <label for="name">Màu sắc</label>
+                                                <input type="text" name="color" class="form-control">
+                                            </div>
+                                            <div class="col-3 m-b-30">
+                                                <label for="name">Kích cỡ</label>
+                                                <input type="text" name="size" class="form-control">
+                                            </div>
+                                        </div>
 
                                         <button type="submit" name="btn-submit" class="btn btn-info mt-3">Thêm mới</button>
                                         <a href="/admin/products" class="btn btn-primary mt-3">Quay lại d/s</a>

@@ -59,7 +59,9 @@
                                                         <td><?= $value['color'] ?></td>
                                                         <td><?= $value['price'] ?></td>
                                                         <td>
-                                                            <a href="/admin/categoriesProductsProperties/update?id=<?= $value['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
+                                                            <a href="/admin/categoriesProductsProperties/update?id=<?= $value['id'] ?>" >
+                                                                <button class="btn btn-primary btn-sm">Cập nhật</button>
+                                                            </a>
 
                                                             <form action="/admin/categoriesProductsProperties/delete?id=<?= $value['id'] ?>" method="post">
                                                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>

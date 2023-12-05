@@ -22,9 +22,11 @@ class CategoriesPropertiesController extends Controller
             $data = [
                 'color' => $_POST['color'],
                 'size' => $_POST['size'],
-                'price' => $_POST['price']
+                'price' => $_POST['price'],
+                'quantity' => $_POST['quantity']
             ];
             (new Categories_Properties())->insert($data);
+
             header('Location: /admin/categoriesProductsProperties');
         }
         $this->renderAdmin("categoriesProperties/create");

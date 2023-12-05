@@ -6,20 +6,22 @@ use MVC_DA1\Model;
 
 class Comment extends Model
 {
-    protected $columns=[];
     protected $table = 'comment';
-    protected $column = [
-        'id',
+    protected $columns = [
         'content',
         'id_user',
         'id_pro',
         'date_comment',
     ];
-    public function __construct()
+    public function allComment($id)
     {
-        parent::__construct();
-        $this->table = 'comment';
-        $this->columns = ['content', 'id_user', 'id_pro', 'date_comment'];
+        $sql = "SELECT * FROM comment JOIN users ON comment.id_user = users.id WHERE id_pro = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll();
+        return $result;
     }
     public function updateComment($id, $newContent)
     {

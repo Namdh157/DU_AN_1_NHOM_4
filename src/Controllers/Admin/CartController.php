@@ -31,12 +31,12 @@ class CartController extends Controller
     {
         $cartsModel = (new Cart)->joinTable(
             $addColumn = [
-                ['cart.id', 'cart_id']
+                ['order_user.id', 'order_user_id']
             ],
             $connect = [
                 ['category', 'products', 'category.id', 'products.id_category'],
-                ['cart', 'cart', 'products.id', 'cart.id_product'],
-                ['users', 'cart', 'users.id', 'cart.id_user']
+                ['order_user', 'order_user', 'products.id', 'order_user.id_product'],
+                ['users', 'order_user', 'users.id', 'order_user.id_user']
 
             ],
         );
