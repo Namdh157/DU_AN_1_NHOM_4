@@ -53,7 +53,6 @@ class HomeController extends Controller
                 $products['colors'] = explode(",", $products['colors']);
             }
 
-
             if (!empty($products['prices'])) {
                 $products['prices'] = explode(",", $products['prices']);
             }
@@ -62,12 +61,12 @@ class HomeController extends Controller
                 $products['quantities'] = explode(",", $products['quantities']);
             }
         }
+
         $productDiscount = (new Product())->allProductsTypes(
             $orderBy = [
                 ['p.discount', 'DESC', 9]
             ]
         );
-
 
         foreach ($productDiscount as $key => &$products) {
             if (!empty($products['image_urls'])) {
@@ -82,7 +81,6 @@ class HomeController extends Controller
                 $products['colors'] = explode(",", $products['colors']);
             }
 
-
             if (!empty($products['prices'])) {
                 $products['prices'] = explode(",", $products['prices']);
             }
@@ -91,7 +89,6 @@ class HomeController extends Controller
                 $products['quantities'] = explode(",", $products['quantities']);
             }
         }
-
 
         $this->render('home', [
             'allCategories' => $this->allCategories,
@@ -108,14 +105,12 @@ class HomeController extends Controller
     {
         $id = $_GET['id'];
         $categoryCurrent = (new Category())->findOne($id);
-
         $categoryProduct = (new Product())->categoryProduct(
             $id,
             $conditions = [
                 ['p.id_category', '=']
             ]
         );
-
 
         foreach ($categoryProduct as $key => &$products) {
             if (!empty($products['image_urls'])) {
@@ -258,7 +253,6 @@ class HomeController extends Controller
                     'role' => $acc['role'],
                 ];
 
-
                 header('Location:/');
             }
         }
@@ -273,7 +267,6 @@ class HomeController extends Controller
     public function allProducts()
     {
         $search = $_GET['search'];
-
 
         $products = (new Product)->joinTable(
             $addColumn = [
@@ -294,7 +287,6 @@ class HomeController extends Controller
         $this->render('AllProducts/index', $data = [
             'countSearch' => $countSearch,
             'allProducts' => $products,
-
             'allCategories' => $this->allCategories,
             'countCart' => $this->countCart,
             'totalCart' => $this->totalCart
@@ -318,7 +310,6 @@ class HomeController extends Controller
             'allProductsInCart' => $allProductsInCart,
             'countCart' => $this->countCart,
             'totalCart' => $this->totalCart
-
 
         ]);
     }
