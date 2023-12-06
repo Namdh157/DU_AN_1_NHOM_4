@@ -4,7 +4,6 @@ namespace MVC_DA1\Controllers\Client;
 
 use MVC_DA1\Controller;
 use MVC_DA1\Models\Cart;
-
 use MVC_DA1\Models\Categories_Properties;
 use MVC_DA1\Models\Comment;
 use MVC_DA1\Models\Product;
