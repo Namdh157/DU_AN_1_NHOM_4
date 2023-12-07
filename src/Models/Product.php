@@ -10,7 +10,6 @@ class Product extends Model
     protected $table = 'products';
     protected $columns = [
         'name_product',
-        'price',
         'description',
         'view',
         'id_category',
@@ -21,27 +20,27 @@ class Product extends Model
     {
 
         $sql = "SELECT
-        *,
-        products.id AS product_id,
-        category.name_category,
-        images.image_urls
+        p.id AS product_id,
+        p.id_category,
+        p.name_product,
+        p.description,
+        p.view,
+        c.name_category,
+        p.discount,
+        p.special,
+        GROUP_CONCAT(DISTINCT cp.price) AS prices,
+        GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
+        GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
     FROM
-        products
-    JOIN
-        category ON products.id_category = category.id
-    LEFT JOIN (
-        SELECT
-            id_products,
-            GROUP_CONCAT(image_url) AS image_urls
-        FROM
-            products_images
-        GROUP BY
-            id_products
-    ) AS images ON products.id = images.id_products
-    LEFT JOIN
-        products_properties ON products.id = products_properties.product_id
-    LEFT JOIN
-        categories_properties ON products_properties.id_categories_properties = categories_properties.id";
+        products p
+    JOIN category c ON
+        p.id_category = c.id
+    LEFT JOIN categories_properties cp ON
+        p.id = cp.id_product
+    LEFT JOIN products_images PI ON
+        p.id = PI.id_products
+    GROUP BY
+        p.id";
 
         if (!empty($orderBy)) {
             $addSql = [];
@@ -64,29 +63,30 @@ class Product extends Model
     {
 
         $sql = "SELECT
-        *,
-        products.id AS product_id,
-        category.name_category,
-        images.image_urls
+        p.id AS product_id,
+        p.id_category,
+        p.name_product,
+        p.description,
+        p.view,
+        c.name_category,
+        p.discount,
+        p.special,
+        GROUP_CONCAT(DISTINCT cp.size) AS sizes,
+        GROUP_CONCAT(DISTINCT cp.color) AS colors,
+        GROUP_CONCAT(DISTINCT cp.price) AS prices,
+        GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
+        GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
     FROM
-        products
-    JOIN
-        category ON products.id_category = category.id
-    LEFT JOIN (
-        SELECT
-            id_products,
-            GROUP_CONCAT(image_url) AS image_urls
-        FROM
-            products_images
-        GROUP BY
-            id_products
-    ) AS images ON products.id = images.id_products
-    LEFT JOIN
-        products_properties ON products.id = products_properties.product_id
-    LEFT JOIN
-        categories_properties ON products_properties.id_categories_properties = categories_properties.id
-    WHERE products.id = :id";
-
+        products p
+    JOIN category c ON
+        p.id_category = c.id
+    LEFT JOIN categories_properties cp ON
+        p.id = cp.id_product
+    LEFT JOIN products_images PI ON
+        p.id = PI.id_products
+        WHERE p.id = :id
+    GROUP BY
+        p.id ";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -99,30 +99,30 @@ class Product extends Model
 
     public function categoryProduct($id, $conditions  = [])
     {
+        
         $sql = "SELECT
-        *,
-        products.id AS product_id,
-        category.name_category,
-        images.image_urls
+        p.id AS product_id,
+        p.id_category,
+        p.name_product,
+        p.description,
+        p.view,
+        c.name_category,
+        p.discount,
+        p.special,
+        GROUP_CONCAT(DISTINCT cp.size) AS sizes,
+        GROUP_CONCAT(DISTINCT cp.color) AS colors,
+        GROUP_CONCAT(DISTINCT cp.price) AS prices,
+        GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
+        GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
     FROM
-        products
-    JOIN
-        category ON products.id_category = category.id
-    LEFT JOIN (
-        SELECT
-            id_products,
-            GROUP_CONCAT(image_url) AS image_urls
-        FROM
-            products_images
-        GROUP BY
-            id_products
-    ) AS images ON products.id = images.id_products
-    LEFT JOIN
-        products_properties ON products.id = products_properties.product_id
-    LEFT JOIN
-        categories_properties ON products_properties.id_categories_properties = categories_properties.id";
-
-
+        products p
+    JOIN category c ON
+        p.id_category = c.id
+    LEFT JOIN categories_properties cp ON
+        p.id = cp.id_product
+    LEFT JOIN products_images PI ON
+        p.id = PI.id_products
+    ";
 
         $where = [];
         foreach ($conditions as $condition) {
@@ -130,74 +130,14 @@ class Product extends Model
         }
         $where = ' WHERE ' . implode(" ", $where);
 
-        $sql .= $where;
-
-       
-
+        $sql .= $where." GROUP BY p.id";
 
         $stmt = $this->conn->prepare($sql);
-
-        // $stmt->bindParam("{$id}", $id);
 
         $stmt->execute();
 
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 
         return $stmt->fetchAll();
-    }
-
-    public function cartProduct($id, $conditions  = [])
-    {
-        $sql = "SELECT
-        *,
-        products.id AS product_id,
-        category.name_category,
-        images.image_urls
-        FROM
-        products
-        JOIN
-        category ON products.id_category = category.id
-        LEFT JOIN (
-        SELECT
-        id_products,
-        GROUP_CONCAT(image_url) AS image_urls
-        FROM
-        products_images
-        GROUP BY
-        id_products
-        ) AS images ON products.id = images.id_products
-        LEFT JOIN
-        products_properties ON products.id = products_properties.product_id
-        LEFT JOIN
-        categories_properties ON products_properties.id_categories_properties = categories_properties.id
-        LEFT JOIN
-        cart ON products.id = cart.id_product"; 
-
-        
-$where = [];
-foreach ($conditions as $condition) {
-    $where[] = "{$condition[0]} {$condition[1]} $id";
-}
-$where = ' WHERE ' . implode(" ", $where);
-
-$sql .= $where;
-
-
-
-
-$stmt = $this->conn->prepare($sql);
-
-// $stmt->bindParam("{$id}", $id);
-
-$stmt->execute();
-
-$stmt->setFetchMode(\PDO::FETCH_ASSOC);
-
-return $stmt->fetchAll();
-      
-
-    //   echo '<pre>';
-    //   print_r($sql);
-    //   die;
-}
+    } 
 }
