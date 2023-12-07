@@ -13,7 +13,7 @@ function listProducts($listProduct)
                                     <img src="/assets/files/assets/images//<?= $value['image_urls'][0] ?>" class="w-100" style="height: 450px;object-fit: cover; " />
                                     <a href="ProductDetail?id=<?=$value['product_id'] ?>">
                                         <div class="mask">
-                                            <div class="d-flex justify  -content-start align-items-end h-100">
+                                            <div class="d-flex justify-content-start align-items-end h-100">
                                                 <h5><span class="badge bg-primary ms-2"><?= $value['discount'] ?>%</span></h5>
                                             </div>
                                         </div>
@@ -44,10 +44,4 @@ function listProducts($listProduct)
     body{
         object-fit: cover;
     }
-
-
-
-
-
-    
 </style>

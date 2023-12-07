@@ -1,5 +1,5 @@
 
-    <div class="container col-8" >
+<div class="container col-8" >
         <h2>Tạo mới Danh mục</h2>
 
         <form action="" method="post">
