@@ -39,4 +39,6 @@ class CategoriesPropertiesController extends Controller
     {
         $this->renderAdmin("categoriesProperties/delete");
     }
+
 }
+

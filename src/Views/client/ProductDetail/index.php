@@ -74,7 +74,9 @@
         margin-top: auto;
     }
 </style>
-
+<pre>
+<!-- <?php print_r($_SESSION) ?> -->
+</pre>
 
 <main id="main">
     <div class="container mt-5">
@@ -221,7 +223,8 @@
 
                             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
                                 <div class="d-flex flex-start w-100">
-                                    <img class="rounded-circle shadow-1-strong me-3" src="assets/files/assets/images/<?php echo empty($_SESSION['account']['image_user']) ? 'assets/image/avatar_trong.jpg' : $_SESSION['account']['image_user'] ?>" alt="avatar" width="40" height="40" />
+
+                                    <img class="rounded-circle shadow-1-strong me-3" src="assets/files/assets/images/<?php echo empty($_SESSION['account']['image_user']) ? 'avatar_trong.jpg' : $_SESSION['account']['image_user'] ?>" alt="avatar" width="40" height="40" />
                                     <div class="form-outline w-100">
                                         <textarea name="comment" class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></textarea>
                                         <label class="form-label" for="textAreaExample">Bình luận</label>
@@ -284,6 +287,31 @@
         })
     })();
 
+
+    //chuyển ảnh
+    setInterval(() => {
+        const images = document.querySelectorAll(".listImage img");
+        if (images.length == 0) return;
+        const imageActive = document.querySelector(".preview-pic img");
+        images.forEach((image, indexImage) => {
+            image.addEventListener("click", () => {
+                images.forEach((img) => img.classList.remove("active"));
+                image.classList.add("active");
+                imageActive.src = image.src;
+                index = indexImage;
+
+            })
+        })
+        index++;
+        if (index >= images.length) {
+            index = 0;
+        }
+        images.forEach((image) => image.classList.remove("active"));
+        images[index].classList.add("active");
+        imageActive.src = images[index].src;
+    }, 3000)
+
+    
     function renderPrice() {
         const properties = <?= ($allCategoriesProperties) ?>;
         properties.forEach((property) => {
@@ -292,6 +320,8 @@
                 var quantityProduct = property.quantity;
                 document.querySelector(".price span").textContent = price.toLocaleString() + '₫';
                 document.querySelector(".totalQuantity span").textContent = quantityProduct;
+
+                
                 return;
             }
         })
@@ -305,17 +335,6 @@
     //thêm vào giỏ hàng
     function addCart() {
 
-        if (size && color) {
-            if (size.value == "" || color.value == "") {
-                alert("Vui lòng chọn size và màu sắc");
-                return;
-            }
-        }
-
-        if (userId == '') {
-            alert("Vui lòng đăng nhập để thêm vào giỏ hàng");
-            return;
-        }
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
 
@@ -323,9 +342,19 @@
         formData.append("idProduct", productId);
         formData.append("idUser", userId);
         if (size && color) {
+
+            if (size.value == "" || color.value == "") {
+                alert("Vui lòng chọn size và màu sắc");
+                return;
+            }
+            
             formData.append("size", size.value);
             formData.append("color", color.value);
+        }else {
+            formData.append("size", "");
+            formData.append("color", "");
         }
+
         formData.append("quantity", quantity.value);
 
         xhr.send(formData);

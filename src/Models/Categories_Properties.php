@@ -68,16 +68,29 @@ class Categories_Properties extends Model
         return $stmt->fetchAll();
     }
 
+<<<<<<< HEAD
     public function getId($color, $size) {
         $sql = "SELECT id FROM categories_properties WHERE color = :color AND size = :size ";
 
+=======
+    public function getId($color, $size, $id_product) {
+        $sql = "SELECT id FROM categories_properties WHERE color = :color AND size = :size AND id_product = :id_product";
+    
+>>>>>>> b0388b76e8887f79da5b04af985cd979a21cc6f4
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindParam(':color', $color);
         $stmt->bindParam(':size', $size);
+<<<<<<< HEAD
 
         $stmt->execute();
 
+=======
+        $stmt->bindParam(':id_product', $id_product);
+    
+        $stmt->execute();
+    
+>>>>>>> b0388b76e8887f79da5b04af985cd979a21cc6f4
         return $stmt->fetch(\PDO::FETCH_ASSOC)['id'];
     }
     

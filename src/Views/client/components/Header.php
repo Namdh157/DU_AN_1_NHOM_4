@@ -26,18 +26,6 @@
                                         <i class="fa fa-search position-absolute" style="top:50%;left:50%;transform: translate(-50%,-50%);font-size:1.3rem"></i>
                                     </div>
                                 </form>
-                                <!-- <div class="menuMb d-none">
-                                        <i class="fa-solid fa-bars"></i>
-                                        <ul class="standard_dropdown main_nav_dropdown">
-                                            <li class="hassubs">
-                                                <ul class="standard_dropdown main_nav_dropdown>
-                                            <?php foreach ($category as $value) { ?>
-                                                <li class=" d-flex align-items-center"><i class="fa-solid fa-caret-right"></i> &ensp;<a href="index.php?type=Category&id=<?php echo $value['id'] ?>"><?php echo $value['name_category'] ?></a>
-                                            </li>
-                                        <?php } ?>
-                                        </ul>
-                                    </div> -->
-
                             </div>
                         </div>
                     </div>
@@ -72,10 +60,12 @@
                                         <span class="fw-bold"><?= $_SESSION['account']['name'] ?></span>
                                     </div>
                                     <div class="logout position-absolute rounded " style="display:none; background-color: #00d2d4;">
-                                        <div class="fw-bolder border-bottom fs-5 "><a href="/Logout"> <button>Đăng xuất</button></a></div>
+                                        <div class="border-bottom "><a href="/Logout"> <button>Đăng xuất</button></a></div>
+                                        <div class="border-bottom "><a href="/Profile"> <button>Tài khoản của tôi</button></a></div>
                                         <?php if ($_SESSION['account']['role'] == 10) { ?>
                                             <div class="fw-bolder"><a href="/admin/dashboard"> <button> Quản trị website</button></a></div>
                                         <?php } ?>
+                                        
                                     </div>
                                 </div>
 

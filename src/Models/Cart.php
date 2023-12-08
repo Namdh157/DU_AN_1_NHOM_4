@@ -33,6 +33,10 @@ class Cart extends Model
     {
         $sql = "SELECT
         ou.id AS order_id,
+<<<<<<< HEAD
+=======
+        cp.id AS properties_id,
+>>>>>>> b0388b76e8887f79da5b04af985cd979a21cc6f4
         p.id AS product_id,
         p.name_product AS product_name,
         p.discount AS product_discount,
@@ -66,7 +70,13 @@ class Cart extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+<<<<<<< HEAD
     public function allCart() {
+=======
+
+    public function allCart()
+    {
+>>>>>>> b0388b76e8887f79da5b04af985cd979a21cc6f4
         $sql = "SELECT
         ou.id AS order_id,
         p.id AS product_id,
@@ -111,6 +121,7 @@ class Cart extends Model
     WHERE
         ou.id_user = :id AND ou.status = 0;
     ";
+<<<<<<< HEAD
     
             $stmt = $this->conn->prepare($sql);
     
@@ -122,12 +133,83 @@ class Cart extends Model
     }
 
     function pay($id){
+=======
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['total_cart_price'];
+    }
+
+    function pay($id)
+    {
+>>>>>>> b0388b76e8887f79da5b04af985cd979a21cc6f4
         $sql = "UPDATE order_user SET status = 1 WHERE id = :id";
 
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindParam(':id', $id);
+<<<<<<< HEAD
         
         $stmt->execute();
     }
 }
+=======
+
+        $stmt->execute();
+    }
+
+    function updateQuantity($id, $quantity)
+    {
+        $sql = "UPDATE order_user SET quantity = :quantity WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':quantity', $quantity);
+
+        $stmt->execute();
+    }
+
+    function getProductByProperties($id)
+    {
+        $sql = "SELECT
+        cp.id,
+        cp.size,
+        cp.price AS unit_price,
+        cp.color,
+        cp.quantity,
+        p.name_product,
+        c.name_category,
+        SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT PI.image_url), ',', 1) AS image_url
+    FROM
+        categories_properties cp
+    JOIN products p ON
+        cp.id_product = p.id
+    JOIN products_images PI ON
+        p.id = PI.id_products
+    JOIN category c ON
+        p.id_category = c.id
+    WHERE
+        cp.id = :id
+    GROUP BY
+        cp.id,
+        cp.size,
+        cp.color,
+        cp.quantity,
+        p.name_product,
+        c.name_category";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+}
+>>>>>>> b0388b76e8887f79da5b04af985cd979a21cc6f4
