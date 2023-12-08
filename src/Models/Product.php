@@ -140,4 +140,37 @@ class Product extends Model
 
         return $stmt->fetchAll();
     } 
+
+    public function getOneProduct($idProduct) {
+        $sql = "SELECT
+        p.id AS product_id,
+        p.id_category,
+        p.name_product,
+        p.description,
+        p.view,
+        c.name_category,
+        p.discount,
+        p.special,
+        GROUP_CONCAT(DISTINCT cp.size) AS sizes,
+        GROUP_CONCAT(DISTINCT cp.color) AS colors,
+        GROUP_CONCAT(DISTINCT cp.price) AS prices,
+        GROUP_CONCAT(DISTINCT cp.quantity) AS quantities,
+        GROUP_CONCAT(DISTINCT PI.image_url) AS image_urls
+    FROM product AS p JOIN category AS c ON p.id_category = c.id
+    LEFT JOIN categories_properties AS cp ON p.id = cp.id_product
+    LEFT JOIN products_images AS PI ON p.id = PI.id_products
+    WHERE p.id = :id
+    GROUP BY p.id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':id', $idProduct);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetch();
+    }
+
 }

@@ -25,9 +25,9 @@ class HomeController extends Controller
             $id = $_SESSION['account']['id_user'];
             $this->countCart = (new Cart)->countCart($id);
             $this->totalCart = (new Cart)->totalCart($id);
-        } else {
-            $this->countCart = 0;
-            $this->totalCart = 0;
+        } else {           
+            $this->countCart = isset($_SESSION['cart']) ?  count($_SESSION['cart']) : 0;
+            $this->totalCart = $_SESSION['totalCart'] ?? 0;
         }
     }
     public function index()
@@ -38,7 +38,7 @@ class HomeController extends Controller
             ]
         );
 
-        
+
 
         foreach ($productSeller as $key => &$products) {
             if (!empty($products['image_urls'])) {
@@ -268,22 +268,22 @@ class HomeController extends Controller
     {
         $search = $_GET['search'];
 
-        $products = (new Product)->joinTable(
-            $addColumn = [
-                ['products.id', 'product_detail']
-            ],
-            $connect = [
-                ['category', 'products.id_category', 'category.id']
-            ],
-            $condition = [
-                ['products.name_product', 'LIKE',  "'%" . $search . "%'"]
-            ],
-            $orderBy = [
-                ['products.id', 'DESC']
-            ],
+        $products = (new Product)->categoryProduct(
+            '"%' . $search . '%"',
+            $conditions = [
+                ['p.name_product', 'LIKE']
+            ]
         );
         $countSearch = (new Product())->countSearch($search);
 
+        foreach ($products as $key => &$product) {
+            if (!empty($product['image_urls'])) {
+                $product['image_urls'] = explode(",", $product['image_urls']);
+            }
+            if (!empty($product['prices'])) {
+                $product['prices'] = explode(",", $product['prices']);
+            }
+        }
         $this->render('AllProducts/index', $data = [
             'countSearch' => $countSearch,
             'allProducts' => $products,
@@ -300,11 +300,9 @@ class HomeController extends Controller
             $id = $_SESSION['account']['id_user'];
             $allProductsInCart = (new cart)->allCartBYUser($id);
         } else {
-            $allProductsInCart = [];
+            $allProductsInCart = $_SESSION['cart'] ?? null;
         }
-        // echo "<pre>";
-        // print_r( $allProductsInCart);
-        // die;
+
         $this->render('Carts/index', $data = [
             'allCategories' => $this->allCategories,
             'allProductsInCart' => $allProductsInCart,
@@ -314,9 +312,14 @@ class HomeController extends Controller
         ]);
     }
 
-    public function cartsDelete($id)
-    {
-        (new Cart)->delete($id);
-        header('location:/Carts');
+    public function profile(){
+        
+
+        $this->render('Profiles/index', $data = [
+            'allCategories' => $this->allCategories,
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart
+
+        ]);
     }
 }

@@ -39,9 +39,3 @@ function listProducts($listProduct)
     </section>
 <?php  }
 ?>
-
-<style>
-    body{
-        object-fit: cover;
-    }
-</style>

@@ -2,11 +2,13 @@
 
 namespace MVC_DA1\Controllers;
 
+use MVC_DA1\Models\BillDetail;
+use MVC_DA1\Models\Bills;
 use MVC_DA1\Models\Cart;
 use MVC_DA1\Models\Categories_Properties;
 use MVC_DA1\Models\Comment;
 use MVC_DA1\Models\Images;
-use MVC_DA1\Models\Product_properties;
+use MVC_DA1\Models\Product;
 
 class APIController
 {
@@ -80,11 +82,32 @@ class APIController
         $idProduct = $_POST["idProduct"];
         $idUser = $_POST["idUser"];
         $quantity = $_POST["quantity"];
+        $size = $_POST["size"];
+        $color = $_POST["color"];
 
-        if (isset($_POST['size']) && isset($_POST['color'])) {
-            $size = $_POST["size"];
-            $color = $_POST["color"];
-            $id_categoriesProperties = (new Categories_Properties)->getId($color, $size);
+        if (!isset($_SESSION['account'])) {
+            $id_categoriesProperties = (new Categories_Properties)->getId($color, $size, $idProduct);
+            $product = (new Cart)->getProductByProperties($id_categoriesProperties);
+
+            $_SESSION['cart'][] = [
+                'quantity' => $quantity,
+                'product' => $product,
+                'totalPrice' => $product['unit_price'] * $quantity,
+            ];
+
+            foreach ($_SESSION['cart'] as $item) {
+                if (isset($item['totalPrice'])) {
+                    $_SESSION['totalCart'] += $item['totalPrice'];
+                }
+            }
+            $data = [
+                'countCart' => count($_SESSION['cart']),
+                'totalCart' => number_format($_SESSION['totalCart'], 0, '.', ',')
+            ];
+            echo json_encode($data);
+        } else {
+
+            $id_categoriesProperties = (new Categories_Properties)->getId($color, $size, $idProduct);
             $data = [
                 'id_product' => (int)$idProduct,
                 'quantity' => (int)$quantity,
@@ -93,38 +116,156 @@ class APIController
                 'time' => date('Y-m-d H:i:s'),
                 'id_properties' => $id_categoriesProperties
             ];
-        } else {
-            $data = [
-                'id_product' => (int)$idProduct,
-                'quantity' => (int)$quantity,
-                'id_user' => (int)$idUser,
-                'status' => 0,
-                'time' => date('Y-m-d H:i:s'),
-                'id_properties' => 0
+
+            (new Cart)->insert($data);
+            $countCart = (new Cart)->countCart($idUser);
+            $totalCart = (new Cart)->totalCart($idUser);
+
+            $datas = [
+                'countCart' => $countCart,
+                'totalCart' => number_format($totalCart, 0, '.', ',')
             ];
+            echo json_encode($datas);
         }
-
-        
-
-        (new Cart)->insert($data);
-        $countCart = (new Cart)->countCart($idUser);
-        $totalCart = (new Cart)->totalCart($idUser);
-
-        $datas = [
-            'countCart' => $countCart,
-            'totalCart' => $totalCart
-        ];
-        echo json_encode($datas);
     }
+
+
+
 
     public function order()
     {
-        if (isset($_POST['pay'])) {
-            $orderIds = $_POST['orderIds'];
-            foreach ($orderIds as $orderId) {
-                (new Cart)->pay($orderId);
+        // Chưa đăng nhập
+        if (isset($_SESSION['cart'])) {
+            if (isset($_POST['totalPrice'])) {
+                $quantity = $_POST['quantity'];
+                $orderId = $_POST['orderId'];
+                $_SESSION['cart'][$orderId]['quantity'] = $quantity;
+                $_SESSION['cart'][$orderId]['totalPrice'] = $_SESSION['cart'][$orderId]['product']['unit_price'] * $quantity;
+                $_SESSION['totalCart'] = 0;
+                foreach ($_SESSION['cart'] as $item) {
+                    if (isset($item['totalPrice'])) {
+                        $_SESSION['totalCart'] += $item['totalPrice'];
+                    }
+                }
+                $data = [
+                    'totalPrice' => number_format($_SESSION['cart'][$orderId]['totalPrice'], 0, '.', ','),
+                    'totalCart' => number_format($_SESSION['totalCart'], 0, '.', ','),
+                    'orderId' => $orderId
+                ];
+                echo json_encode($data);
             }
-            echo json_encode('success');
+
+            if (isset($_POST['delete'])) {
+                $orderId = $_POST['orderId'];
+                unset($_SESSION['cart'][$orderId]);
+                $_SESSION['totalCart'] = 0;
+                foreach ($_SESSION['cart'] as $item) {
+                    if (isset($item['totalPrice'])) {
+                        $_SESSION['totalCart'] += $item['totalPrice'];
+                    }
+                }
+                $data = [
+                    'totalCart' => number_format($_SESSION['totalCart'], 0, '.', ','),
+                    'orderId' => $orderId
+                ];
+                echo json_encode($data);
+            }
+
+            if (isset($_POST['pay'])) {
+                $orderIds = $_POST['orderIds'];
+                $data = [
+                    'id_user' => 0,
+                    'name_user' => $_POST['nameUser'],
+                    'price' => $_SESSION['totalCart'],
+                    'phone' => $_POST['phone'],
+                    'address' => $_POST['address'],
+                    'status' => 0,
+                    'pay_method' => $_POST['pay_method'],
+                    'time_create' => date('Y-m-d H:i:s'),
+                    'time_update' => date('Y-m-d H:i:s'),
+                    'note' => $_POST['note']
+                ];
+                (new Bills)->insert($data);
+                $id_bill = (new Bills)->getLastId();
+                foreach ($orderIds as $orderId) {
+                    $data1 = [
+                        'id_bills' => $id_bill,
+                        'id_productProperties' => $_SESSION['cart'][$orderId]['product']['id'],
+                        'price' => $_SESSION['cart'][$orderId]['totalPrice'],
+                        'quantity' => $_SESSION['cart'][$orderId]['quantity']
+                    ];
+                    (new BillDetail)->insert($data1);
+
+                }
+                unset($_SESSION['cart']);
+                $_SESSION['totalCart'] = 0;
+                echo json_encode($data);
+            }
+        } else {
+            // Đã đăng nhập
+            if (isset($_POST['pay'])) {
+                $orderIds = $_POST['orderIds'];
+                $idUser = $_SESSION['account']['id_user'];
+                $totalCart = (new Cart)->totalCart($idUser);
+                $data = [
+                    'id_user' => $idUser,
+                    'name_user' => $_POST['nameUser'],
+                    'price' => $totalCart,
+                    'phone' => $_POST['phone'],
+                    'address' => $_POST['address'],
+                    'status' => 0,
+                    'pay_method' => $_POST['pay_method'],
+                    'time_create' => date('Y-m-d H:i:s'),
+                    'time_update' => date('Y-m-d H:i:s'),
+                    'note' => $_POST['note']
+                ];
+                (new Bills)->insert($data);
+                $id_bill = (new Bills)->getLastId();
+                $allProductsInCart = (new cart)->allCartBYUser($idUser);
+                foreach ($orderIds as $orderId) {
+                    $data1 = [
+                        'id_bills' => $id_bill,
+                        'id_productProperties' => $allProductsInCart[$orderId]['properties_id'],
+                        'price' => $allProductsInCart[$orderId]['total_price'],
+                        'quantity' => $allProductsInCart[$orderId]['quantity']
+                    ];
+                    (new BillDetail)->insert($data1);
+                    (new Cart)->delete([
+                        ['id', '=', $allProductsInCart[$orderId]['order_id']]
+                    ]);
+                }
+
+                echo json_encode($data);
+            }
+
+            if (isset($_POST['delete'])) {
+                $orderId = $_POST['orderId'];
+                (new Cart)->delete([
+                    ['id', '=', $orderId]
+                ]);
+                $countCart = (new Cart)->countCart($_POST['userId']);
+                $totalCart = (new Cart)->totalCart($_POST['userId']);
+                $data = [
+                    'countCart' => $countCart,
+                    'totalCart' => number_format($totalCart, 0, '.', ','),
+                    'orderId' => $orderId
+                ];
+                echo json_encode($data);
+            }
+
+            if (isset($_POST['totalPrice'])) {
+                $idUser = $_POST['userId'];
+                $quantity = $_POST['quantity'];
+                $orderId = $_POST['orderId'];
+                (new Cart)->updateQuantity($orderId, $quantity);
+                $totalCart = (new Cart)->totalCart($idUser);
+                $data = [
+                    'totalPrice' => number_format($totalCart, 0, '.', ','),
+                    'totalCart' => number_format($totalCart, 0, '.', ','),
+                    'orderId' => $orderId
+                ];
+                echo json_encode($data);
+            }
         }
     }
 

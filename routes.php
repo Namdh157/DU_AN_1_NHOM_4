@@ -38,6 +38,7 @@ $router->addRoute('/Logout', HomeController::class, 'logout');
 $router->addRoute('/allProducts', HomeController::class, 'allProducts');
 $router->addRoute('/Carts', HomeController::class, 'carts');
 $router->addRoute('/Carts/delete', HomeController::class, 'cartsDelete');
+$router->addRoute('/Profile', HomeController::class, 'profile');
 
 
 
