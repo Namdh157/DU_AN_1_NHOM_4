@@ -4,6 +4,7 @@ namespace MVC_DA1\Controllers\Admin;
 
 use MVC_DA1\Controller;
 use MVC_DA1\Models\Category;
+use MVC_DA1\Models\Product;
 
 class CategoryController extends Controller {
 
@@ -59,6 +60,11 @@ class CategoryController extends Controller {
         $conditions = [
             ['id', '=', $_GET['id']],
         ];
+        $conditions2 = [
+            ['id_category', '=', $_GET['id']],
+        ];
+
+        (new Product())->delete($conditions2);
 
         (new Category())->delete($conditions);
 

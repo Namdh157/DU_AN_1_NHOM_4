@@ -30,4 +30,11 @@ class User extends Model
 
         return $stmt->fetch();
     }
+    public function getById($id) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        return $stmt->fetch();
+    }
 }

@@ -13,6 +13,19 @@ class Categories_Properties extends Model
         'id_product'
     ];
 
+    public function getAll() {
+        $sql = "SELECT * FROM {$this->table} JOIN products ON products.id = categories_properties.id_product ORDER BY categories_properties.id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll();
+
+    }
+
     public function getData($id) {
         $sql = "SELECT * FROM {$this->table} WHERE id = :id";
 

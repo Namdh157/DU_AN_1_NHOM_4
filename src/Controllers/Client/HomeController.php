@@ -3,6 +3,8 @@
 namespace MVC_DA1\Controllers\Client;
 
 use MVC_DA1\Controller;
+use MVC_DA1\Models\BillDetail;
+use MVC_DA1\Models\Bills;
 use MVC_DA1\Models\Cart;
 use MVC_DA1\Models\Categories_Properties;
 use MVC_DA1\Models\Comment;
@@ -319,6 +321,19 @@ class HomeController extends Controller
             'allCategories' => $this->allCategories,
             'countCart' => $this->countCart,
             'totalCart' => $this->totalCart
+
+        ]);
+    }
+
+    public function order(){
+
+        $allProductInBills = (new Bills)->getBillUser($_SESSION['account']['id_user']);
+
+        $this->render('Order/index', $data = [
+            'allCategories' => $this->allCategories,
+            'countCart' => $this->countCart,
+            'totalCart' => $this->totalCart,
+            'allProductInBills' => $allProductInBills
 
         ]);
     }

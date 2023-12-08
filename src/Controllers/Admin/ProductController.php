@@ -5,6 +5,7 @@ namespace MVC_DA1\Controllers\Admin;
 use MVC_DA1\Controller;
 use MVC_DA1\Models\Categories_Properties;
 use MVC_DA1\Models\Category;
+use MVC_DA1\Models\Comment;
 use MVC_DA1\Models\Images;
 use MVC_DA1\Models\Product;
 
@@ -41,7 +42,6 @@ class ProductController extends Controller
     }
     public function create()
     {
-
 
         if (isset($_POST['btn-submit'])) {
             $data = [
@@ -136,6 +136,21 @@ class ProductController extends Controller
         $conditions = [
             ['id', '=', $_GET['id']],
         ];
+        $conditions2 = [
+            ['id_pro', '=', $_GET['id']],
+        ];
+        $conditions3 = [
+            ['id_products', '=', $_GET['id']],
+        ];
+        $conditions4 = [
+            ['id_product', '=', $_GET['id']],
+        ];
+
+        (new Categories_Properties)->delete($conditions4);
+
+        (new Images)->delete($conditions3);
+
+        (new Comment)->delete($conditions2);
 
         (new Product())->delete($conditions);
 

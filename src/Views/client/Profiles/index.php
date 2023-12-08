@@ -1,13 +1,3 @@
-<style>
-    * {
-        /* box-shadow: 0 0 2px #000; */
-    }
-</style>
-<pre>
-<?php
-print_r($_SESSION);
-?>
-</pre>
 <section class="" style="background-color: #f4f5f7;">
     <div class="container py-3">
         <h2 class="text-center py-3">Hồ sơ tài khoản</h2>
@@ -25,10 +15,10 @@ print_r($_SESSION);
                 </div>
                 <div class="col-12 gradient-custom text-start text-dark">
                     <ul class="m-0 p-0">
-                        <a href="">
+                        <a href="/Profile">
                             <li class="p-2 mb-2 border"> <i class="text-success fa-solid fa-user"></i> Tài khoản của tôi</li>
                         </a>
-                        <a href="">
+                        <a href="/Order">
                             <li class="p-2 border"> <i class="text-success fa-solid fa-cart-shopping"></i> Đơn mua</li>
                         </a>
                     </ul>
@@ -40,31 +30,31 @@ print_r($_SESSION);
                     <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                     <hr>
                     <div class="row">
-                        <div class="col-7 d-flex flex-column align-items-end me-5 pe-5">
+                        <div class="col-7 d-flex flex-column align-items-end">
                             <div class="form-group">
                                 <label for="">Tên tài khoản</label>
-                                <input type="text" class="form-group">
+                                <input type="text" id="name" class="form-group"value="<?= $_SESSION['account']['name']?>">
                             </div>
                             <div class="form-group">
                                 <label for="">Email</label>
-                                <input type="email" class="form-group">
+                                <input type="email" id="email" class="form-group" value="<?= $_SESSION['account']['email']?>">
                             </div>
                             <div class="form-group">
                                 <label for="">Địa chỉ</label>
-                                <input type="text" class="form-group">
+                                <input type="text" id="address" class="form-group" value="<?= $_SESSION['account']['address']?>">
                             </div>
                             <div class="form-group">
                                 <label for="">Số điện thoại</label>
-                                <input type="number" class="form-group">
+                                <input type="number" id="phone" class="form-group" value="<?= $_SESSION['account']['phone']?>">
                             </div>
-                            <div class="form-group">
-                                <button class="btn btn-lg" style="background-color: #00d2d4; border:none;">Lưu</button>
+                            <div  id="btnSave"class="form-group" >
+                                <button  class="btn btn-lg" style="background-color: #00d2d4; border:none;">Lưu</button>
                             </div>
                         </div>
                         <div class="col-4 d-flex flex-column align-items-center">
-                            <img src="/assets/files/assets/images/<?= $_SESSION['account']['image_user'] ?>" class="rounded-circle mt-5" width="100" alt="">
+                            <img id="imgDetail" src="/assets/files/assets/images/<?= $_SESSION['account']['image_user'] ?>" class="rounded-circle mt-5" width="100" alt="">
                             <div class="border my-2" style="width:max-content">
-                                <button class="btn">Chọn ảnh</button>
+                                <button data-id="<?=$_SESSION['account']['id_user']?>" class="btn" id="img">Chọn ảnh</button>
                                 <input type="file" id="image" hidden>
                             </div>
                             <p>Dụng lượng file tối đa 1 MB</p>
@@ -78,3 +68,51 @@ print_r($_SESSION);
         </div>
     </div>
 </section>
+
+
+<script>
+    const btnImg = document.querySelector('#img');
+    const img = document.querySelector('#image');
+    const imgDetail = document.querySelector('#imgDetail');
+    const btnSave = document.querySelector('#btnSave');
+    const name = document.querySelector('#name');
+    const email = document.querySelector('#email');
+    const address = document.querySelector('#address');
+    const phone = document.querySelector('#phone');
+    const id = btnImg.dataset.id;
+    btnImg.addEventListener('click', () => {
+        img.click();
+    })
+    img.addEventListener('change', () => {
+        const file = img.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            imgDetail.src = reader.result;
+        }
+        reader.readAsDataURL(file);
+    })
+    btnSave.addEventListener('click', () => {
+        const formData = new FormData();
+        const xhr = new XMLHttpRequest();
+        formData.append('id', id);
+        formData.append('name', name.value);
+        formData.append('email', email.value);
+        formData.append('address', address.value);
+        formData.append('phone', phone.value);
+        if (img.files[0]) {
+            formData.append('image', img.files[0]);
+        }else{
+            formData.append('image', imgDetail.src);
+        }
+        xhr.open('POST', '/api/profile');
+        xhr.send(formData);
+        xhr.onload = () => {
+            if (xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+                console.log(data);
+
+                // alert('Cập nhật thành công');
+            }
+        }
+    })
+</script>

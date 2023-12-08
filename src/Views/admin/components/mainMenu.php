@@ -15,7 +15,7 @@
                 <li class>
                     <a href="/admin/users" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="feather icon-box"></i>
+                            <i class="fa-solid fa-people-group"></i>
                         </span>
 
                         <span class="pcoded-mtext">Quản lý khách hàng</span>
@@ -26,7 +26,7 @@
                 <li class>
                     <a href="/admin/categories" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="feather icon-layers"></i>
+                            <i class="fa-solid fa-bars-progress"></i>
                         </span>
                         <span class="pcoded-mtext">Quản lý Danh mục</span>
                     </a>
@@ -35,7 +35,7 @@
                 <li class>
                     <a href="/admin/products" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="feather icon-box"></i>
+                            <i class="fa-solid fa-bars-progress"></i>
                         </span>
                         <span class="pcoded-mtext">Quản lý sản phẩm</span>
                     </a>
@@ -43,7 +43,7 @@
                 <li class>
                     <a href="/admin/categoriesProductsProperties" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="feather icon-box"></i>
+                            <i class="fa-solid fa-list-check"></i>
                         </span>
                         <span class="pcoded-mtext">Loại Thuộc tính sản phẩm</span>
                     </a>
@@ -52,7 +52,7 @@
                 <li class>
                     <a href="/admin/comments" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="feather icon-layers"></i>
+                            <i class="fa-solid fa-comments"></i>
                         </span>
                         <span class="pcoded-mtext">Quản lý bình luận</span>
                     </a>
@@ -61,7 +61,7 @@
                 <li class>
                     <a href="/admin/carts" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="feather icon-box"></i>
+                            <i class="fa-solid fa-cart-shopping"></i>
                         </span>
                         <span class="pcoded-mtext">Quản lý đơn hàng</span>
                     </a>

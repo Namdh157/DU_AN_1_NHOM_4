@@ -42,10 +42,11 @@
                                             <thead>
                                                 <tr>
                                                     <th>STT</th>
-                                                    <th>ID</th>
+                                                    <th>Sản phẩm</th>
                                                     <th>Kích thước</th>
                                                     <th>Màu sắc</th>
                                                     <th>Giá tiền</th>
+                                                    <th>Số lượng</th>
                                                     <th>Hành động</th>
                                                 </tr>
                                             </thead>
@@ -54,12 +55,17 @@
                                                 <?php foreach ($allCategories_Properties as $key => $value) : ?>
                                                     <tr>
                                                         <td><?= $key + 1 ?></td>
-                                                        <td><?= $value['id'] ?></td>
-                                                        <td><?= $value['size'] ?></td>
-                                                        <td><?= $value['color'] ?></td>
-                                                        <td><?= $value['price'] ?></td>
+                                                        <td><?= $value['name_product'] ?></td>
                                                         <td>
-                                                            <a href="/admin/categoriesProductsProperties/update?id=<?= $value['id'] ?>" >
+                                                            <?= empty($value['size']) ? "Không có màu sắc" : $value['size'] ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= empty($value['color']) ? "Không có màu sắc" : $value['color'] ?>
+                                                        </td>
+                                                        <td><?= number_format($value['price']) ?> VNĐ</td>
+                                                        <td><?= $value['quantity'] ?> sản phẩm</td>
+                                                        <td>
+                                                            <a href="/admin/categoriesProductsProperties/update?id=<?= $value['id'] ?>">
                                                                 <button class="btn btn-primary btn-sm">Cập nhật</button>
                                                             </a>
 

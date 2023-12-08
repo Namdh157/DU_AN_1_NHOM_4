@@ -39,6 +39,7 @@ $router->addRoute('/allProducts', HomeController::class, 'allProducts');
 $router->addRoute('/Carts', HomeController::class, 'carts');
 $router->addRoute('/Carts/delete', HomeController::class, 'cartsDelete');
 $router->addRoute('/Profile', HomeController::class, 'profile');
+$router->addRoute('/Order', HomeController::class, 'order');
 
 
 
@@ -80,6 +81,9 @@ $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
  $router->addRoute('/api/carts', APIController::class, 'carts');
  $router->addRoute('/api/comments', APIController::class, 'comments');
  $router->addRoute('/api/orders', APIController::class, 'order');
+$router->addRoute('/api/profile', APIController::class, 'profile');
+$router->addRoute('/api/billDetail', APIController::class, 'billDetail');
+
 
 
 

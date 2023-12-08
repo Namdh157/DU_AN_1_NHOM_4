@@ -3,6 +3,9 @@
 namespace MVC_DA1\Controllers\Admin;
 
 use MVC_DA1\Controller;
+use MVC_DA1\Models\Bills;
+use MVC_DA1\Models\Cart;
+use MVC_DA1\Models\Comment;
 use MVC_DA1\Models\User;
 
 
@@ -89,6 +92,15 @@ class UserController extends Controller
         $conditions = [
             ['id', '=', $_GET['id']]
         ];
+        $conditions2 = [
+            ['id_user', '=', $_GET['id']]
+        ];
+
+        (new Bills)->delete($conditions2);
+
+        (new Cart)->delete($conditions2);
+
+        (new Comment)->delete($conditions2);
 
         (new User)->delete($conditions);
 

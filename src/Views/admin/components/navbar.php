@@ -43,7 +43,7 @@
                         <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                             <li>
                                 <a href="/">
-                                    <i class="feather icon-lock"></i> Quay về trang chủ
+                                <i class="feather icon-home"></i></i> Quay về trang chủ
                                 </a>
                             </li>
                             <li>

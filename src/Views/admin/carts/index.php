@@ -40,10 +40,11 @@
                                             <thead>
                                                 <tr>
                                                     <th>STT</th>
-                                                    <th>Sản phẩm</th>
-                                                    <th>Số lượng</th>
+                                                    <th>Thông tin khách hàng</th>
                                                     <th>Trạng thái</th>
-                                                    <th>Khách hàng</th>
+                                                    <th>Tổng tiền</th>
+                                                    <th>Thời gian đặt hàng</th>
+                                                    <th>Ghi chú</th>
                                                     <th>Chức năng</th>
                                                 </tr>
                                             </thead>
@@ -52,29 +53,34 @@
                                                 <?php foreach ($showData as $key => $cart) : ?>
                                                     <tr>
                                                         <td><?= $key + 1 ?></td>
-                                                        <td> 
-                                                        <span>Tên sản phẩm: </span><?= $cart['name_product'] ?><br>
-                                                        <span>Tên danh mục: </span><?= $cart['name_category'] ?><br>
-                                                        </td>
-                                                        <td><?= $cart['quantity'] ?></td>
-                                                        <td><?php
-                                                            if($cart['status'] == 0){
-                                                                echo "Đang chờ xử lý";
-                                                            } else if($cart['status'] == 1){
-                                                                echo "Đã thanh toán";
-                                                            } else if($cart['status'] == 2){
-                                                                echo "Đã giao hàng";
-                                                            } else if($cart['status'] == 3){
-                                                                echo "Đã hủy";
-                                                            }
-                                                        ?></td>
                                                         <td>
-                                                            <span>Tên tài khoản: </span><?= $cart['user_name'] ?><br>
-                                                            <span>Tên khách hàng: </span><?= $cart['name'] ?><br>
-                                                            <span>Ảnh khách hàng: </span><img src="/assets/files/assets/images/<?= $cart['image'] ?>" alt="Ảnh khách hàng" width="100"><br>
-                                                            <span>Email: </span><?= $cart['email'] ?><br>
+                                                            <?php if ($cart['id_user'] == 0) { ?>
+                                                                <span class="text-info">*(Khách hàng chưa có tài khoản)</span><br>
+                                                            <?php } ?>
+                                                            <span>Tên khách hàng: </span><?= $cart['name_user'] ?><br>
                                                             <span>Địa chỉ:</span><?= $cart['address'] ?><br>
                                                             <span>Số điện thoại: </span><?= $cart['phone'] ?>
+                                                        </td>
+                                                        <td><?php
+                                                            if ($cart['status'] == 0) { ?>
+                                                                <span class="text-danger">Đang chờ xử lý</span>
+                                                            <?php } else if ($cart['status'] == 1) { ?>
+                                                                <span class="text-warning">Đang giao hàng</span>
+                                                            <?php } else if ($cart['status'] == 2) { ?>
+                                                                <span class="text-success">Đã giao hàng</span>
+                                                            <?php } else if ($cart['status'] == 3) { ?>
+                                                                <span class="text-danger">Đã hủy</span>
+                                                            <?php }
+                                                            ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= number_format($cart['price']) ?> VNĐ
+                                                        </td>
+                                                        <td>
+                                                            <?= $cart['time_create'] ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= $cart['note'] ?>
                                                         </td>
                                                         <td>
                                                             <a href="/admin/carts/update?id=<?= $cart['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>

@@ -20,5 +20,41 @@ class Bills extends Model
 		'note'
     ];
 
+	public function updateBills($id, $status)
+	{
+		$sql = "UPDATE $this->table SET status = :status WHERE id = :id";
+
+
+		$stmt = $this->conn->prepare($sql);
+
+		$stmt->bindParam(':id', $id);
+
+		$stmt->bindParam(':status', $status);
+
+		$stmt->execute();
+	}
+
+	public function getBillUser($id) {
+		$sql = "SELECT * FROM $this->table WHERE id_user = :id_user";
+
+		$stmt = $this->conn->prepare($sql);
+
+		$stmt->bindParam(':id_user', $id);
+
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+	}
+
+	public function countBills() {
+		$sql = "SELECT COUNT(*) FROM $this->table";
+
+		$stmt = $this->conn->prepare($sql);
+
+		$stmt->execute();
+
+		return $stmt->fetchColumn();
+	}
+
    
 }

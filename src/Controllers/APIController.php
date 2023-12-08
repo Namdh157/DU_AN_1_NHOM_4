@@ -9,6 +9,7 @@ use MVC_DA1\Models\Categories_Properties;
 use MVC_DA1\Models\Comment;
 use MVC_DA1\Models\Images;
 use MVC_DA1\Models\Product;
+use MVC_DA1\Models\User;
 
 class APIController
 {
@@ -126,6 +127,34 @@ class APIController
                 'totalCart' => number_format($totalCart, 0, '.', ',')
             ];
             echo json_encode($datas);
+        }
+    }
+
+    public function profile()
+    {
+        if (isset($_POST['name'])) {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $address = $_POST['address'];
+            $phone = $_POST['phone'];
+            $image = $_FILES['image'];
+            $id = $_SESSION['account']['id_user'];
+            $user = (new User)->getById($id);
+            if ($image['name'] == "") {
+                $image = $user['image_user'];
+            } else {
+                move_uploaded_file($image['tmp_name'], "assets/files/assets/images/" . $image['name']);
+                $image = $image['name'];
+            }
+            $data = [
+                'name' => $name,
+                'email' => $email,
+                'address' => $address,
+                'phone' => $phone,
+                'image' => $image
+            ];
+            (new User)->update($id, $data);
+            echo json_encode($image);
         }
     }
 
@@ -279,6 +308,15 @@ class APIController
                 'date_comment' => date('Y-m-d H:i:s')
             ];
             (new Comment)->insert($data);
+            echo json_encode($data);
+        }
+    }
+
+    public function billDetail()
+    {
+        if (isset($_POST['idBill'])) {
+            $idBill = $_POST['idBill'];
+            $data = (new BillDetail)->getProductBillDetail($idBill);
             echo json_encode($data);
         }
     }
