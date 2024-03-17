@@ -256,6 +256,8 @@
     const userId = btnAddCart.getAttribute("data-idUser");
     const containerComment = document.querySelector("#containerComment");
 
+    console.log(productId);
+
     btnMinus.addEventListener("click", () => {
         if (quantity.value > 1) {
             quantity.value--;

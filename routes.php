@@ -7,7 +7,6 @@ use MVC_DA1\Controllers\Admin\CategoryController;
 use MVC_DA1\Controllers\Admin\CommentController;
 use MVC_DA1\Controllers\Admin\DashboardController;
 use MVC_DA1\Controllers\Admin\ProductController;
-use MVC_DA1\Controllers\Admin\ProductPropertiesController;
 use MVC_DA1\Controllers\APIController;
 use MVC_DA1\Controllers\Client\HomeController;
 use MVC_DA1\Router;
@@ -77,10 +76,10 @@ $router->addRoute('/admin/carts/update', CartController::class, 'update');
 $router->addRoute('/admin/carts/delete', CartController::class, 'delete');
 
 // sử dụng api
- $router->addRoute('/api/products', APIController::class, 'products');
- $router->addRoute('/api/carts', APIController::class, 'carts');
- $router->addRoute('/api/comments', APIController::class, 'comments');
- $router->addRoute('/api/orders', APIController::class, 'order');
+$router->addRoute('/api/products', APIController::class, 'products');
+$router->addRoute('/api/carts', APIController::class, 'carts');
+$router->addRoute('/api/comments', APIController::class, 'comments');
+$router->addRoute('/api/orders', APIController::class, 'order');
 $router->addRoute('/api/profile', APIController::class, 'profile');
 $router->addRoute('/api/billDetail', APIController::class, 'billDetail');
 

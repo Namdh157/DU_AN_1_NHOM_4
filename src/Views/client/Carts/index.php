@@ -344,6 +344,7 @@ else { ?>
         });
 
 
+
         $.ajax({
             url: "/api/orders",
             type: "POST",

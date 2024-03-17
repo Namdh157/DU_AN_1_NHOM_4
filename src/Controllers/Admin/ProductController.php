@@ -112,6 +112,23 @@ class ProductController extends Controller
         }
 
         if(isset($_POST['btn-submit'])) {
+
+            $data = [
+                'name_product' => $_POST['nameProduct'],
+                'description' => $_POST['description'],
+                'view' => 0,
+                'id_category' => $_POST['categories'],
+                'discount' => $_POST['discount'],
+                'special' => 0
+            ];
+            $conditions = [
+                ['id', '=', $id]
+            ];
+            (new Product)->update($data, $conditions);
+            
+            header('Location: /admin/products');
+
+            
             $properties = [
                 'size' => $_POST['size'],
                 'color' => $_POST['color'],
@@ -119,9 +136,6 @@ class ProductController extends Controller
                 'quantity' => $_POST['quantity'],
                 'id_product' => $id
             ];
-            echo "<pre>";
-            print_r($properties);
-            die;
         }
 
         $this->renderAdmin('products/update', [

@@ -26,76 +26,85 @@
             </div>
             <div class="col-9 border ms-4" style="border-radius: .5rem;">
                 <div class="card m-0" style="background-color: #f4f5f7; border:none;">
-                    <h4>Danh sách đơn hàng</h4>
-
-                    <div class="card-block">
-                        <div class="dt-responsive table-responsive">
-                            <table class="table  table-bordered nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Trạng thái</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Thời gian đặt hàng</th>
-                                        <th>Chi tiết</th>
-                                        <th>Chức năng</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php foreach ($allProductInBills as $key => $cart) : ?>
-                                        <tr>
-                                            <td><?= $key + 1 ?></td>
-                                            </td>
-                                            <td><?php
-                                                if ($cart['status'] == 0) { ?>
-                                                    <span class="text-danger">Đang chờ xử lý</span>
-                                                <?php } else if ($cart['status'] == 1) { ?>
-                                                    <span class="text-warning">Đang giao hàng</span>
-                                                <?php } else if ($cart['status'] == 2) { ?>
-                                                    <span class="text-success">Đã giao hàng</span>
-                                                <?php } else if ($cart['status'] == 3) { ?>
-                                                    <span class="text-danger">Đã hủy</span>
-                                                <?php }
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <?= number_format($cart['price']) ?> VNĐ
-                                            </td>
-                                            <td>
-                                                <?= $cart['time_create'] ?>
-                                            </td>
-                                            <td>
-                                                <button class="btn border bills" data-idBill="<?= $cart['id'] ?>"  data-toggle="modal" data-target=".bd-example-modal-lg">
-                                                    <i class="fa-solid fa-circle-info"></i>
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <form action="/admin/carts/delete?id=<?= $cart['id'] ?>" method="post">
-                                                    <button type="submit" onclick="return confirm('Bạn có chắc chắn hủy?');">
-                                                        <?php if ($cart['status'] == 0) { ?>
-                                                            <a href="/admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-danger btn-sm mt-2">Hủy</a>
-                                                        <?php } else if ($cart['status'] == 1) { ?>
-                                                            <a href="/admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-danger btn-sm mt-2">Hủy</a>
-                                                        <?php } else if ($cart['status'] == 2) { ?>
-                                                            <a href="/admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-success btn-sm mt-2">Xác nhận</a>
-                                                        <?php } else if ($cart['status'] == 3) { ?>
-                                                            <a href="//admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-danger btn-sm mt-2">Xác nhận</a>
-                                                        <?php }
-
-
-                                                        ?>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-
-                            </table>
+                    <?php if (empty($allProductInBills)) { ?>
+                        <h3 class="text-center p-5">Bạn chưa có sản phẩm nào</h3>
+                        <div class="text-center">
+                            <h3 class="text-info ">
+                                <a href="/">Mua ngay nào <i class="fa-solid fa-right-long"></i> </a>
+                            </h3>
                         </div>
-                    </div>
 
+                    <?php } else { ?>
+                        <h4>Danh sách đơn hàng</h4>
+
+                        <div class="card-block">
+                            <div class="dt-responsive table-responsive">
+                                <table class="table  table-bordered nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Trạng thái</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Thời gian đặt hàng</th>
+                                            <th>Chi tiết</th>
+                                            <th>Chức năng</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php foreach ($allProductInBills as $key => $cart) : ?>
+                                            <tr>
+                                                <td><?= $key + 1 ?></td>
+                                                </td>
+                                                <td><?php
+                                                    if ($cart['status'] == 0) { ?>
+                                                        <span class="text-danger">Đang chờ xử lý</span>
+                                                    <?php } else if ($cart['status'] == 1) { ?>
+                                                        <span class="text-warning">Đang giao hàng</span>
+                                                    <?php } else if ($cart['status'] == 2) { ?>
+                                                        <span class="text-success">Đã giao hàng</span>
+                                                    <?php } else if ($cart['status'] == 3) { ?>
+                                                        <span class="text-danger">Đã hủy</span>
+                                                    <?php }
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?= number_format($cart['price']) ?> VNĐ
+                                                </td>
+                                                <td>
+                                                    <?= $cart['time_create'] ?>
+                                                </td>
+                                                <td>
+                                                    <button class="btn border bills" data-idBill="<?= $cart['id'] ?>" data-toggle="modal" data-target=".bd-example-modal-lg">
+                                                        <i class="fa-solid fa-circle-info"></i>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <form action="/admin/carts/delete?id=<?= $cart['id'] ?>" method="post">
+                                                        <button type="submit" onclick="return confirm('Bạn có chắc chắn hủy?');">
+                                                            <?php if ($cart['status'] == 0) { ?>
+                                                                <a href="/admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-danger btn-sm mt-2">Hủy</a>
+                                                            <?php } else if ($cart['status'] == 1) { ?>
+                                                                <a href="/admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-danger btn-sm mt-2">Hủy</a>
+                                                            <?php } else if ($cart['status'] == 2) { ?>
+                                                                <a href="/admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-success btn-sm mt-2">Xác nhận</a>
+                                                            <?php } else if ($cart['status'] == 3) { ?>
+                                                                <a href="//admin/carts/delete?id=<?= $cart['id'] ?>" class="btn btn-danger btn-sm mt-2">Xác nhận</a>
+                                                            <?php }
+
+
+                                                            ?>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>

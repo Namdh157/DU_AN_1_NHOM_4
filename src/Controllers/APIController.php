@@ -8,7 +8,6 @@ use MVC_DA1\Models\Cart;
 use MVC_DA1\Models\Categories_Properties;
 use MVC_DA1\Models\Comment;
 use MVC_DA1\Models\Images;
-use MVC_DA1\Models\Product;
 use MVC_DA1\Models\User;
 
 class APIController

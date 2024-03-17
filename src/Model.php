@@ -6,7 +6,6 @@ class Model
 {
     protected $conn;
     protected $table;
-
     protected $columns;
 
     public function __construct()

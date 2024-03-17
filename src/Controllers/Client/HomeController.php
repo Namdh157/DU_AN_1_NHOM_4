@@ -3,7 +3,6 @@
 namespace MVC_DA1\Controllers\Client;
 
 use MVC_DA1\Controller;
-use MVC_DA1\Models\BillDetail;
 use MVC_DA1\Models\Bills;
 use MVC_DA1\Models\Cart;
 use MVC_DA1\Models\Categories_Properties;
