@@ -8,39 +8,65 @@ use MVC_DA1\Models\User;
 
 class UserController extends Controller
 {
-    /*
-        Đây là hàm hiển thị danh sách user
-    */
+    protected $allUsers;
+
+    public function __construct() {
+        $this->allUsers = (new User)->all();
+    }
+
     public function index() {
-        $users = (new User)->all();
         
-        $this->render('admin/users/index', ['users' => $users]);
+        $this->renderAdmin('users/index', [
+            'users' =>  $this->allUsers
+        ]);
     }
 
     public function create() {
         if (isset($_POST['btn-submit'])) { 
             $data = [
-                'name' => $_POST['name'],
-                'address' => $_POST['address'],
-                'email' => $_POST['email'],
+                'user_name' => $_POST['nameUser'],
                 'password' => $_POST['password'],
+                'name' => $_POST['name'],
+                'image' => $_FILES['image']['name'],
+                'email' => $_POST['email'],
+                'address' => $_POST['address'],
+                'phone' => $_POST['phone'],
+                'role' => 0,
             ];
+            if(!empty($data['image'])) {
+                $fileUrl = '/assets/files/assets/images/';
+                move_uploaded_file($fileUrl, $data['image']);
+            }
 
             (new User)->insert($data);
 
             header('Location: /admin/users');
         }
 
-        $this->render('admin/users/create');
+        $this->renderAdmin('users/create');
     }
 
     public function update() {
+        $user = (new User)->findOne($_GET['id']);
+
         if (isset($_POST['btn-submit'])) { 
+
+            if(!empty($_FILES['image']['name'])) {
+                $imageUrl = $_FILES['image']['name'];
+                $url = 'assets/files/assets/images/';
+                move_uploaded_file($_FILES['image']['tmp_name'], $url.$imageUrl);
+            } else { 
+                $imageUrl = $user['image'];
+            }
             $data = [
-                'name' => $_POST['name'],
-                'address' => $_POST['address'],
-                'email' => $_POST['email'],
+                'user_name' => $_POST['nameUser'],
                 'password' => $_POST['password'],
+                'name' => $_POST['name'],
+                'image' => $imageUrl,
+                'email' => $_POST['email'],
+                'address' => $_POST['address'],
+                'phone' => $_POST['phone'],
+                'role' => $_POST['role'],
             ];
 
             $conditions = [
@@ -48,11 +74,15 @@ class UserController extends Controller
             ];
 
             (new User)->update($data, $conditions);
+            
+            header('Location: /admin/users');
+
         }
 
-        $user = (new User)->findOne($_GET['id']);
 
-        $this->render('admin/users/update', ['user' => $user]);
+        $this->renderAdmin('users/update', [
+            'user' => $user,
+        ]);
     }
 
     public function delete() {
